@@ -58,3 +58,159 @@ quadrantChart
 | **BG-05** | **Quản lý tập trung hoạt động kinh doanh** | Tập trung quản lý thông tin khách hàng, tài xế, phương tiện, chuyến đi, thanh toán và lịch sử giao dịch trên một hệ thống. |
 | **BG-06** | **Nâng cao hiệu quả vận hành** | Hỗ trợ nhân viên vận hành theo dõi chuyến đi, trạng thái tài xế, xử lý các trường hợp bất thường và tra cứu thông tin cần thiết. |
 | **BG-07** | **Xây dựng nền tảng có khả năng mở rộng** | Đảm bảo hệ thống có thể phục vụ số lượng lớn khách hàng và tài xế, đồng thời dễ dàng bổ sung dịch vụ, phương thức thanh toán, kênh thông báo và tính năng mới trong tương lai. |
+
+## Phạm vi dự án trong 7 tuần
+
+Dự án tập trung xây dựng các module cốt lõi để hệ thống CAB có thể vận hành đầy đủ quy trình:
+
+**Đăng nhập → Đặt xe → Tìm tài xế → Thực hiện chuyến → Tính cước → Thanh toán → Hoàn thành.**
+
+### 1. Authentication & User Management
+
+**Mục tiêu:** Quản lý tài khoản và xác thực người dùng.
+
+**In Scope:**
+- Đăng ký tài khoản khách hàng.
+- Đăng nhập/đăng xuất.
+- Cập nhật thông tin cá nhân.
+- Xác thực người dùng.
+- Phân quyền cơ bản cho các nhóm người dùng.
+
+**Đối tượng:** Khách hàng, Tài xế, Nhân viên vận hành.
+
+---
+
+### 2. Driver & Vehicle Management
+
+**Mục tiêu:** Quản lý tài xế và phương tiện phục vụ việc nhận chuyến.
+
+**In Scope:**
+- Quản lý hồ sơ tài xế.
+- Quản lý thông tin phương tiện.
+- Cập nhật trạng thái tài xế.
+- Bật/tắt trạng thái sẵn sàng nhận chuyến.
+- Ghi nhận vị trí tài xế.
+
+**Đối tượng:** Tài xế, Nhân viên vận hành.
+
+---
+
+### 3. Booking Management
+
+**Mục tiêu:** Cho phép khách hàng tạo và quản lý yêu cầu đặt xe.
+
+**In Scope:**
+- Nhập điểm đón.
+- Nhập điểm đến.
+- Lựa chọn loại xe.
+- Tạo yêu cầu đặt xe.
+- Xem trạng thái yêu cầu.
+- Hủy chuyến theo chính sách đã được xác nhận.
+
+**Đối tượng:** Khách hàng.
+
+---
+
+### 4. Driver Matching & Dispatch
+
+**Mục tiêu:** Tự động tìm kiếm và phân công tài xế cho chuyến đi.
+
+**In Scope:**
+- Xác định tài xế đang sẵn sàng.
+- Tìm tài xế phù hợp và gần khách hàng.
+- Gửi yêu cầu chuyến đến tài xế.
+- Tài xế chấp nhận/từ chối chuyến.
+- Tiếp tục tìm tài xế khác khi tài xế không phản hồi hoặc từ chối.
+- Thông báo cho khách hàng khi không tìm được tài xế.
+
+**Đối tượng:** Khách hàng, Tài xế, Nhân viên vận hành.
+
+---
+
+### 5. Trip Management
+
+**Mục tiêu:** Quản lý toàn bộ vòng đời của chuyến đi.
+
+**In Scope:**
+- Tài xế đã nhận chuyến.
+- Tài xế đang đến điểm đón.
+- Tài xế đã đến.
+- Đã đón khách.
+- Đang di chuyển.
+- Hoàn thành chuyến.
+- Hủy chuyến và xử lý các trường hợp bất thường.
+- Theo dõi vị trí và ETA cơ bản.
+
+**Đối tượng:** Khách hàng, Tài xế, Nhân viên vận hành.
+
+---
+
+### 6. Fare & Payment
+
+**Mục tiêu:** Tính cước và xử lý thanh toán.
+
+**In Scope:**
+- Tính cước dựa trên loại dịch vụ và thông tin chuyến.
+- Hỗ trợ thanh toán tiền mặt.
+- Hỗ trợ thanh toán điện tử.
+- Tích hợp một nhà cung cấp thanh toán.
+- Nhận kết quả giao dịch.
+- Xử lý thanh toán thành công/thất bại.
+- Cho phép xử lý lại thanh toán theo chính sách doanh nghiệp.
+
+**Đối tượng:** Khách hàng, Tài xế, Bộ phận tài chính.
+
+---
+
+### 7. Notification
+
+**Mục tiêu:** Đảm bảo khách hàng và tài xế nhận được thông tin cần thiết trong quá trình sử dụng dịch vụ.
+
+**In Scope:**
+- Thông báo tiếp nhận yêu cầu đặt xe.
+- Thông báo tài xế nhận chuyến.
+- Thông báo tài xế đến điểm đón.
+- Thông báo hoàn thành chuyến.
+- Thông báo kết quả thanh toán.
+- Thông báo chuyến mới cho tài xế.
+
+**Đối tượng:** Khách hàng, Tài xế.
+
+---
+
+### 8. Operation & Reporting
+
+**Mục tiêu:** Hỗ trợ nhân viên vận hành quản lý và giám sát hệ thống.
+
+**In Scope:**
+- Quản lý khách hàng.
+- Quản lý tài xế.
+- Quản lý phương tiện.
+- Theo dõi chuyến đang diễn ra.
+- Theo dõi trạng thái tài xế.
+- Hỗ trợ xử lý chuyến bị lỗi.
+- Tra cứu lịch sử chuyến và giao dịch.
+- Báo cáo cơ bản: số chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy.
+- Phân quyền nhân viên.
+- Lưu vết các thao tác quan trọng.
+
+**Đối tượng:** Nhân viên vận hành, Bộ phận tài chính, Ban giám đốc.
+
+---
+
+## Out of Scope – Giai đoạn sau
+
+Các chức năng sau chưa thực hiện trong phạm vi 7 tuần:
+
+- AI/ML dự đoán nhu cầu.
+- AI tối ưu điều phối tài xế.
+- Dynamic Pricing nâng cao.
+- Voucher/Khuyến mãi.
+- Loyalty/Điểm thưởng.
+- Báo cáo và BI nâng cao.
+- Các loại dịch vụ vận chuyển mới.
+- Tích hợp nhiều nhà cung cấp thanh toán.
+- Tích hợp nhiều nhà cung cấp thông báo.
+- Các tính năng nâng cao khác chưa được khách hàng yêu cầu.
+
+Các chức năng Out of Scope sẽ được xem xét phát triển ở các giai đoạn tiếp theo dựa trên nhu cầu thực tế và mức độ ưu tiên của khách hàng.
