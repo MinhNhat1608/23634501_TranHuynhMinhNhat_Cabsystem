@@ -9,14 +9,19 @@
 | **Ban giám đốc** | Đưa ra mục tiêu, yêu cầu kinh doanh; phê duyệt phạm vi và định hướng phát triển hệ thống; theo dõi báo cáo và hiệu quả hoạt động. |
 | **Khách hàng** | Sử dụng hệ thống để đăng ký, đặt xe, theo dõi chuyến, thanh toán, xem lịch sử và đánh giá tài xế. |
 | **Tài xế** | Nhận và thực hiện chuyến; cập nhật trạng thái hoạt động, thông tin phương tiện, vị trí và trạng thái chuyến đi. |
+| **Nhà cung cấp thanh toán** | Xử lý thanh toán điện tử và trả kết quả giao dịch. |
+| **Nhà cung cấp bản đồ/GPS** | Cung cấp vị trí, bản đồ, khoảng cách và ETA. |
+| **Bộ phận CSKH** | Tiếp nhận khiếu nại, hỗ trợ khách hàng/tài xế, xử lý vấn đề chuyến đi. |
+| **Nhà cung cấp thông báo** | Gửi SMS, email, push notification. |
 | **Nhân viên vận hành** | Quản lý khách hàng, tài xế, phương tiện và chuyến đi; theo dõi hoạt động và xử lý các trường hợp chuyến bị lỗi. |
 | **Bộ phận tài chính** | Theo dõi, kiểm tra và đối soát các giao dịch thanh toán, doanh thu từ các chuyến đi. |
 
-## B3. Stakeholder Matrix
+## Stakeholder Matrix
 
 Stakeholder Matrix được xây dựng dựa trên hai tiêu chí:
-- **Power:** Mức độ quyền lực/ảnh hưởng đến dự án.
-- **Interest:** Mức độ quan tâm đến dự án.
+
+- **Power:** Mức độ quyền lực và khả năng ảnh hưởng đến dự án.
+- **Interest:** Mức độ quan tâm và tham gia vào hệ thống CAB.
 
 ```mermaid
 quadrantChart
@@ -30,8 +35,14 @@ quadrantChart
     quadrant-4 Keep Informed
 
     Ban giám đốc: [0.85, 0.90]
-    Nhân viên vận hành: [0.80, 0.80]
+    Nhân viên vận hành: [0.82, 0.80]
+
     Khách hàng: [0.85, 0.30]
     Tài xế: [0.80, 0.25]
+    Bộ phận CSKH: [0.78, 0.40]
     Bộ phận tài chính: [0.75, 0.55]
+
+    Nhà cung cấp thanh toán: [0.40, 0.25]
+    Nhà cung cấp bản đồ/GPS: [0.35, 0.20]
+    Nhà cung cấp thông báo: [0.30, 0.15]
 ```
