@@ -210,18 +210,11 @@ Các chức năng Out of Scope sẽ được xem xét ở giai đoạn sau khi h
 | BR-41 | Khách hàng có thể đánh giá tài xế sau khi hoàn thành chuyến. |
 | BR-42 | Hệ thống lưu kết quả đánh giá. |
 
-### 10. Chức năng Should Have / Could Have
+### 10. Báo cáo
 
-Các chức năng sau được đưa vào giai đoạn tiếp theo sau khi hoàn thành các chức năng Must Have:
-
-| ID | Yêu cầu nghiệp vụ | Mức độ |
-|---|---|---|
-| BR-43 | Khách hàng có thể hủy chuyến. | Should Have |
-| BR-44 | Hệ thống có thể xử lý lại giao dịch thanh toán thất bại. | Should Have |
-| BR-45 | Nhân viên vận hành có thể tra cứu lịch sử chuyến. | Should Have |
-| BR-46 | Nhân viên vận hành có thể tra cứu lịch sử giao dịch. | Should Have |
-| BR-47 | Hệ thống cung cấp báo cáo số lượng chuyến. | Should Have |
-| BR-48 | Hệ thống cung cấp báo cáo doanh thu. | Should Have |
-| BR-49 | Hệ thống cung cấp báo cáo tỷ lệ hoàn thành và tỷ lệ hủy. | Should Have |
-| BR-50 | Hệ thống cung cấp báo cáo hiệu quả hoạt động của tài xế. | Could Have |
-
+| ID | Yêu cầu nghiệp vụ |
+|---|---|
+| BR-47 | Hệ thống tổng hợp số lượng chuyến đi để người quản lý theo dõi tình hình hoạt động. |
+| BR-48 | Hệ thống tổng hợp doanh thu từ các chuyến đi để người quản lý theo dõi kết quả kinh doanh. |
+| BR-49 | Hệ thống tính toán tỷ lệ chuyến hoàn thành và tỷ lệ chuyến hủy để người quản lý đánh giá chất lượng vận hành. |
+| BR-50 | Hệ thống tổng hợp dữ liệu hoạt động của tài xế để người quản lý đánh giá hiệu quả làm việc. |
