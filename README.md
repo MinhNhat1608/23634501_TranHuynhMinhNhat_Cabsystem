@@ -224,3 +224,406 @@ Trong thời gian 7 tuần, dự án tập trung xây dựng **MVP (Minimum Viab
 | BR-38 | Hệ thống bảo vệ dữ liệu giao dịch và thông tin thanh toán. | Must Have |
 | BR-39 | Hệ thống không lưu trực tiếp thông tin nhạy cảm của thẻ hoặc tài khoản thanh toán. | Must Have |
 | BR-40 | Hệ thống lưu vết các thao tác quản trị quan trọng để phục vụ kiểm tra và xử lý sự cố. | Should Have |
+
+# B6. Functional Requirements
+
+## 1. Quản lý người dùng
+
+### BR-01 - Quản lý tài khoản
+
+| ID    | Functional Requirement       | Mô tả                                                |
+| ----- | ---------------------------- | ---------------------------------------------------- |
+| FR-01 | Đăng ký tài khoản            | Hệ thống cho phép người dùng đăng ký tài khoản.      |
+| FR-02 | Đăng nhập/đăng xuất          | Hệ thống cho phép người dùng đăng nhập và đăng xuất. |
+| FR-03 | Quản lý thông tin cá nhân    | Người dùng có thể xem và cập nhật thông tin cá nhân. |
+| FR-04 | Quản lý trạng thái tài khoản | Hệ thống quản lý trạng thái hoạt động của tài khoản. |
+
+### BR-02 - Xác thực người dùng
+
+| ID    | Functional Requirement     | Mô tả                                                                   |
+| ----- | -------------------------- | ----------------------------------------------------------------------- |
+| FR-05 | Xác thực tài khoản         | Hệ thống xác thực thông tin người dùng trước khi cho phép truy cập.     |
+| FR-06 | Xác thực thông tin đăng ký | Hệ thống xác thực các thông tin cần thiết như email hoặc số điện thoại. |
+| FR-07 | Kiểm tra tài khoản         | Hệ thống kiểm tra tài khoản có hợp lệ và đang hoạt động hay không.      |
+
+### BR-03 - Phân quyền người dùng
+
+| ID    | Functional Requirement | Mô tả                                                                           |
+| ----- | ---------------------- | ------------------------------------------------------------------------------- |
+| FR-08 | Quản lý vai trò        | Hệ thống hỗ trợ các vai trò Customer, Driver, Operator, CSKH, Finance và Admin. |
+| FR-09 | Phân quyền chức năng   | Hệ thống giới hạn chức năng người dùng được phép sử dụng theo vai trò.          |
+| FR-10 | Phân quyền dữ liệu     | Hệ thống giới hạn dữ liệu người dùng được phép xem và thay đổi theo vai trò.    |
+
+---
+
+# 2. Quản lý tài xế
+
+### BR-04 - Quản lý tài xế và phương tiện
+
+| ID    | Functional Requirement     | Mô tả                                                            |
+| ----- | -------------------------- | ---------------------------------------------------------------- |
+| FR-11 | Quản lý thông tin tài xế   | Nhân viên vận hành có thể thêm, xem, cập nhật thông tin tài xế.  |
+| FR-12 | Quản lý phương tiện        | Hệ thống cho phép quản lý thông tin phương tiện của tài xế.      |
+| FR-13 | Gán phương tiện cho tài xế | Hệ thống cho phép xác định phương tiện đang được tài xế sử dụng. |
+| FR-14 | Quản lý trạng thái tài xế  | Hệ thống quản lý trạng thái hoạt động của tài xế.                |
+
+### BR-05 - Quản lý trạng thái sẵn sàng
+
+| ID    | Functional Requirement          | Mô tả                                                            |
+| ----- | ------------------------------- | ---------------------------------------------------------------- |
+| FR-15 | Bật/tắt trạng thái sẵn sàng     | Tài xế có thể bật hoặc tắt trạng thái sẵn sàng nhận chuyến.      |
+| FR-16 | Cập nhật trạng thái hoạt động   | Tài xế có thể cập nhật trạng thái online, offline hoặc đang bận. |
+| FR-17 | Kiểm tra trạng thái nhận chuyến | Hệ thống xác định tài xế có đủ điều kiện nhận chuyến hay không.  |
+
+### BR-06 - Ghi nhận vị trí tài xế
+
+| ID    | Functional Requirement | Mô tả                                                                              |
+| ----- | ---------------------- | ---------------------------------------------------------------------------------- |
+| FR-18 | Cập nhật vị trí tài xế | Hệ thống ghi nhận vị trí hiện tại của tài xế.                                      |
+| FR-19 | Theo dõi vị trí tài xế | Hệ thống cập nhật vị trí tài xế trong quá trình hoạt động.                         |
+| FR-20 | Cung cấp vị trí tài xế | Hệ thống cung cấp vị trí tài xế cho khách hàng hoặc nhân viên vận hành theo quyền. |
+
+---
+
+# 3. Quản lý chuyến đi
+
+### BR-07 - Nhập thông tin chuyến
+
+| ID    | Functional Requirement      | Mô tả                                                                             |
+| ----- | --------------------------- | --------------------------------------------------------------------------------- |
+| FR-21 | Nhập điểm đón               | Khách hàng có thể nhập hoặc chọn điểm đón.                                        |
+| FR-22 | Nhập điểm đến               | Khách hàng có thể nhập hoặc chọn điểm đến.                                        |
+| FR-23 | Lựa chọn loại xe            | Khách hàng có thể lựa chọn loại xe/dịch vụ.                                       |
+| FR-24 | Xác định thông tin địa điểm | Hệ thống xác định tọa độ và thông tin địa điểm thông qua nhà cung cấp bản đồ/GPS. |
+
+### BR-08 - Tạo yêu cầu đặt xe
+
+| ID    | Functional Requirement     | Mô tả                                                                                     |
+| ----- | -------------------------- | ----------------------------------------------------------------------------------------- |
+| FR-25 | Tạo yêu cầu đặt xe         | Hệ thống cho phép khách hàng tạo yêu cầu đặt xe.                                          |
+| FR-26 | Lưu thông tin đặt xe       | Hệ thống lưu thông tin khách hàng, điểm đón, điểm đến, loại xe và phương thức thanh toán. |
+| FR-27 | Khởi tạo trạng thái chuyến | Hệ thống tạo chuyến với trạng thái ban đầu phù hợp.                                       |
+| FR-28 | Kích hoạt tìm tài xế       | Hệ thống tự động bắt đầu quá trình tìm tài xế sau khi tạo yêu cầu.                        |
+
+### BR-09 - Theo dõi trạng thái chuyến
+
+| ID    | Functional Requirement     | Mô tả                                                                             |
+| ----- | -------------------------- | --------------------------------------------------------------------------------- |
+| FR-29 | Xem trạng thái chuyến      | Khách hàng có thể xem trạng thái hiện tại của chuyến.                             |
+| FR-30 | Cập nhật trạng thái chuyến | Hệ thống cập nhật trạng thái theo tiến trình thực tế của chuyến.                  |
+| FR-31 | Xem thông tin tài xế       | Khách hàng có thể xem thông tin tài xế và phương tiện sau khi tài xế nhận chuyến. |
+| FR-32 | Xem ETA                    | Hệ thống hiển thị thời gian dự kiến tài xế đến điểm đón nếu có dữ liệu GPS.       |
+
+### BR-10 - Cập nhật trạng thái chuyến
+
+| ID    | Functional Requirement      | Mô tả                                                          |
+| ----- | --------------------------- | -------------------------------------------------------------- |
+| FR-33 | Cập nhật trạng thái đến đón | Tài xế có thể cập nhật trạng thái đang di chuyển đến điểm đón. |
+| FR-34 | Xác nhận đã đến             | Tài xế có thể xác nhận đã đến điểm đón.                        |
+| FR-35 | Bắt đầu chuyến              | Tài xế có thể xác nhận bắt đầu chuyến.                         |
+| FR-36 | Hoàn thành chuyến           | Tài xế có thể xác nhận hoàn thành chuyến.                      |
+
+### BR-11 - Lịch sử chuyến
+
+| ID    | Functional Requirement | Mô tả                                                  |
+| ----- | ---------------------- | ------------------------------------------------------ |
+| FR-37 | Lưu lịch sử chuyến     | Hệ thống lưu thông tin các chuyến đã tạo và thực hiện. |
+| FR-38 | Xem lịch sử chuyến     | Khách hàng có thể xem danh sách các chuyến của mình.   |
+| FR-39 | Xem chi tiết chuyến    | Khách hàng có thể xem chi tiết từng chuyến.            |
+
+### BR-12 - Hủy chuyến
+
+| ID    | Functional Requirement  | Mô tả                                                              |
+| ----- | ----------------------- | ------------------------------------------------------------------ |
+| FR-40 | Yêu cầu hủy chuyến      | Khách hàng có thể yêu cầu hủy chuyến.                              |
+| FR-41 | Kiểm tra điều kiện hủy  | Hệ thống kiểm tra trạng thái chuyến và chính sách hủy.             |
+| FR-42 | Cập nhật trạng thái hủy | Hệ thống chuyển chuyến sang trạng thái `CANCELLED` khi hủy hợp lệ. |
+| FR-43 | Ghi nhận lý do hủy      | Hệ thống lưu người hủy, thời gian và lý do hủy.                    |
+
+---
+
+# 4. Phân công tài xế
+
+### BR-13 - Tìm và ưu tiên tài xế
+
+| ID    | Functional Requirement     | Mô tả                                                                                    |
+| ----- | -------------------------- | ---------------------------------------------------------------------------------------- |
+| FR-44 | Xác định vị trí khách hàng | Hệ thống xác định vị trí điểm đón của khách hàng.                                        |
+| FR-45 | Lọc tài xế phù hợp         | Hệ thống lọc tài xế theo trạng thái sẵn sàng, loại xe và vị trí hiện tại.                |
+| FR-46 | Tính khoảng cách và ETA    | Hệ thống tính khoảng cách và thời gian dự kiến từ tài xế đến điểm đón.                   |
+| FR-47 | Xếp hạng tài xế            | Hệ thống ưu tiên tài xế dựa trên khoảng cách, ETA, rating và các tiêu chí được cấu hình. |
+| FR-48 | Chọn tài xế                | Hệ thống chọn tài xế phù hợp nhất để gửi yêu cầu chuyến.                                 |
+
+### BR-14 - Gửi yêu cầu nhận chuyến
+
+| ID    | Functional Requirement    | Mô tả                                                            |
+| ----- | ------------------------- | ---------------------------------------------------------------- |
+| FR-49 | Gửi yêu cầu chuyến        | Hệ thống gửi yêu cầu nhận chuyến đến tài xế được chọn.           |
+| FR-50 | Hiển thị thông tin chuyến | Tài xế có thể xem thông tin cần thiết của chuyến.                |
+| FR-51 | Chấp nhận chuyến          | Tài xế có thể chấp nhận yêu cầu trong thời gian quy định.        |
+| FR-52 | Từ chối chuyến            | Tài xế có thể từ chối yêu cầu chuyến.                            |
+| FR-53 | Gán tài xế cho chuyến     | Hệ thống gán tài xế cho booking khi tài xế chấp nhận thành công. |
+
+### BR-15 - Tìm tài xế khác
+
+| ID    | Functional Requirement           | Mô tả                                                                        |
+| ----- | -------------------------------- | ---------------------------------------------------------------------------- |
+| FR-54 | Theo dõi thời gian phản hồi      | Hệ thống theo dõi thời gian tài xế phản hồi yêu cầu.                         |
+| FR-55 | Xử lý từ chối hoặc hết thời gian | Hệ thống ghi nhận tài xế từ chối hoặc không phản hồi.                        |
+| FR-56 | Tìm tài xế tiếp theo             | Hệ thống tiếp tục tìm tài xế khác khi yêu cầu bị từ chối hoặc hết thời gian. |
+| FR-57 | Giới hạn tìm kiếm                | Hệ thống dừng tìm kiếm khi đạt giới hạn được cấu hình.                       |
+
+### BR-16 - Không tìm được tài xế
+
+| ID    | Functional Requirement   | Mô tả                                                        |
+| ----- | ------------------------ | ------------------------------------------------------------ |
+| FR-58 | Xác định không có tài xế | Hệ thống xác định không còn tài xế phù hợp để phân công.     |
+| FR-59 | Cập nhật trạng thái      | Hệ thống cập nhật booking sang trạng thái `NO_DRIVER_FOUND`. |
+| FR-60 | Thông báo khách hàng     | Hệ thống thông báo cho khách hàng khi không tìm được tài xế. |
+
+---
+
+# 5. Quản lý cước
+
+### BR-17 - Tính cước chuyến đi
+
+| ID    | Functional Requirement       | Mô tả                                                             |
+| ----- | ---------------------------- | ----------------------------------------------------------------- |
+| FR-61 | Xác định thông tin tính cước | Hệ thống xác định loại xe, khoảng cách và thời gian chuyến.       |
+| FR-62 | Lấy cấu hình giá             | Hệ thống lấy bảng giá tương ứng với loại dịch vụ.                 |
+| FR-63 | Tính cước                    | Hệ thống tính cước dựa trên công thức được doanh nghiệp cấu hình. |
+| FR-64 | Tính phụ phí/giảm giá        | Hệ thống áp dụng phụ phí hoặc giảm giá nếu có.                    |
+
+### BR-18 - Lưu thông tin cước
+
+| ID    | Functional Requirement | Mô tả                                                      |
+| ----- | ---------------------- | ---------------------------------------------------------- |
+| FR-65 | Lưu chi tiết cước      | Hệ thống lưu các thành phần tạo nên giá chuyến.            |
+| FR-66 | Lưu tổng tiền          | Hệ thống lưu số tiền cuối cùng khách hàng phải thanh toán. |
+| FR-67 | Hiển thị cước          | Hệ thống hiển thị số tiền phải thanh toán cho khách hàng.  |
+
+> **Note:** Công thức tính cước cụ thể cần được Business xác nhận trước khi triển khai.
+
+---
+
+# 6. Thanh toán
+
+### BR-19 - Phương thức thanh toán
+
+| ID    | Functional Requirement       | Mô tả                                                    |
+| ----- | ---------------------------- | -------------------------------------------------------- |
+| FR-68 | Chọn phương thức thanh toán  | Khách hàng có thể chọn tiền mặt hoặc thanh toán điện tử. |
+| FR-69 | Ghi nhận thanh toán tiền mặt | Hệ thống ghi nhận kết quả thanh toán bằng tiền mặt.      |
+| FR-70 | Khởi tạo thanh toán điện tử  | Hệ thống tạo giao dịch thanh toán điện tử cho chuyến.    |
+
+### BR-20 - Tích hợp nhà cung cấp thanh toán
+
+| ID    | Functional Requirement  | Mô tả                                                                 |
+| ----- | ----------------------- | --------------------------------------------------------------------- |
+| FR-71 | Gửi yêu cầu thanh toán  | Hệ thống gửi yêu cầu thanh toán đến nhà cung cấp thanh toán.          |
+| FR-72 | Nhận kết quả thanh toán | Hệ thống nhận và xử lý kết quả giao dịch từ nhà cung cấp.             |
+| FR-73 | Xử lý callback/webhook  | Hệ thống tiếp nhận callback/webhook để cập nhật trạng thái giao dịch. |
+
+### BR-21 - Quản lý giao dịch
+
+| ID    | Functional Requirement        | Mô tả                                                                  |
+| ----- | ----------------------------- | ---------------------------------------------------------------------- |
+| FR-74 | Tạo giao dịch                 | Hệ thống tạo mã giao dịch duy nhất cho mỗi lần thanh toán.             |
+| FR-75 | Lưu trạng thái giao dịch      | Hệ thống lưu trạng thái thanh toán như `PENDING`, `SUCCESS`, `FAILED`. |
+| FR-76 | Liên kết giao dịch với chuyến | Hệ thống liên kết giao dịch với booking/trip tương ứng.                |
+| FR-77 | Tra cứu giao dịch             | Người có quyền có thể tra cứu thông tin giao dịch.                     |
+
+### BR-22 - Thanh toán thất bại
+
+| ID    | Functional Requirement        | Mô tả                                                                   |
+| ----- | ----------------------------- | ----------------------------------------------------------------------- |
+| FR-78 | Xử lý thanh toán thất bại     | Hệ thống cập nhật trạng thái khi thanh toán thất bại.                   |
+| FR-79 | Thông báo thanh toán thất bại | Hệ thống thông báo kết quả thanh toán cho khách hàng.                   |
+| FR-80 | Thực hiện lại thanh toán      | Khách hàng có thể thực hiện lại giao dịch theo chính sách doanh nghiệp. |
+
+---
+
+# 7. Thông báo
+
+### BR-23 - Thông báo trạng thái chuyến
+
+| ID    | Functional Requirement       | Mô tả                                                 |
+| ----- | ---------------------------- | ----------------------------------------------------- |
+| FR-81 | Thông báo tiếp nhận đặt xe   | Hệ thống thông báo khi yêu cầu đặt xe được tiếp nhận. |
+| FR-82 | Thông báo tài xế nhận chuyến | Hệ thống thông báo khi tài xế nhận chuyến.            |
+| FR-83 | Thông báo tài xế đến         | Hệ thống thông báo khi tài xế đến điểm đón.           |
+| FR-84 | Thông báo hoàn thành chuyến  | Hệ thống thông báo khi chuyến hoàn thành.             |
+
+### BR-24 - Thông báo thanh toán
+
+| ID    | Functional Requirement       | Mô tả                                                                          |
+| ----- | ---------------------------- | ------------------------------------------------------------------------------ |
+| FR-85 | Thông báo kết quả thanh toán | Hệ thống thông báo cho khách hàng kết quả thanh toán thành công hoặc thất bại. |
+
+### BR-25 - Thông báo cho tài xế
+
+| ID    | Functional Requirement    | Mô tả                                                            |
+| ----- | ------------------------- | ---------------------------------------------------------------- |
+| FR-86 | Thông báo chuyến mới      | Hệ thống thông báo cho tài xế khi có chuyến mới.                 |
+| FR-87 | Thông báo thay đổi chuyến | Hệ thống thông báo cho tài xế khi chuyến có thay đổi quan trọng. |
+
+---
+
+# 8. Quản lý vận hành
+
+### BR-26 - Quản lý khách hàng, tài xế và phương tiện
+
+| ID    | Functional Requirement | Mô tả                                                            |
+| ----- | ---------------------- | ---------------------------------------------------------------- |
+| FR-88 | Quản lý khách hàng     | Operator có thể xem và cập nhật thông tin khách hàng theo quyền. |
+| FR-89 | Quản lý tài xế         | Operator có thể xem và cập nhật thông tin tài xế.                |
+| FR-90 | Quản lý phương tiện    | Operator có thể xem và cập nhật thông tin phương tiện.           |
+| FR-91 | Tìm kiếm dữ liệu       | Operator có thể tìm kiếm khách hàng, tài xế và phương tiện.      |
+
+### BR-27 - Theo dõi chuyến và tài xế
+
+| ID    | Functional Requirement       | Mô tả                                                    |
+| ----- | ---------------------------- | -------------------------------------------------------- |
+| FR-92 | Theo dõi chuyến đang diễn ra | Operator có thể xem danh sách các chuyến đang hoạt động. |
+| FR-93 | Theo dõi trạng thái tài xế   | Operator có thể xem trạng thái hoạt động của tài xế.     |
+| FR-94 | Theo dõi vị trí tài xế       | Operator có thể xem vị trí tài xế đang thực hiện chuyến. |
+| FR-95 | Xem chi tiết chuyến          | Operator có thể xem thông tin chi tiết của chuyến.       |
+
+### BR-28 - Xử lý chuyến lỗi
+
+| ID    | Functional Requirement | Mô tả                                                                  |
+| ----- | ---------------------- | ---------------------------------------------------------------------- |
+| FR-96 | Phát hiện chuyến lỗi   | Hệ thống xác định và hiển thị các chuyến có trạng thái bất thường.     |
+| FR-97 | Xem thông tin lỗi      | Operator có thể xem nguyên nhân và thông tin liên quan đến chuyến lỗi. |
+| FR-98 | Xử lý chuyến lỗi       | Operator có thể thực hiện các thao tác xử lý theo quyền được cấp.      |
+| FR-99 | Ghi nhận xử lý         | Hệ thống lưu thông tin người xử lý, thời gian và kết quả xử lý.        |
+
+### BR-29 - Tra cứu lịch sử
+
+| ID     | Functional Requirement    | Mô tả                                                                     |
+| ------ | ------------------------- | ------------------------------------------------------------------------- |
+| FR-100 | Tra cứu lịch sử chuyến    | Operator có thể tìm kiếm và xem lịch sử chuyến.                           |
+| FR-101 | Tra cứu lịch sử giao dịch | Operator/Finance có thể tìm kiếm và xem lịch sử thanh toán.               |
+| FR-102 | Lọc dữ liệu lịch sử       | Hệ thống hỗ trợ lọc theo thời gian, trạng thái và các tiêu chí liên quan. |
+
+---
+
+# 9. Đánh giá
+
+### BR-30 - Đánh giá tài xế
+
+| ID     | Functional Requirement      | Mô tả                                                                |
+| ------ | --------------------------- | -------------------------------------------------------------------- |
+| FR-103 | Kiểm tra điều kiện đánh giá | Hệ thống chỉ cho phép khách hàng đánh giá sau khi chuyến hoàn thành. |
+| FR-104 | Đánh giá tài xế             | Khách hàng có thể đánh giá tài xế theo thang điểm được quy định.     |
+| FR-105 | Nhập nhận xét               | Khách hàng có thể nhập nhận xét về chuyến đi/tài xế.                 |
+| FR-106 | Ngăn đánh giá trùng         | Hệ thống không cho phép đánh giá nhiều lần cho cùng một chuyến.      |
+
+### BR-31 - Lưu kết quả đánh giá
+
+| ID     | Functional Requirement | Mô tả                                                           |
+| ------ | ---------------------- | --------------------------------------------------------------- |
+| FR-107 | Lưu đánh giá           | Hệ thống lưu điểm đánh giá và nhận xét của khách hàng.          |
+| FR-108 | Liên kết đánh giá      | Hệ thống liên kết đánh giá với khách hàng, tài xế và chuyến đi. |
+| FR-109 | Tính rating tài xế     | Hệ thống tính rating trung bình của tài xế từ các đánh giá.     |
+
+---
+
+# 10. Báo cáo
+
+### BR-32 - Báo cáo số lượng chuyến
+
+| ID     | Functional Requirement   | Mô tả                                                               |
+| ------ | ------------------------ | ------------------------------------------------------------------- |
+| FR-110 | Thống kê số lượng chuyến | Hệ thống thống kê số lượng chuyến theo khoảng thời gian.            |
+| FR-111 | Phân loại chuyến         | Hệ thống phân loại chuyến theo trạng thái hoàn thành, hủy hoặc lỗi. |
+
+### BR-33 - Báo cáo doanh thu
+
+| ID     | Functional Requirement       | Mô tả                                                                   |
+| ------ | ---------------------------- | ----------------------------------------------------------------------- |
+| FR-112 | Thống kê doanh thu           | Hệ thống tổng hợp doanh thu từ các chuyến.                              |
+| FR-113 | Lọc doanh thu theo thời gian | Hệ thống cho phép xem doanh thu theo ngày, tháng hoặc khoảng thời gian. |
+| FR-114 | Phân loại doanh thu          | Hệ thống có thể thống kê doanh thu theo phương thức thanh toán.         |
+
+### BR-34 - Báo cáo hoàn thành/hủy
+
+| ID     | Functional Requirement | Mô tả                                                           |
+| ------ | ---------------------- | --------------------------------------------------------------- |
+| FR-115 | Tính tỷ lệ hoàn thành  | Hệ thống tính tỷ lệ chuyến hoàn thành.                          |
+| FR-116 | Tính tỷ lệ hủy         | Hệ thống tính tỷ lệ chuyến bị hủy.                              |
+| FR-117 | Hiển thị thống kê      | Hệ thống hiển thị kết quả thống kê dưới dạng bảng hoặc biểu đồ. |
+
+### BR-35 - Báo cáo hiệu quả tài xế
+
+| ID     | Functional Requirement      | Mô tả                                                       |
+| ------ | --------------------------- | ----------------------------------------------------------- |
+| FR-118 | Thống kê chuyến theo tài xế | Hệ thống thống kê số chuyến của từng tài xế.                |
+| FR-119 | Thống kê tỷ lệ nhận chuyến  | Hệ thống thống kê tỷ lệ tài xế chấp nhận và từ chối chuyến. |
+| FR-120 | Thống kê rating tài xế      | Hệ thống thống kê rating trung bình của tài xế.             |
+
+---
+
+# 11. Bảo mật & Quản trị
+
+### BR-36 - Kiểm soát quyền truy cập
+
+| ID     | Functional Requirement       | Mô tả                                                                          |
+| ------ | ---------------------------- | ------------------------------------------------------------------------------ |
+| FR-121 | Xác thực người dùng          | Hệ thống yêu cầu người dùng xác thực trước khi truy cập chức năng được bảo vệ. |
+| FR-122 | Kiểm tra quyền               | Hệ thống kiểm tra quyền trước khi cho phép thực hiện chức năng.                |
+| FR-123 | Kiểm soát quyền theo vai trò | Hệ thống giới hạn chức năng và dữ liệu theo vai trò người dùng.                |
+
+### BR-37 - Bảo vệ dữ liệu
+
+| ID     | Functional Requirement     | Mô tả                                                                 |
+| ------ | -------------------------- | --------------------------------------------------------------------- |
+| FR-124 | Bảo vệ thông tin cá nhân   | Hệ thống giới hạn quyền truy cập thông tin cá nhân.                   |
+| FR-125 | Bảo vệ dữ liệu vị trí      | Hệ thống giới hạn quyền truy cập dữ liệu vị trí tài xế.               |
+| FR-126 | Kiểm soát truy cập dữ liệu | Hệ thống ngăn người dùng truy cập dữ liệu không thuộc quyền của mình. |
+
+### BR-38 - Bảo vệ dữ liệu giao dịch
+
+| ID     | Functional Requirement     | Mô tả                                                                   |
+| ------ | -------------------------- | ----------------------------------------------------------------------- |
+| FR-127 | Bảo vệ thông tin giao dịch | Hệ thống giới hạn quyền truy cập thông tin giao dịch thanh toán.        |
+| FR-128 | Bảo vệ dữ liệu thanh toán  | Hệ thống bảo vệ dữ liệu thanh toán trong quá trình lưu trữ và trao đổi. |
+
+### BR-39 - Không lưu thông tin thanh toán nhạy cảm
+
+| ID     | Functional Requirement         | Mô tả                                                                               |
+| ------ | ------------------------------ | ----------------------------------------------------------------------------------- |
+| FR-129 | Không lưu dữ liệu thẻ nhạy cảm | Hệ thống không lưu trực tiếp số thẻ, CVV hoặc thông tin thanh toán nhạy cảm.        |
+| FR-130 | Lưu thông tin tham chiếu       | Hệ thống chỉ lưu transaction ID, reference hoặc token do Payment Provider cung cấp. |
+
+### BR-40 - Audit Log
+
+| ID     | Functional Requirement     | Mô tả                                                                         |
+| ------ | -------------------------- | ----------------------------------------------------------------------------- |
+| FR-131 | Ghi nhận thao tác quản trị | Hệ thống lưu các thao tác quản trị quan trọng.                                |
+| FR-132 | Lưu thông tin audit        | Audit log lưu người thực hiện, thời gian, hành động và đối tượng bị tác động. |
+| FR-133 | Tra cứu audit log          | Người có quyền có thể tìm kiếm và xem lịch sử thao tác quản trị.              |
+
+---
+
+# 12. Tổng hợp số lượng Functional Requirements
+
+| Module             |            BR | Số lượng FR |
+| ------------------ | ------------: | ----------: |
+| Quản lý người dùng | BR-01 → BR-03 |          10 |
+| Quản lý tài xế     | BR-04 → BR-06 |          10 |
+| Quản lý chuyến đi  | BR-07 → BR-12 |          23 |
+| Phân công tài xế   | BR-13 → BR-16 |          17 |
+| Quản lý cước       | BR-17 → BR-18 |           7 |
+| Thanh toán         | BR-19 → BR-22 |          13 |
+| Thông báo          | BR-23 → BR-25 |           7 |
+| Quản lý vận hành   | BR-26 → BR-29 |          15 |
+| Đánh giá           | BR-30 → BR-31 |           7 |
+| Báo cáo            | BR-32 → BR-35 |          11 |
+| Bảo mật & Quản trị | BR-36 → BR-40 |          13 |
+| **Tổng cộng**      |     **40 BR** |  **133 FR** |
+
+---
+
+
+
