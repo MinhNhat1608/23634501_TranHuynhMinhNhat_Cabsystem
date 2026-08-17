@@ -61,9 +61,11 @@ quadrantChart
 
 ## Phạm vi MVP trong 7 tuần
 
-MVP tập trung vào các chức năng cốt lõi cần thiết để hệ thống CAB có thể vận hành quy trình:
+Trong thời gian 7 tuần, dự án tập trung xây dựng **MVP (Minimum Viable Product)** với các chức năng cốt lõi để hệ thống CAB có thể vận hành đầy đủ quy trình:
 
-**Đăng ký → Đặt xe → Tìm tài xế → Thực hiện chuyến → Tính cước → Thanh toán → Đánh giá**
+**Đăng ký → Đăng nhập → Đặt xe → Tìm tài xế → Thực hiện chuyến → Tính cước → Thanh toán → Đánh giá**
+
+## MVP Scope
 
 | Module | Chức năng MVP | Mức độ |
 |---|---|---|
@@ -117,104 +119,108 @@ MVP tập trung vào các chức năng cốt lõi cần thiết để hệ thố
 | | Báo cáo doanh thu | Should Have |
 | | Báo cáo tỷ lệ hoàn thành / hủy | Should Have |
 | | Báo cáo hiệu quả tài xế | Could Have |
+| **Bảo mật & Quản trị** | Xác thực người dùng | Must Have |
+| | Phân quyền người dùng theo vai trò | Must Have |
+| | Bảo vệ thông tin cá nhân và dữ liệu giao dịch | Must Have |
+| | Không lưu trực tiếp thông tin nhạy cảm của thẻ / tài khoản thanh toán | Must Have |
+| | Lưu vết các thao tác quản trị quan trọng | Should Have |
 
-Các chức năng Out of Scope sẽ được xem xét ở giai đoạn sau khi hệ thống MVP đã hoàn thành và vận hành ổn định.
-| **BG-07** | **Xây dựng nền tảng có khả năng mở rộng** | Đảm bảo hệ thống có thể phục vụ số lượng lớn khách hàng và tài xế, đồng thời dễ dàng bổ sung dịch vụ, phương thức thanh toán, kênh thông báo và tính năng mới trong tương lai. |
 
-## B5. Chuyển các yêu cầu thành yêu cầu nghiệp vụ
+# B5. Chuyển các yêu cầu thành yêu cầu nghiệp vụ
 
 ### 1. Quản lý người dùng
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-01 | Người dùng có thể đăng ký tài khoản. |
-| BR-02 | Người dùng có thể đăng nhập và đăng xuất. |
-| BR-03 | Người dùng có thể cập nhật thông tin cá nhân. |
-| BR-04 | Hệ thống có thể xác thực người dùng. |
-| BR-05 | Hệ thống có thể phân quyền người dùng theo vai trò. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-01 | Người dùng có thể đăng ký, đăng nhập, đăng xuất và cập nhật thông tin tài khoản. | Must Have |
+| BR-02 | Hệ thống có thể xác thực người dùng trước khi sử dụng các chức năng yêu cầu tài khoản. | Must Have |
+| BR-03 | Hệ thống có thể phân quyền người dùng theo vai trò. | Must Have |
 
 ### 2. Quản lý tài xế
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-06 | Tài xế có thể quản lý thông tin cá nhân. |
-| BR-07 | Tài xế có thể quản lý thông tin phương tiện. |
-| BR-08 | Tài xế có thể bật hoặc tắt trạng thái sẵn sàng nhận chuyến. |
-| BR-09 | Tài xế có thể cập nhật trạng thái hoạt động. |
-| BR-10 | Hệ thống có thể ghi nhận vị trí của tài xế. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-04 | Hệ thống cho phép quản lý thông tin tài xế và phương tiện. | Must Have |
+| BR-05 | Tài xế có thể bật hoặc tắt trạng thái sẵn sàng và cập nhật trạng thái hoạt động. | Must Have |
+| BR-06 | Hệ thống có thể ghi nhận vị trí hiện tại của tài xế. | Must Have |
 
 ### 3. Quản lý chuyến đi
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-11 | Khách hàng có thể nhập điểm đón và điểm đến. |
-| BR-12 | Khách hàng có thể lựa chọn loại xe. |
-| BR-13 | Khách hàng có thể tạo yêu cầu đặt xe. |
-| BR-14 | Khách hàng có thể theo dõi trạng thái chuyến đi. |
-| BR-15 | Tài xế có thể cập nhật trạng thái chuyến đi. |
-| BR-16 | Khách hàng có thể xem lịch sử chuyến đi. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-07 | Khách hàng có thể nhập điểm đón, điểm đến và lựa chọn loại xe khi đặt xe. | Must Have |
+| BR-08 | Khách hàng có thể tạo yêu cầu đặt xe. | Must Have |
+| BR-09 | Khách hàng có thể theo dõi trạng thái chuyến đi. | Must Have |
+| BR-10 | Tài xế có thể cập nhật trạng thái chuyến đi trong quá trình thực hiện chuyến. | Must Have |
+| BR-11 | Khách hàng có thể xem lịch sử chuyến đi. | Must Have |
+| BR-12 | Khách hàng có thể hủy chuyến theo chính sách của doanh nghiệp. | Should Have |
 
 ### 4. Phân công tài xế
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-17 | Hệ thống có thể tìm tài xế đang sẵn sàng nhận chuyến. |
-| BR-18 | Hệ thống ưu tiên tài xế phù hợp và gần khách hàng. |
-| BR-19 | Hệ thống có thể gửi yêu cầu chuyến đến tài xế phù hợp. |
-| BR-20 | Tài xế có thể chấp nhận hoặc từ chối chuyến. |
-| BR-21 | Hệ thống có thể tìm tài xế khác khi tài xế từ chối hoặc không phản hồi. |
-| BR-22 | Hệ thống thông báo cho khách hàng khi không tìm được tài xế. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-13 | Hệ thống tự động tìm và ưu tiên tài xế phù hợp, gần khách hàng và đang sẵn sàng nhận chuyến. | Must Have |
+| BR-14 | Hệ thống gửi yêu cầu chuyến đến tài xế phù hợp và cho phép tài xế chấp nhận hoặc từ chối chuyến. | Must Have |
+| BR-15 | Hệ thống tiếp tục tìm tài xế khác khi tài xế từ chối hoặc không phản hồi. | Must Have |
+| BR-16 | Hệ thống thông báo cho khách hàng khi không tìm được tài xế. | Must Have |
 
 ### 5. Quản lý cước
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-23 | Hệ thống có thể tính cước chuyến đi. |
-| BR-24 | Hệ thống xác định số tiền khách hàng phải trả. |
-| BR-25 | Hệ thống lưu thông tin cước của chuyến đi. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-17 | Hệ thống có thể tính cước dựa trên loại dịch vụ và thông tin chuyến đi. | Must Have |
+| BR-18 | Hệ thống xác định và lưu số tiền khách hàng phải thanh toán. | Must Have |
+
+> **Lưu ý:** Công thức tính cước cụ thể cần được khách hàng xác nhận trước khi triển khai.
 
 ### 6. Thanh toán
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-26 | Khách hàng có thể thanh toán bằng tiền mặt. |
-| BR-27 | Khách hàng có thể thanh toán bằng phương thức điện tử. |
-| BR-28 | Hệ thống có thể xử lý thanh toán điện tử thông qua một nhà cung cấp thanh toán. |
-| BR-29 | Hệ thống có thể ghi nhận kết quả thanh toán. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-19 | Khách hàng có thể thanh toán bằng tiền mặt hoặc phương thức điện tử. | Must Have |
+| BR-20 | Hệ thống tích hợp với một nhà cung cấp thanh toán bên ngoài để xử lý giao dịch điện tử. | Must Have |
+| BR-21 | Hệ thống ghi nhận kết quả giao dịch thanh toán. | Must Have |
+| BR-22 | Hệ thống hỗ trợ xử lý lại giao dịch thanh toán thất bại theo chính sách doanh nghiệp. | Should Have |
 
 ### 7. Thông báo
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-30 | Khách hàng nhận được thông báo khi yêu cầu đặt xe được tiếp nhận. |
-| BR-31 | Khách hàng nhận được thông báo khi tài xế nhận chuyến. |
-| BR-32 | Khách hàng nhận được thông báo khi tài xế đến điểm đón. |
-| BR-33 | Khách hàng nhận được thông báo khi chuyến đi hoàn thành. |
-| BR-34 | Khách hàng nhận được thông báo về kết quả thanh toán. |
-| BR-35 | Tài xế nhận được thông báo khi có chuyến mới. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-23 | Hệ thống thông báo cho khách hàng về các sự kiện quan trọng của chuyến đi như tiếp nhận yêu cầu, tài xế nhận chuyến, tài xế đến điểm đón và hoàn thành chuyến. | Must Have |
+| BR-24 | Hệ thống thông báo cho khách hàng về kết quả thanh toán. | Must Have |
+| BR-25 | Hệ thống thông báo cho tài xế khi có chuyến mới hoặc thay đổi quan trọng liên quan đến chuyến. | Must Have |
 
 ### 8. Quản lý vận hành
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-36 | Nhân viên vận hành có thể quản lý thông tin khách hàng. |
-| BR-37 | Nhân viên vận hành có thể quản lý thông tin tài xế và phương tiện. |
-| BR-38 | Nhân viên vận hành có thể theo dõi các chuyến đang diễn ra. |
-| BR-39 | Nhân viên vận hành có thể theo dõi trạng thái tài xế. |
-| BR-40 | Nhân viên vận hành có thể xử lý các chuyến bị lỗi. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-26 | Nhân viên vận hành có thể quản lý thông tin khách hàng, tài xế và phương tiện. | Must Have |
+| BR-27 | Nhân viên vận hành có thể theo dõi các chuyến đang diễn ra và trạng thái tài xế. | Must Have |
+| BR-28 | Nhân viên vận hành có thể xử lý các chuyến bị lỗi. | Must Have |
+| BR-29 | Nhân viên vận hành có thể tra cứu lịch sử chuyến đi và giao dịch. | Should Have |
 
 ### 9. Đánh giá
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-41 | Khách hàng có thể đánh giá tài xế sau khi hoàn thành chuyến. |
-| BR-42 | Hệ thống lưu kết quả đánh giá. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-30 | Khách hàng có thể đánh giá tài xế sau khi hoàn thành chuyến. | Must Have |
+| BR-31 | Hệ thống lưu kết quả đánh giá để phục vụ theo dõi chất lượng dịch vụ. | Must Have |
 
 ### 10. Báo cáo
 
-| ID | Yêu cầu nghiệp vụ |
-|---|---|
-| BR-47 | Hệ thống tổng hợp số lượng chuyến đi để người quản lý theo dõi tình hình hoạt động. |
-| BR-48 | Hệ thống tổng hợp doanh thu từ các chuyến đi để người quản lý theo dõi kết quả kinh doanh. |
-| BR-49 | Hệ thống tính toán tỷ lệ chuyến hoàn thành và tỷ lệ chuyến hủy để người quản lý đánh giá chất lượng vận hành. |
-| BR-50 | Hệ thống tổng hợp dữ liệu hoạt động của tài xế để người quản lý đánh giá hiệu quả làm việc. |
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-32 | Hệ thống cung cấp báo cáo về số lượng chuyến đi. | Should Have |
+| BR-33 | Hệ thống cung cấp báo cáo về doanh thu. | Should Have |
+| BR-34 | Hệ thống cung cấp báo cáo về tỷ lệ chuyến hoàn thành và tỷ lệ chuyến hủy. | Should Have |
+| BR-35 | Hệ thống cung cấp báo cáo về hiệu quả hoạt động của tài xế. | Could Have |
+
+### 11. Bảo mật & Quản trị
+
+| ID | Yêu cầu nghiệp vụ | Mức độ |
+|---|---|---|
+| BR-36 | Hệ thống kiểm soát quyền truy cập theo vai trò người dùng. | Must Have |
+| BR-37 | Hệ thống bảo vệ thông tin cá nhân, thông tin phương tiện và dữ liệu vị trí. | Must Have |
+| BR-38 | Hệ thống bảo vệ dữ liệu giao dịch và thông tin thanh toán. | Must Have |
+| BR-39 | Hệ thống không lưu trực tiếp thông tin nhạy cảm của thẻ hoặc tài khoản thanh toán. | Must Have |
+| BR-40 | Hệ thống lưu vết các thao tác quản trị quan trọng để phục vụ kiểm tra và xử lý sự cố. | Should Have |
