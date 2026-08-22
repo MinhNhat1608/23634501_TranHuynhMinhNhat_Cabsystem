@@ -1165,7 +1165,44 @@ Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)
 2. Hiển thị báo cáo rỗng.
 3. Kết thúc Use Case.
 
----
+@startuml
+|Khách hàng / Tài xế|
+start
+:Chọn chức năng "Đăng ký tài khoản";
+
+|Hệ thống|
+:Hiển thị biểu mẫu đăng ký;
+
+|Khách hàng / Tài xế|
+:Nhập số điện thoại/email và mật khẩu;
+
+|Hệ thống|
+:Kiểm tra thông tin đăng ký;
+
+if (Thông tin hợp lệ?) then (Có)
+    :Kiểm tra tài khoản đã tồn tại;
+
+    if (Tài khoản đã tồn tại?) then (Có)
+        :Hiển thị thông báo tài khoản đã tồn tại;
+        |Khách hàng / Tài xế|
+        :Nhập lại thông tin;
+        |Hệ thống|
+        :Kiểm tra lại thông tin;
+    else (Không)
+        :Tạo tài khoản mới;
+        :Lưu thông tin vào CSDL;
+        :Thông báo đăng ký thành công;
+        stop
+    endif
+else (Không)
+    :Hiển thị thông báo dữ liệu không hợp lệ;
+    |Khách hàng / Tài xế|
+    :Nhập lại thông tin;
+    |Hệ thống|
+    :Kiểm tra lại thông tin;
+endif
+
+@enduml
 
 
 
