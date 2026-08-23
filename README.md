@@ -329,8 +329,10 @@ Trong thời gian giới hạn **7 tuần**, dự án tập trung xây dựng **
 | **FR-45** | Bảo vệ dữ liệu vị trí             | Tọa độ GPS chỉ được chia sẻ cho khách hàng liên kết với chuyến đang diễn ra. |
 | **FR-46** | Không lưu thông tin thẻ ngân hàng | Hệ thống không lưu số thẻ, ngày hết hạn hoặc mã bảo mật thẻ.                 |
 | **FR-47** | Lưu mã tham chiếu giao dịch       | Hệ thống chỉ lưu mã tham chiếu do cổng thanh toán cung cấp để tra soát.      |
+# B7 Usecase tổng quát
+<img width="1159" height="821" alt="image" src="https://github.com/user-attachments/assets/b7d2b9ec-62fa-4581-95da-7bcd0b445a61" />
 
-# ĐẶC TẢ USE CASE – CAB SYSTEM
+# B8 ĐẶC TẢ USE CASE – CAB SYSTEM
 
 > **Tổng số Use Case: 19**
 >
@@ -1164,6 +1166,12 @@ Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)
 1. Hệ thống thông báo không có dữ liệu trong khoảng thời gian đã chọn.
 2. Hiển thị báo cáo rỗng.
 3. Kết thúc Use Case.
+
+# B9 Phân Tích Business Process
+### Đăng ký tài khoản
+<img width="1325" height="668" alt="{850511AA-5C38-4294-A37C-F877FEF3B697}" src="https://github.com/user-attachments/assets/b7229cc1-30ce-48d3-a739-2cb6848cbcb0" />
+
+
 
 
 
