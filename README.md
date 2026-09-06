@@ -334,7 +334,7 @@ Trong thời gian giới hạn **7 tuần**, dự án tập trung xây dựng **
 
 # B8 ĐẶC TẢ USE CASE – CAB SYSTEM
 
-
+---
 ## UC01 – Đăng ký tài khoản
 
 
@@ -401,89 +401,180 @@ Không
 3. Hệ thống không tạo tài khoản mới.
 4. Use case kết thúc.
 
-# UC02 – Đăng nhập / Đăng xuất
+## UC02 – Đăng nhập / Đăng xuất
 
-| **Đăng nhập / Đăng xuất** |                                                                                        |
-| ------------------------- | -------------------------------------------------------------------------------------- |
-| **Mã Use Case**           | UC02                                                                                   |
-| **Tiền điều kiện**        | Người dùng đã có tài khoản để đăng nhập.                                               |
-| **Hậu điều kiện**         | Đăng nhập thành công tạo phiên làm việc; đăng xuất thành công kết thúc phiên làm việc. |
-| **Actor chính**           | Khách hàng / Tài xế / Nhân viên vận hành                                               |
-| **Actor phụ**             | Không                                                                                  |
-| **Mức độ**                | Must Have                                                                              |
+### Tóm tắt
 
-## Basic Flow – Đăng nhập
+Use case này cho phép Khách hàng, Tài xế và Nhân viên vận hành đăng nhập vào hệ thống để sử dụng các chức năng theo quyền được cấp và đăng xuất khỏi hệ thống khi kết thúc sử dụng.
 
-| **Người dùng**                           | **Hệ thống**                                  |
-| ---------------------------------------- | --------------------------------------------- |
-| 1. Chọn **Đăng nhập**.                   | 2. Hiển thị biểu mẫu đăng nhập.               |
-| 3. Nhập số điện thoại/email và mật khẩu. | 4. Kiểm tra thông tin đăng nhập.              |
-|                                          | 5. Xác thực tài khoản.                        |
-|                                          | 6. Xác định vai trò người dùng.               |
-|                                          | 7. Tạo phiên đăng nhập.                       |
-|                                          | 8. Chuyển người dùng đến giao diện tương ứng. |
+### Actor chính
 
-## Alternative Flow
+Khách hàng, Tài xế, Nhân viên vận hành
 
-### 3.1. Sai thông tin đăng nhập
+### Actor phụ
+
+Không
+
+### Tiền điều kiện
+
+1. Khách hàng, Tài xế hoặc Nhân viên vận hành đã có tài khoản trên hệ thống.
+2. Tài khoản đang ở trạng thái hoạt động.
+3. Người dùng chưa đăng nhập vào hệ thống.
+
+### Hậu điều kiện
+
+- Nếu đăng nhập thành công, người dùng được xác thực và có thể sử dụng các chức năng tương ứng với vai trò.
+- Nếu đăng xuất thành công, phiên đăng nhập của người dùng được kết thúc.
+- Nếu đăng nhập hoặc đăng xuất không thành công, trạng thái tài khoản và dữ liệu nghiệp vụ không thay đổi.
+
+### Dòng sự kiện
+
+#### Basic Flow – Đăng nhập
+
+| STT | Actor | Hệ thống |
+|---|---|---|
+| 1 | Khách hàng, Tài xế hoặc Nhân viên vận hành chọn chức năng **Đăng nhập**. | |
+| 2 | | Hệ thống yêu cầu cung cấp thông tin đăng nhập. |
+| 3 | Khách hàng, Tài xế hoặc Nhân viên vận hành nhập thông tin đăng nhập và xác nhận. | |
+| 4 | | Hệ thống kiểm tra thông tin đăng nhập. |
+| 5 | | Hệ thống xác thực tài khoản. |
+| 6 | | Hệ thống xác định vai trò của tài khoản. |
+| 7 | | Hệ thống tạo phiên đăng nhập cho người dùng. |
+| 8 | | Hệ thống cho phép người dùng truy cập các chức năng tương ứng với vai trò. |
+
+#### Basic Flow – Đăng xuất
+
+| STT | Actor | Hệ thống |
+|---|---|---|
+| 1 | Khách hàng, Tài xế hoặc Nhân viên vận hành chọn chức năng **Đăng xuất**. | |
+| 2 | | Hệ thống kiểm tra phiên đăng nhập hiện tại. |
+| 3 | | Hệ thống yêu cầu xác nhận đăng xuất. |
+| 4 | Khách hàng, Tài xế hoặc Nhân viên vận hành xác nhận đăng xuất. | |
+| 5 | | Hệ thống kết thúc phiên đăng nhập. |
+| 6 | | Hệ thống thông báo đăng xuất thành công. |
+
+### Alternative Flow
+
+#### A1. Thông tin đăng nhập không chính xác
+
+*Điểm bắt đầu: Bước 4 của Basic Flow – Đăng nhập.*
 
 1. Hệ thống thông báo thông tin đăng nhập không chính xác.
-2. Người dùng nhập lại thông tin.
-3. Quay lại bước 3.
+2. Khách hàng, Tài xế hoặc Nhân viên vận hành nhập lại thông tin đăng nhập.
+3. Quay lại bước 3 của Basic Flow – Đăng nhập.
 
-## Basic Flow – Đăng xuất
+#### A2. Tài khoản bị khóa
 
-| **Người dùng**         | **Hệ thống**                          |
-| ---------------------- | ------------------------------------- |
-| 1. Chọn **Đăng xuất**. | 2. Xác nhận phiên đăng nhập hiện tại. |
-|                        | 3. Hủy phiên đăng nhập.               |
-|                        | 4. Chuyển về màn hình đăng nhập.      |
+*Điểm bắt đầu: Bước 5 của Basic Flow – Đăng nhập.*
 
-## Exception Flow
+1. Hệ thống phát hiện tài khoản đang bị khóa.
+2. Hệ thống thông báo tài khoản không thể đăng nhập.
+3. Use case kết thúc.
 
-### 4.1. Phiên đăng nhập không hợp lệ
+#### A3. Người dùng hủy đăng xuất
 
-1. Hệ thống phát hiện phiên đã hết hạn.
+*Điểm bắt đầu: Bước 3 của Basic Flow – Đăng xuất.*
+
+1. Khách hàng, Tài xế hoặc Nhân viên vận hành hủy xác nhận đăng xuất.
+2. Hệ thống giữ nguyên phiên đăng nhập.
+3. Use case kết thúc.
+
+### Exception Flow
+
+#### E1. Phiên đăng nhập không hợp lệ hoặc đã hết hạn
+
+*Điểm bắt đầu: Bước 2 của Basic Flow – Đăng xuất.*
+
+1. Hệ thống phát hiện phiên đăng nhập không hợp lệ hoặc đã hết hạn.
 2. Hệ thống yêu cầu người dùng đăng nhập lại.
-3. Kết thúc Use Case.
+3. Use case kết thúc.
+---
+#### E2. Lỗi hệ thống khi xác thực tài khoản
+
+*Điểm bắt đầu: Bước 5 của Basic Flow – Đăng nhập.*
+
+1. Hệ thống không thể hoàn tất quá trình xác thực tài khoản.
+2. Hệ thống thông báo đăng nhập không thành công.
+3. Hệ thống không tạo phiên đăng nhập.
+4. Use case kết thúc.
 
 ---
 
-# UC03 – Quản lý hồ sơ cá nhân
+## UC03 – Quản lý hồ sơ cá nhân
 
-| **Quản lý hồ sơ cá nhân** |                                                      |
-| ------------------------- | ---------------------------------------------------- |
-| **Mã Use Case**           | UC03                                                 |
-| **Tiền điều kiện**        | Người dùng đã đăng nhập thành công.                  |
-| **Hậu điều kiện**         | Thông tin cá nhân được cập nhật thành công vào CSDL. |
-| **Actor chính**           | Khách hàng / Tài xế                                  |
-| **Actor phụ**             | Không                                                |
-| **Mức độ**                | Should Have                                          |
+### Tóm tắt
 
-## Basic Flow
+Use case này cho phép duy trì thông tin hồ sơ cá nhân của Khách hàng và Tài xế trong hệ thống, bao gồm xem và cập nhật thông tin cá nhân.
 
-| **Người dùng**             | **Hệ thống**                            |
-| -------------------------- | --------------------------------------- |
-| 1. Chọn **Hồ sơ cá nhân**. | 2. Hiển thị thông tin cá nhân hiện tại. |
-| 3. Chỉnh sửa thông tin.    | 4. Kiểm tra dữ liệu nhập.               |
-| 5. Chọn **Lưu**.           | 6. Cập nhật thông tin vào CSDL.         |
-|                            | 7. Thông báo cập nhật thành công.       |
+### Actor chính:
 
-## Alternative Flow
+Khách hàng, Tài xế
 
-### 3.1. Dữ liệu không hợp lệ
+### Actor phụ:
 
-1. Hệ thống thông báo trường dữ liệu không hợp lệ.
-2. Người dùng sửa thông tin.
-3. Quay lại bước 3.
+Không
 
-## Exception Flow
+### Tiền điều kiện
 
-### 6.1. Không thể cập nhật dữ liệu
+1. Khách hàng hoặc Tài xế đã đăng nhập thành công.
+2. Tài khoản đang ở trạng thái hoạt động.
+3. Hồ sơ cá nhân của Khách hàng hoặc Tài xế đã tồn tại trên hệ thống.
 
-1. Hệ thống thông báo cập nhật thất bại.
-2. Giữ nguyên thông tin cũ.
-3. Kết thúc Use Case.
+### Post-Conditions
+
+Nếu use case thành công, thông tin hồ sơ cá nhân được hiển thị hoặc cập nhật theo chức năng được lựa chọn. Ngược lại, thông tin hồ sơ cá nhân không thay đổi.
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+1. Hệ thống yêu cầu chọn chức năng muốn thực hiện (Xem hồ sơ cá nhân hoặc Cập nhật hồ sơ cá nhân).
+2. Khách hàng hoặc Tài xế chọn một trong các chức năng được yêu cầu.
+   - Nếu Khách hàng hoặc Tài xế chọn **“Xem hồ sơ cá nhân”**, subflow **Xem hồ sơ cá nhân** được thực hiện.
+   - Nếu Khách hàng hoặc Tài xế chọn **“Cập nhật hồ sơ cá nhân”**, subflow **Cập nhật hồ sơ cá nhân** được thực hiện.
+
+### Xem hồ sơ cá nhân
+
+1. Hệ thống yêu cầu xem thông tin hồ sơ cá nhân của Khách hàng hoặc Tài xế.
+2. Hệ thống hiển thị thông tin hồ sơ cá nhân hiện tại.
+3. Khách hàng hoặc Tài xế xem thông tin hồ sơ cá nhân.
+4. Hệ thống kết thúc chức năng xem hồ sơ cá nhân.
+
+### Cập nhật hồ sơ cá nhân
+
+1. Hệ thống yêu cầu nhập các thông tin cá nhân cần cập nhật.
+2. Khách hàng hoặc Tài xế cung cấp thông tin cần cập nhật và xác nhận lưu thông tin.
+3. Hệ thống kiểm tra dữ liệu nhập.
+4. Hệ thống hiển thị thông tin đã được cập nhật để Khách hàng hoặc Tài xế kiểm tra.
+5. Khách hàng hoặc Tài xế xác nhận cập nhật thông tin.
+6. Hệ thống cập nhật thông tin hồ sơ cá nhân.
+7. Hệ thống thông báo cập nhật hồ sơ cá nhân thành công.
+
+### Alternative Flow
+
+#### Subflow Cập nhật hồ sơ cá nhân
+
+**3.1. Dữ liệu nhập không hợp lệ**
+
+1. Hệ thống thông báo lỗi và yêu cầu Khách hàng hoặc Tài xế kiểm tra lại thông tin.
+2. Quay lại bước 2 của subflow **Cập nhật hồ sơ cá nhân**.
+
+#### Subflow Cập nhật hồ sơ cá nhân
+
+**5.1. Khách hàng hoặc Tài xế hủy xác nhận cập nhật**
+
+1. Hệ thống không thực hiện cập nhật thông tin.
+2. Quay lại bước 1 của Basic Flow.
+
+### Exception Flow
+
+#### Subflow Cập nhật hồ sơ cá nhân
+
+**6.1. Không thể cập nhật thông tin hồ sơ**
+
+1. Hệ thống thông báo cập nhật hồ sơ cá nhân không thành công.
+2. Hệ thống giữ nguyên thông tin hồ sơ cá nhân hiện tại.
+3. Use case kết thúc.
 
 ---
 
