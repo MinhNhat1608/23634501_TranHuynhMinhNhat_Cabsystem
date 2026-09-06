@@ -1170,6 +1170,75 @@ Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)
 # B9 Phân Tích Business Process
 ### Đăng ký tài khoản
 <img width="1325" height="668" alt="{850511AA-5C38-4294-A37C-F877FEF3B697}" src="https://github.com/user-attachments/assets/b7229cc1-30ce-48d3-a739-2cb6848cbcb0" />
+### Đăng nhập/Đăng xuất
+<img width="968" height="871" alt="{9C571F67-743B-42E2-920D-6166F47D1750}" src="https://github.com/user-attachments/assets/2115ef6d-0048-4dde-9bce-86859c3a3493" />
+### Quản lý tài xế và phương tiện
+<img width="775" height="841" alt="{608C2D8E-8307-41DF-883B-E9BF1664AFFB}" src="https://github.com/user-attachments/assets/1e9f1936-5286-4793-aa02-f0a3c0d288a7" />
+### Quản lý trạng thái tài xế
+<img width="1095" height="729" alt="{C167E46B-A643-40B0-A527-25459CD456B4}" src="https://github.com/user-attachments/assets/40936e9e-4586-403e-ab33-e60b8c2c2584" />
+### Cập nhật vị trí GPS
+<img width="910" height="793" alt="{9849F080-F746-43FD-A410-1F3B0D0047E4}" src="https://github.com/user-attachments/assets/ddd2473a-9aa1-489e-b67d-c5928fb80810" />
+### Đặt xe
+<img width="651" height="746" alt="{6B67ED05-5433-4DF1-B043-C06135143C32}" src="https://github.com/user-attachments/assets/ac368002-a5f1-4b07-a5b5-3cb1df48aff7" />
+### Tìm và phân công tài xế
+<img width="795" height="915" alt="{F8C6C20F-4113-4A5B-B311-FBE70D8E7C7B}" src="https://github.com/user-attachments/assets/d1f84890-d9e9-4b8b-aa8b-a84f9bc3cef4" />
+### Nhận/Từ chối chuyến
+<img width="642" height="477" alt="{8D153770-25C3-4274-AE82-FAB742C6D27F}" src="https://github.com/user-attachments/assets/e6cf184d-4f53-403b-a558-661479abae6e" />
+### Thực hiện chuyến
+<img width="401" height="851" alt="{EC8B364F-7670-4AFF-AFAA-78B221BAB880}" src="https://github.com/user-attachments/assets/3135d2e1-356a-4416-a35a-5c81d32b25a1" />
+### Theo dõi chuyến
+<img width="401" height="624" alt="{AB2D8333-52ED-4D1F-9151-AAC4C2BE7D6B}" src="https://github.com/user-attachments/assets/5ff1c38e-a5da-4ce9-965c-f3b365d2a8be" />
+### Hủy chuyến(Thiếu)
+### Tính cước (thiếu)
+### Thanh toán chiếu đi (Thiếu)
+### Gửi thông báo (thiếu)
+### Giám sát & xử lý chuyến(Thiếu)
+### Tra cứu lịch sử(Thiếu)
+### Đánh giá tài xế ( Thiếu)
+### Báo cáo chuyến đi & doanh thu(Thiếu)
+# B10 Phân tích các quy tắc Business Rule
+
+| Mã | Business Rule | Phân tích / Quy tắc |
+|---|---|---|
+| **BR-01** | Phân quyền người dùng | Hệ thống có 3 vai trò: **Khách hàng, Tài xế, Nhân viên vận hành**. Mỗi vai trò chỉ được thực hiện các chức năng được cấp quyền. |
+| **BR-02** | Điều kiện tài xế Online | Chỉ tài xế có trạng thái **Online** mới được đưa vào danh sách tìm tài xế. |
+| **BR-03** | Điều kiện tài xế phù hợp | Tài xế được chọn phải **Online, không bận, đúng loại xe và nằm trong bán kính tìm kiếm** từ điểm đón. |
+| **BR-04** | Ưu tiên tài xế | Hệ thống **ưu tiên tài xế gần điểm đón nhất** để giảm thời gian chờ của khách hàng. |
+| **BR-05** | Xếp hạng tài xế | Khi các tài xế có khoảng cách tương đương, hệ thống có thể **ưu tiên tài xế có điểm đánh giá cao hơn**. |
+| **BR-06** | Phân công chuyến | Một chuyến chỉ được **phân công cho một tài xế** tại một thời điểm. |
+| **BR-07** | Thời gian nhận chuyến | Tài xế phải phản hồi yêu cầu trong **15–30 giây**. Hết thời gian được xem là Timeout. |
+| **BR-08** | Tài xế từ chối/Timeout | Nếu tài xế từ chối hoặc Timeout, hệ thống **loại tài xế đó khỏi lượt phân công hiện tại và chuyển sang tài xế phù hợp tiếp theo**. |
+| **BR-09** | Không có tài xế | Nếu không còn tài xế phù hợp, hệ thống **thông báo cho khách hàng không tìm thấy tài xế**. |
+| **BR-10** | Trạng thái chuyến | Chuyến đi phải tuân theo trạng thái: **Đang tìm tài xế → Đã nhận → Đang đến → Đã đến → Đang thực hiện → Hoàn thành**. |
+| **BR-11** | Hủy chuyến | Khách hàng hoặc tài xế chỉ được hủy **trước khi chuyến bắt đầu**, đồng thời phải ghi nhận lý do hủy. |
+| **BR-12** | Tính cước | Cước chuyến đi được tính theo công thức: **Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)**. |
+| **BR-13** | Cước dự kiến | Trước khi đặt xe, hệ thống phải hiển thị **cước dự kiến** cho khách hàng. |
+| **BR-14** | Cước thực tế | Sau khi chuyến hoàn thành, hệ thống tính và lưu **cước thực tế** dựa trên quãng đường thực tế. |
+| **BR-15** | Phương thức thanh toán | Hệ thống hỗ trợ **tiền mặt hoặc 01 cổng thanh toán trực tuyến**. |
+| **BR-16** | Thanh toán tiền mặt | Khi khách trả tiền mặt, **tài xế phải xác nhận đã thu tiền** trước khi giao dịch được ghi nhận thành công. |
+| **BR-17** | Thanh toán Online | Giao dịch Online có 3 trạng thái: **Pending, Success, Failed**. |
+| **BR-18** | Thanh toán thất bại | Nếu thanh toán thất bại, hệ thống phải **thông báo lỗi và cho phép khách hàng thử lại hoặc đổi phương thức thanh toán**. |
+| **BR-19** | Bảo mật thanh toán | Hệ thống **không lưu thông tin thẻ**, chỉ lưu mã tham chiếu giao dịch từ cổng thanh toán. |
+| **BR-20** | Theo dõi vị trí | Vị trí GPS của tài xế chỉ được chia sẻ cho **khách hàng đang có chuyến đi liên quan**. |
+| **BR-21** | Cập nhật GPS | Tài xế Online hoặc đang thực hiện chuyến phải **cập nhật vị trí định kỳ** cho hệ thống. |
+| **BR-22** | Đánh giá tài xế | Khách hàng chỉ được đánh giá **sau khi chuyến đã hoàn thành**, với mức **1–5 sao**. |
+| **BR-23** | Đánh giá một lần | Một khách hàng chỉ được **đánh giá một lần cho một chuyến đi**. |
+| **BR-24** | Điểm đánh giá tài xế | Điểm trung bình của tài xế được cập nhật dựa trên các đánh giá hợp lệ đã nhận. |
+| **BR-25** | Giám sát chuyến | Nhân viên vận hành được theo dõi các chuyến đang hoạt động và có quyền xử lý các chuyến gặp sự cố. |
+| **BR-26** | Khóa tài xế | Nhân viên vận hành có thể **khóa tài xế**; khi bị khóa, tài xế không được nhận chuyến mới. |
+| **BR-27** | Lịch sử | Người dùng chỉ được xem **lịch sử chuyến đi và giao dịch của chính mình**. |
+| **BR-28** | Báo cáo | Báo cáo chuyến đi và doanh thu được tổng hợp từ **dữ liệu chuyến đi và giao dịch đã được ghi nhận**. |
+
+
+
+
+
+
+
+
+
+
+
 
 
 
