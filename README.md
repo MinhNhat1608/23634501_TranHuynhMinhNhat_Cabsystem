@@ -503,7 +503,7 @@ Không
 
 ### Tóm tắt
 
-Use case này cho phép Khách hàng và Tài xế duy trì thông tin hồ sơ cá nhân trong hệ thống, bao gồm xem và cập nhật thông tin cá nhân.
+Use case này cho phép Khách hàng và Tài xế duy trì thông tin hồ sơ cá nhân trong hệ thống, bao gồm xem và cập nhật hồ sơ cá nhân.
 
 ### Actor chính
 
@@ -516,8 +516,8 @@ Không
 ### Tiền điều kiện
 
 1. Khách hàng hoặc Tài xế đã đăng nhập thành công.
-2. Tài khoản đang ở trạng thái hoạt động.
-3. Hồ sơ cá nhân của Khách hàng hoặc Tài xế đã tồn tại.
+2. Tài khoản của Khách hàng hoặc Tài xế đang ở trạng thái hoạt động.
+3. Hồ sơ cá nhân của Khách hàng hoặc Tài xế đã tồn tại trên hệ thống.
 
 ### Post-Conditions
 
@@ -529,45 +529,49 @@ Nếu use case thành công, thông tin hồ sơ cá nhân được xem hoặc c
 
 | Người dùng | Hệ thống |
 |---|---|
-| | 1. Hệ thống yêu cầu chọn chức năng muốn thực hiện: **Xem hồ sơ cá nhân** hoặc **Cập nhật hồ sơ cá nhân**. |
-| 2. Khách hàng hoặc Tài xế chọn một trong các chức năng được yêu cầu. | |
-| | Nếu Khách hàng hoặc Tài xế chọn **“Xem hồ sơ cá nhân”**, subflow **Xem hồ sơ cá nhân** được thực hiện. |
-| | Nếu Khách hàng hoặc Tài xế chọn **“Cập nhật hồ sơ cá nhân”**, subflow **Cập nhật hồ sơ cá nhân** được thực hiện. |
+| 1. Khách hàng hoặc Tài xế chọn chức năng muốn thực hiện: **Xem hồ sơ cá nhân** hoặc **Cập nhật hồ sơ cá nhân**. | |
+| | 2. Hệ thống xác định chức năng được lựa chọn. |
+| | 3. Nếu Khách hàng hoặc Tài xế chọn **“Xem hồ sơ cá nhân”**, subflow **Xem hồ sơ cá nhân** được thực hiện. |
+| | 4. Nếu Khách hàng hoặc Tài xế chọn **“Cập nhật hồ sơ cá nhân”**, subflow **Cập nhật hồ sơ cá nhân** được thực hiện. |
 
 ### Xem hồ sơ cá nhân
 
 | Người dùng | Hệ thống |
 |---|---|
-| | 1. Hệ thống yêu cầu xem thông tin hồ sơ cá nhân. |
-| | 2. Hệ thống hiển thị thông tin cá nhân hiện tại của Khách hàng hoặc Tài xế. |
-| 3. Khách hàng hoặc Tài xế xem thông tin hồ sơ cá nhân. | |
-| | 4. Hệ thống kết thúc chức năng xem hồ sơ cá nhân. |
+| 1. Khách hàng hoặc Tài xế chọn chức năng xem hồ sơ cá nhân. | |
+| | 2. Hệ thống xác định hồ sơ cá nhân tương ứng với tài khoản đang đăng nhập. |
+| | 3. Hệ thống hiển thị thông tin hồ sơ cá nhân hiện tại. |
+| 4. Khách hàng hoặc Tài xế xem thông tin hồ sơ cá nhân. | |
+| | 5. Hệ thống kết thúc chức năng xem hồ sơ cá nhân. |
 
 ### Cập nhật hồ sơ cá nhân
 
 | Người dùng | Hệ thống |
 |---|---|
-| | 1. Hệ thống yêu cầu nhập thông tin cá nhân cần cập nhật. |
-| 2. Khách hàng hoặc Tài xế nhập thông tin cá nhân mới và xác nhận lưu thông tin. | |
-| | 3. Hệ thống kiểm tra dữ liệu nhập. |
-| | 4. Hệ thống hiển thị thông tin đã cập nhật để Khách hàng hoặc Tài xế kiểm tra. |
-| 5. Khách hàng hoặc Tài xế xác nhận cập nhật thông tin. | |
-| | 6. Hệ thống cập nhật thông tin hồ sơ cá nhân. |
-| | 7. Hệ thống thông báo cập nhật hồ sơ thành công. |
+| 1. Khách hàng hoặc Tài xế chọn chức năng cập nhật hồ sơ cá nhân. | |
+| | 2. Hệ thống yêu cầu nhập thông tin hồ sơ cá nhân cần cập nhật. |
+| 3. Khách hàng hoặc Tài xế nhập thông tin cần cập nhật. | |
+| 4. Khách hàng hoặc Tài xế xác nhận lưu thông tin. | |
+| | 5. Hệ thống kiểm tra dữ liệu nhập. |
+| | 6. Hệ thống hiển thị thông tin đã cập nhật để Khách hàng hoặc Tài xế kiểm tra. |
+| 7. Khách hàng hoặc Tài xế xác nhận thông tin cập nhật. | |
+| | 8. Hệ thống cập nhật thông tin hồ sơ cá nhân. |
+| | 9. Hệ thống thông báo cập nhật hồ sơ cá nhân thành công. |
 
 ### Alternative Flow
 
 #### Subflow Cập nhật hồ sơ cá nhân
 
-**3.1. Dữ liệu nhập không hợp lệ**
+**5.1. Dữ liệu nhập không hợp lệ**
 
 | Người dùng | Hệ thống |
 |---|---|
-| | 1. Hệ thống thông báo dữ liệu nhập không hợp lệ. |
-| 2. Khách hàng hoặc Tài xế chỉnh sửa lại thông tin. | |
-| | 3. Quay lại bước 3 của subflow **Cập nhật hồ sơ cá nhân**. |
+| | 1. Hệ thống phát hiện dữ liệu hồ sơ cá nhân không hợp lệ. |
+| | 2. Hệ thống thông báo dữ liệu nhập không hợp lệ. |
+| 3. Khách hàng hoặc Tài xế chỉnh sửa lại thông tin. | |
+| | 4. Quay lại bước 5 của subflow **Cập nhật hồ sơ cá nhân**. |
 
-**5.1. Thao tác cập nhật bị hủy**
+**7.1. Khách hàng hoặc Tài xế không xác nhận cập nhật**
 
 | Người dùng | Hệ thống |
 |---|---|
@@ -579,11 +583,11 @@ Nếu use case thành công, thông tin hồ sơ cá nhân được xem hoặc c
 
 #### Subflow Cập nhật hồ sơ cá nhân
 
-**6.1. Không thể cập nhật thông tin hồ sơ**
+**8.1. Không thể cập nhật thông tin hồ sơ**
 
 | Người dùng | Hệ thống |
 |---|---|
-| | 1. Hệ thống phát hiện không thể cập nhật thông tin hồ sơ. |
+| | 1. Hệ thống phát hiện không thể cập nhật thông tin hồ sơ cá nhân. |
 | | 2. Hệ thống thông báo cập nhật hồ sơ không thành công. |
 | | 3. Hệ thống giữ nguyên thông tin hồ sơ cá nhân hiện tại. |
 | | 4. Use case kết thúc. |
