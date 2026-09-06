@@ -530,9 +530,8 @@ Nếu use case thành công, thông tin hồ sơ cá nhân được xem hoặc c
 | Người dùng | Hệ thống |
 |---|---|
 | 1. Khách hàng hoặc Tài xế chọn chức năng muốn thực hiện: **Xem hồ sơ cá nhân** hoặc **Cập nhật hồ sơ cá nhân**. | |
-| | 2. Hệ thống xác định chức năng được lựa chọn. |
-| | 3. Nếu Khách hàng hoặc Tài xế chọn **“Xem hồ sơ cá nhân”**, subflow **Xem hồ sơ cá nhân** được thực hiện. |
-| | 4. Nếu Khách hàng hoặc Tài xế chọn **“Cập nhật hồ sơ cá nhân”**, subflow **Cập nhật hồ sơ cá nhân** được thực hiện. |
+| | 2. Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Khách hàng hoặc Tài xế chọn **“Xem hồ sơ cá nhân”**, subflow **Xem hồ sơ cá nhân** được thực hiện.<br><br>Nếu Khách hàng hoặc Tài xế chọn **“Cập nhật hồ sơ cá nhân”**, subflow **Cập nhật hồ sơ cá nhân** được thực hiện. |
+
 
 ### Xem hồ sơ cá nhân
 
