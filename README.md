@@ -1170,32 +1170,59 @@ Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)
 # B9 Phân Tích Business Process
 ### Đăng ký tài khoản
 <img width="1325" height="668" alt="{850511AA-5C38-4294-A37C-F877FEF3B697}" src="https://github.com/user-attachments/assets/b7229cc1-30ce-48d3-a739-2cb6848cbcb0" />
+
 ### Đăng nhập/Đăng xuất
+
 <img width="968" height="871" alt="{9C571F67-743B-42E2-920D-6166F47D1750}" src="https://github.com/user-attachments/assets/2115ef6d-0048-4dde-9bce-86859c3a3493" />
+
 ### Quản lý tài xế và phương tiện
+
 <img width="775" height="841" alt="{608C2D8E-8307-41DF-883B-E9BF1664AFFB}" src="https://github.com/user-attachments/assets/1e9f1936-5286-4793-aa02-f0a3c0d288a7" />
+
 ### Quản lý trạng thái tài xế
+
 <img width="1095" height="729" alt="{C167E46B-A643-40B0-A527-25459CD456B4}" src="https://github.com/user-attachments/assets/40936e9e-4586-403e-ab33-e60b8c2c2584" />
+
 ### Cập nhật vị trí GPS
+
 <img width="910" height="793" alt="{9849F080-F746-43FD-A410-1F3B0D0047E4}" src="https://github.com/user-attachments/assets/ddd2473a-9aa1-489e-b67d-c5928fb80810" />
+
 ### Đặt xe
+
 <img width="651" height="746" alt="{6B67ED05-5433-4DF1-B043-C06135143C32}" src="https://github.com/user-attachments/assets/ac368002-a5f1-4b07-a5b5-3cb1df48aff7" />
+
 ### Tìm và phân công tài xế
+
 <img width="795" height="915" alt="{F8C6C20F-4113-4A5B-B311-FBE70D8E7C7B}" src="https://github.com/user-attachments/assets/d1f84890-d9e9-4b8b-aa8b-a84f9bc3cef4" />
+
 ### Nhận/Từ chối chuyến
+
 <img width="642" height="477" alt="{8D153770-25C3-4274-AE82-FAB742C6D27F}" src="https://github.com/user-attachments/assets/e6cf184d-4f53-403b-a558-661479abae6e" />
+
 ### Thực hiện chuyến
+
 <img width="401" height="851" alt="{EC8B364F-7670-4AFF-AFAA-78B221BAB880}" src="https://github.com/user-attachments/assets/3135d2e1-356a-4416-a35a-5c81d32b25a1" />
+
 ### Theo dõi chuyến
+
 <img width="401" height="624" alt="{AB2D8333-52ED-4D1F-9151-AAC4C2BE7D6B}" src="https://github.com/user-attachments/assets/5ff1c38e-a5da-4ce9-965c-f3b365d2a8be" />
+
 ### Hủy chuyến(Thiếu)
+
 ### Tính cước (thiếu)
+
 ### Thanh toán chiếu đi (Thiếu)
+
 ### Gửi thông báo (thiếu)
+
 ### Giám sát & xử lý chuyến(Thiếu)
+
 ### Tra cứu lịch sử(Thiếu)
+
 ### Đánh giá tài xế ( Thiếu)
+
 ### Báo cáo chuyến đi & doanh thu(Thiếu)
+
 # B10 Phân tích các quy tắc Business Rule
 
 | Mã | Business Rule | Phân tích / Quy tắc |
