@@ -334,58 +334,72 @@ Trong thời gian giới hạn **7 tuần**, dự án tập trung xây dựng **
 
 # B8 ĐẶC TẢ USE CASE – CAB SYSTEM
 
-> **Tổng số Use Case: 19**
->
-> Lưu ý: **“Hệ thống” không phải Actor** trong UML. Với các UC được hệ thống tự động thực hiện như tính cước, gửi thông báo, Actor chính có thể ghi **Không có actor trực tiếp**. Các dịch vụ bên ngoài như nhà cung cấp thanh toán, bản đồ/GPS, thông báo là **Actor phụ**.
 
----
+## UC01 – Đăng ký tài khoản
 
-# UC01 – Đăng ký tài khoản
 
-| **Đăng ký tài khoản** |                                                |
-| --------------------- | ---------------------------------------------- |
-| **Mã Use Case**       | UC01                                           |
-| **Tiền điều kiện**    | Người dùng chưa có tài khoản trên hệ thống.    |
-| **Hậu điều kiện**     | Tài khoản được tạo thành công và lưu vào CSDL. |
-| **Actor chính**       | Khách hàng / Tài xế                            |
-| **Actor phụ**         | Không                                          |
-| **Mức độ**            | Must Have                                      |
+### Actor chính
 
-## Basic Flow
+Khách hàng, Tài xế
 
-| **Khách hàng / Tài xế**                  | **Hệ thống**                                  |
-| ---------------------------------------- | --------------------------------------------- |
-| 1. Chọn chức năng **Đăng ký tài khoản**. | 2. Hiển thị biểu mẫu đăng ký.                 |
-| 3. Nhập số điện thoại/email và mật khẩu. | 4. Kiểm tra dữ liệu nhập.                     |
-|                                          | 5. Kiểm tra số điện thoại/email chưa tồn tại. |
-|                                          | 6. Kiểm tra mật khẩu hợp lệ.                  |
-| 7. Xác nhận đăng ký.                     | 8. Tạo tài khoản mới.                         |
-|                                          | 9. Lưu thông tin tài khoản vào CSDL.          |
-|                                          | 10. Thông báo đăng ký thành công.             |
+### Actor phụ
 
-## Alternative Flow
+Không
 
-### 3.1. Người dùng đã có tài khoản
+### Tiền điều kiện
 
-1. Người dùng nhập số điện thoại/email đã đăng ký.
-2. Hệ thống thông báo tài khoản đã tồn tại.
-3. Quay lại bước 3.
+1. Khách hàng hoặc Tài xế chưa có tài khoản trên hệ thống.
+2. Khách hàng hoặc Tài xế chưa đăng nhập vào hệ thống.
 
-### 4.1. Mật khẩu không hợp lệ
+### Hậu điều kiện
 
-1. Hệ thống thông báo mật khẩu không hợp lệ.
-2. Người dùng nhập lại mật khẩu.
-3. Quay lại bước 3.
+- Nếu use case thành công, tài khoản của Khách hàng hoặc Tài xế được tạo và lưu vào hệ thống.
+- Nếu use case không thành công, tài khoản không được tạo và trạng thái dữ liệu hiện tại của hệ thống không thay đổi.
 
-## Exception Flow
+### Dòng sự kiện
 
-### 8.1. Lỗi khi lưu tài khoản
+#### Basic Flow
 
-1. Hệ thống không thể lưu tài khoản.
-2. Thông báo đăng ký thất bại.
-3. Kết thúc Use Case.
+| STT | Actor | Hệ thống |
+|---|---|---|
+| 1 | Khách hàng hoặc Tài xế chọn chức năng **Đăng ký tài khoản**. | |
+| 2 | | Hệ thống yêu cầu cung cấp số điện thoại hoặc email và mật khẩu. |
+| 3 | Khách hàng hoặc Tài xế nhập thông tin đăng ký và xác nhận đăng ký. | |
+| 4 | | Hệ thống kiểm tra tính hợp lệ của thông tin đăng ký. |
+| 5 | | Hệ thống kiểm tra số điện thoại hoặc email đã tồn tại hay chưa. |
+| 6 | | Hệ thống kiểm tra mật khẩu có đáp ứng quy định đăng ký hay không. |
+| 7 | | Hệ thống tạo tài khoản mới. |
+| 8 | | Hệ thống lưu thông tin tài khoản. |
+| 9 | | Hệ thống thông báo đăng ký tài khoản thành công. |
 
----
+#### Alternative Flow
+
+**A1. Số điện thoại hoặc email đã tồn tại**
+
+*Điểm bắt đầu: Bước 5 của Basic Flow.*
+
+1. Hệ thống thông báo số điện thoại hoặc email đã được sử dụng.
+2. Khách hàng hoặc Tài xế nhập lại thông tin đăng ký.
+3. Quay lại bước 4 của Basic Flow.
+
+**A2. Mật khẩu không hợp lệ**
+
+*Điểm bắt đầu: Bước 6 của Basic Flow.*
+
+1. Hệ thống thông báo mật khẩu không đáp ứng quy định.
+2. Khách hàng hoặc Tài xế nhập lại mật khẩu.
+3. Quay lại bước 3 của Basic Flow.
+
+#### Exception Flow
+
+**E1. Không thể lưu tài khoản**
+
+*Điểm bắt đầu: Bước 8 của Basic Flow.*
+
+1. Hệ thống phát hiện lỗi trong quá trình lưu thông tin tài khoản.
+2. Hệ thống thông báo đăng ký tài khoản không thành công.
+3. Hệ thống không tạo tài khoản mới.
+4. Use case kết thúc.
 
 # UC02 – Đăng nhập / Đăng xuất
 
