@@ -1,0 +1,144 @@
+openapi: 3.0.3
+
+info:
+  title: Ride Completion and Payment Notification API
+  description: API for notifying customers when a ride is completed and providing the payment result.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Ride Completion Notification
+    description: Ride completion and payment notification operations
+
+paths:
+  /rides/{rideId}/completion-notification:
+    post:
+      tags:
+        - Ride Completion Notification
+      summary: Notify ride completion and payment result
+      description: Sends a notification to the customer when the ride is completed and the payment result is available.
+      operationId: notifyRideCompletionAndPayment
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      responses:
+        '200':
+          description: Completion and payment notification sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideCompletionNotificationResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                driverId: DRV001
+                rideStatus: COMPLETED
+                paymentMethod: ONLINE
+                paymentStatus: SUCCESS
+                fare: 41000
+                currency: VND
+                message: Your ride has been completed. Payment was successful.
+                notifiedAt: "2026-09-07T20:00:00Z"
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: You do not have permission to send this notification.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '409':
+          description: Ride or payment is not in the appropriate state
+          content:
+            application/json:
+              example:
+                message: Ride must be completed before sending the completion notification.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    RideCompletionNotificationResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+        customerId:
+          type: string
+          example: CUS001
+        driverId:
+          type: string
+          example: DRV001
+        rideStatus:
+          type: string
+          enum:
+            - COMPLETED
+          example: COMPLETED
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+            - ONLINE
+          example: ONLINE
+        paymentStatus:
+          type: string
+          enum:
+            - PENDING
+            - SUCCESS
+            - FAILED
+          example: SUCCESS
+        fare:
+          type: number
+          format: double
+          example: 41000
+        currency:
+          type: string
+          example: VND
+        message:
+          type: string
+          example: Your ride has been completed. Payment was successful.
+        notifiedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T20:00:00Z"
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
