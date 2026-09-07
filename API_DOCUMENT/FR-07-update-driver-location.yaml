@@ -1,0 +1,217 @@
+openapi: 3.0.3
+
+info:
+  title: Driver Location API
+  description: API cho phép cập nhật và xem tọa độ GPS hiện tại của tài xế.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Location
+    description: Quản lý vị trí GPS của tài xế
+
+paths:
+
+  /drivers/{driverId}/location:
+
+    get:
+      tags:
+        - Driver Location
+      summary: Xem vị trí hiện tại của tài xế
+      description: Trả về tọa độ GPS hiện tại của tài xế.
+      operationId: getDriverLocation
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Mã tài xế
+          schema:
+            type: string
+          example: DRV001
+
+      responses:
+
+        '200':
+          description: Lấy vị trí thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+              example:
+                success: true
+                message: Lấy vị trí thành công
+                data:
+                  driverId: DRV001
+                  latitude: 10.7769
+                  longitude: 106.7009
+                  updatedAt: "2026-09-07T18:30:00Z"
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Không tìm thấy tài xế hoặc vị trí
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy vị trí của tài xế
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      tags:
+        - Driver Location
+      summary: Cập nhật tọa độ GPS
+      description: Cập nhật vị trí GPS hiện tại của tài xế.
+      operationId: updateDriverLocation
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Mã tài xế
+          schema:
+            type: string
+          example: DRV001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLocationRequest'
+            example:
+              latitude: 10.7769
+              longitude: 106.7009
+
+      responses:
+
+        '200':
+          description: Cập nhật tọa độ thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+              example:
+                success: true
+                message: Cập nhật tọa độ thành công
+                data:
+                  driverId: DRV001
+                  latitude: 10.7769
+                  longitude: 106.7009
+                  updatedAt: "2026-09-07T18:30:00Z"
+
+        '400':
+          description: Tọa độ GPS không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Tọa độ GPS không hợp lệ
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Unauthorized
+
+        '403':
+          description: Người dùng không có quyền cập nhật vị trí
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Chỉ tài xế mới có quyền cập nhật vị trí
+
+        '404':
+          description: Không tìm thấy tài xế
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy tài xế
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  schemas:
+
+    UpdateLocationRequest:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+          description: Vĩ độ GPS
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+          description: Kinh độ GPS
+
+    LocationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            driverId:
+              type: string
+            latitude:
+              type: number
+              format: double
+            longitude:
+              type: number
+              format: double
+            updatedAt:
+              type: string
+              format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
