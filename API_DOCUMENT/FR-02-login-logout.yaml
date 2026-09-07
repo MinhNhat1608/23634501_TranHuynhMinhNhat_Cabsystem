@@ -1,0 +1,243 @@
+```yaml
+openapi: 3.0.3
+
+info:
+  title: Authentication API
+  description: API for user login and logout in the CAB System.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local development server
+
+tags:
+  - name: Authentication
+    description: APIs for user authentication
+
+paths:
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login to the system
+      description: Authenticate a customer, driver, or operator using phone number or email and password.
+      operationId: login
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              login: "0901234567"
+              password: "Password@123"
+
+      responses:
+
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                success: true
+                message: "Login successful"
+                data:
+                  accessToken: "eyJhbGciOiJIUzI1NiIs..."
+                  refreshToken: "eyJhbGciOiJIUzI1NiIs..."
+                  user:
+                    userId: "USR001"
+                    fullName: "Nguyen Van A"
+                    role: "CUSTOMER"
+
+        '400':
+          description: Invalid login information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Invalid login information"
+
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Invalid phone number, email, or password"
+
+        '403':
+          description: Account is not allowed to login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Account is inactive or locked"
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Internal server error"
+
+
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout from the system
+      description: End the current authenticated user's session.
+      operationId: logout
+
+      security:
+        - bearerAuth: []
+
+      responses:
+
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+              example:
+                success: true
+                message: "Logout successful"
+
+        '401':
+          description: Authentication token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Unauthorized"
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Internal server error"
+
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+
+  schemas:
+
+    LoginRequest:
+      type: object
+      required:
+        - login
+        - password
+      properties:
+
+        login:
+          type: string
+          description: Phone number or email used to login
+          example: "0901234567"
+
+        password:
+          type: string
+          format: password
+          description: Password of the account
+          example: "Password@123"
+
+
+    LoginResponse:
+      type: object
+      properties:
+
+        success:
+          type: boolean
+          example: true
+
+        message:
+          type: string
+          example: "Login successful"
+
+        data:
+          type: object
+          properties:
+
+            accessToken:
+              type: string
+              description: JWT access token
+              example: "eyJhbGciOiJIUzI1NiIs..."
+
+            refreshToken:
+              type: string
+              description: JWT refresh token
+              example: "eyJhbGciOiJIUzI1NiIs..."
+
+            user:
+              type: object
+              properties:
+
+                userId:
+                  type: string
+                  example: "USR001"
+
+                fullName:
+                  type: string
+                  example: "Nguyen Van A"
+
+                role:
+                  type: string
+                  enum:
+                    - CUSTOMER
+                    - DRIVER
+                    - OPERATOR
+                  example: "CUSTOMER"
+
+
+    LogoutResponse:
+      type: object
+      properties:
+
+        success:
+          type: boolean
+          example: true
+
+        message:
+          type: string
+          example: "Logout successful"
+
+
+    ErrorResponse:
+      type: object
+      properties:
+
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: "Invalid login information"
+```
