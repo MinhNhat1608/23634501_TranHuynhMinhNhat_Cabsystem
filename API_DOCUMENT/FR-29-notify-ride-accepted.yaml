@@ -1,0 +1,118 @@
+openapi: 3.0.3
+
+info:
+  title: Ride Acceptance Notification API
+  description: API for notifying customers when a driver accepts a ride.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Ride Acceptance Notification
+    description: Ride acceptance notification operations
+
+paths:
+  /rides/{rideId}/acceptance-notification:
+    post:
+      tags:
+        - Ride Acceptance Notification
+      summary: Notify customer that driver accepted the ride
+      description: Sends a notification to the customer when the assigned driver accepts the ride.
+      operationId: notifyRideAccepted
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      responses:
+        '200':
+          description: Acceptance notification sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideAcceptanceNotificationResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                driverId: DRV001
+                rideStatus: DRIVER_ASSIGNED
+                message: Driver has accepted your ride.
+                notifiedAt: "2026-09-07T19:40:00Z"
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: You do not have permission to send this notification.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '409':
+          description: Ride is not in the appropriate state
+          content:
+            application/json:
+              example:
+                message: Driver has not accepted this ride.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+  schemas:
+
+    RideAcceptanceNotificationResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+        customerId:
+          type: string
+          example: CUS001
+        driverId:
+          type: string
+          example: DRV001
+        rideStatus:
+          type: string
+          enum:
+            - DRIVER_ASSIGNED
+          example: DRIVER_ASSIGNED
+        message:
+          type: string
+          example: Driver has accepted your ride.
+        notifiedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T19:40:00Z"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
