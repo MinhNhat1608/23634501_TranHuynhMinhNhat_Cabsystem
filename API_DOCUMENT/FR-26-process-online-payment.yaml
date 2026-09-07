@@ -1,0 +1,174 @@
+openapi: 3.0.3
+
+info:
+  title: Online Payment Processing API
+  description: API for processing online payment through the configured payment gateway.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Online Payment
+    description: Online payment processing operations
+
+paths:
+  /rides/{rideId}/online-payment:
+    post:
+      tags:
+        - Online Payment
+      summary: Process online payment
+      description: Processes an online payment for a completed ride through the configured payment gateway.
+      operationId: processOnlinePayment
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnlinePaymentRequest'
+            example:
+              amount: 41000
+              paymentGateway: DEFAULT_GATEWAY
+
+      responses:
+        '200':
+          description: Online payment processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnlinePaymentResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                transactionId: TXN001
+                paymentMethod: ONLINE
+                paymentGateway: DEFAULT_GATEWAY
+                amount: 41000
+                paymentStatus: SUCCESS
+                processedAt: "2026-09-07T19:30:00Z"
+
+        '400':
+          description: Invalid payment request
+          content:
+            application/json:
+              example:
+                message: Invalid payment amount or payment gateway.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only the customer who booked the ride can make the payment.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '409':
+          description: Payment cannot be processed
+          content:
+            application/json:
+              example:
+                message: Online payment cannot be processed for this ride.
+
+        '502':
+          description: Payment gateway error
+          content:
+            application/json:
+              example:
+                message: Payment gateway is unavailable.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+  schemas:
+
+    OnlinePaymentRequest:
+      type: object
+      required:
+        - amount
+        - paymentGateway
+      properties:
+        amount:
+          type: number
+          format: double
+          minimum: 0.01
+          description: Amount to be paid online
+          example: 41000
+        paymentGateway:
+          type: string
+          enum:
+            - DEFAULT_GATEWAY
+          description: Configured online payment gateway
+          example: DEFAULT_GATEWAY
+
+    OnlinePaymentResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+        customerId:
+          type: string
+          example: CUS001
+        transactionId:
+          type: string
+          example: TXN001
+        paymentMethod:
+          type: string
+          enum:
+            - ONLINE
+          example: ONLINE
+        paymentGateway:
+          type: string
+          example: DEFAULT_GATEWAY
+        amount:
+          type: number
+          format: double
+          example: 41000
+        paymentStatus:
+          type: string
+          enum:
+            - SUCCESS
+            - FAILED
+            - PENDING
+          example: SUCCESS
+        processedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T19:30:00Z"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
