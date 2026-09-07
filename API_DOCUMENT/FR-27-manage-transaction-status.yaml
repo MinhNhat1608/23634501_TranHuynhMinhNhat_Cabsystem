@@ -1,0 +1,231 @@
+openapi: 3.0.3
+
+info:
+  title: Transaction Status Management API
+  description: API for viewing and managing payment transaction status.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Transactions
+    description: Payment transaction status operations
+
+paths:
+
+  /transactions/{transactionId}:
+    get:
+      tags:
+        - Transactions
+      summary: Get transaction status
+      description: Returns the current status and information of a payment transaction.
+      operationId: getTransactionStatus
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Unique identifier of the transaction
+          schema:
+            type: string
+          example: TXN001
+
+      responses:
+        '200':
+          description: Transaction information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              example:
+                transactionId: TXN001
+                rideId: RID001
+                customerId: CUS001
+                paymentMethod: ONLINE
+                amount: 41000
+                status: SUCCESS
+                createdAt: "2026-09-07T19:25:00Z"
+                updatedAt: "2026-09-07T19:30:00Z"
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: You do not have permission to view this transaction.
+
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              example:
+                message: Transaction not found.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+  /transactions/{transactionId}/status:
+    patch:
+      tags:
+        - Transactions
+      summary: Update transaction status
+      description: Updates the payment transaction status.
+      operationId: updateTransactionStatus
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Unique identifier of the transaction
+          schema:
+            type: string
+          example: TXN001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTransactionStatusRequest'
+            example:
+              status: SUCCESS
+
+      responses:
+        '200':
+          description: Transaction status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              example:
+                transactionId: TXN001
+                rideId: RID001
+                customerId: CUS001
+                paymentMethod: ONLINE
+                amount: 41000
+                status: SUCCESS
+                createdAt: "2026-09-07T19:25:00Z"
+                updatedAt: "2026-09-07T19:30:00Z"
+
+        '400':
+          description: Invalid transaction status
+          content:
+            application/json:
+              example:
+                message: Invalid transaction status.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: You do not have permission to update this transaction.
+
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              example:
+                message: Transaction not found.
+
+        '409':
+          description: Invalid transaction state transition
+          content:
+            application/json:
+              example:
+                message: Transaction status cannot be changed from SUCCESS.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    UpdateTransactionStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - PENDING
+            - SUCCESS
+            - FAILED
+          description: New status of the transaction
+          example: SUCCESS
+
+    TransactionResponse:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          example: TXN001
+        rideId:
+          type: string
+          example: RID001
+        customerId:
+          type: string
+          example: CUS001
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+            - ONLINE
+          example: ONLINE
+        amount:
+          type: number
+          format: double
+          example: 41000
+        status:
+          type: string
+          enum:
+            - PENDING
+            - SUCCESS
+            - FAILED
+          example: SUCCESS
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T19:25:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T19:30:00Z"
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
