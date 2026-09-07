@@ -1,0 +1,165 @@
+openapi: 3.0.3
+
+info:
+  title: Ride Status API
+  description: API for drivers to start and complete rides
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Ride Status
+    description: Ride status management
+
+paths:
+
+  /rides/{rideId}/status:
+
+    patch:
+      tags:
+        - Ride Status
+      summary: Update ride status
+      description: Driver updates the ride status to start or complete the ride
+      operationId: updateRideStatus
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: "RID001"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRideStatusRequest'
+            example:
+              status: "IN_PROGRESS"
+
+      responses:
+
+        '200':
+          description: Ride status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideStatusResponse'
+              example:
+                rideId: "RID001"
+                driverId: "DRV001"
+                status: "IN_PROGRESS"
+                updatedAt: "2026-09-07T18:30:00Z"
+
+        '400':
+          description: Invalid ride status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '403':
+          description: User does not have permission to update ride status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '409':
+          description: Invalid ride state transition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    UpdateRideStatusRequest:
+      type: object
+      required:
+        - status
+
+      properties:
+
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+          description: New ride status
+          example: "IN_PROGRESS"
+
+    RideStatusResponse:
+      type: object
+
+      properties:
+
+        rideId:
+          type: string
+          example: "RID001"
+
+        driverId:
+          type: string
+          example: "DRV001"
+
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+          example: "IN_PROGRESS"
+
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:30:00Z"
+
+    ErrorResponse:
+      type: object
+
+      properties:
+
+        code:
+          type: string
+          example: "INVALID_REQUEST"
+
+        message:
+          type: string
+          example: "Invalid ride status."
