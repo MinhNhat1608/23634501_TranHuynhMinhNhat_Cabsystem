@@ -1,0 +1,226 @@
+openapi: 3.0.3
+
+info:
+  title: CAB System - FR-42 Revenue Report
+  description: API for reporting total revenue from completed rides over time.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: FR-42 Revenue Report
+
+paths:
+  /reports/revenue:
+    get:
+      tags:
+        - FR-42 Revenue Report
+      summary: Get revenue report
+      description: Operator retrieves total revenue from completed rides within a specified time period.
+      operationId: getRevenueReport
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: fromDate
+          in: query
+          required: true
+          description: Start date of the reporting period.
+          schema:
+            type: string
+            format: date
+            example: "2026-09-01"
+
+        - name: toDate
+          in: query
+          required: true
+          description: End date of the reporting period.
+          schema:
+            type: string
+            format: date
+            example: "2026-09-07"
+
+        - name: groupBy
+          in: query
+          required: false
+          description: Time unit used to group the revenue report.
+          schema:
+            type: string
+            enum:
+              - DAY
+              - WEEK
+              - MONTH
+            default: DAY
+            example: DAY
+
+      responses:
+        '200':
+          description: Revenue report retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueReportResponse'
+              example:
+                fromDate: "2026-09-01"
+                toDate: "2026-09-07"
+                groupBy: DAY
+                totalRevenue: 4875000
+                currency: VND
+                data:
+                  - period: "2026-09-01"
+                    completedRides: 20
+                    revenue: 750000
+                  - period: "2026-09-02"
+                    completedRides: 18
+                    revenue: 680000
+                  - period: "2026-09-03"
+                    completedRides: 17
+                    revenue: 620000
+                  - period: "2026-09-04"
+                    completedRides: 22
+                    revenue: 810000
+                  - period: "2026-09-05"
+                    completedRides: 16
+                    revenue: 570000
+                  - period: "2026-09-06"
+                    completedRides: 14
+                    revenue: 520000
+                  - period: "2026-09-07"
+                    completedRides: 13
+                    revenue: 925000
+
+        '400':
+          description: Invalid date range or query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: "Invalid date range."
+
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: "Authentication required."
+
+        '403':
+          description: User does not have permission to view revenue reports.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: "Access denied. Operator role required."
+
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: "Internal server error."
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    RevenueReportResponse:
+      type: object
+      required:
+        - fromDate
+        - toDate
+        - groupBy
+        - totalRevenue
+        - currency
+        - data
+      properties:
+
+        fromDate:
+          type: string
+          format: date
+          example: "2026-09-01"
+
+        toDate:
+          type: string
+          format: date
+          example: "2026-09-07"
+
+        groupBy:
+          type: string
+          enum:
+            - DAY
+            - WEEK
+            - MONTH
+          example: DAY
+
+        totalRevenue:
+          type: number
+          format: double
+          minimum: 0
+          example: 4875000
+
+        currency:
+          type: string
+          enum:
+            - VND
+          example: VND
+
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RevenueReportItem'
+
+    RevenueReportItem:
+      type: object
+      required:
+        - period
+        - completedRides
+        - revenue
+      properties:
+
+        period:
+          type: string
+          example: "2026-09-01"
+
+        completedRides:
+          type: integer
+          minimum: 0
+          example: 20
+
+        revenue:
+          type: number
+          format: double
+          minimum: 0
+          example: 750000
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: "Invalid request."
