@@ -1,0 +1,217 @@
+openapi: 3.0.3
+
+info:
+  title: Active Ride Monitoring API
+  description: API for operators to monitor active rides and their current progress.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Active Ride Monitoring
+    description: APIs for monitoring active rides
+
+paths:
+  /rides/active:
+    get:
+      tags:
+        - Active Ride Monitoring
+      summary: Get active rides
+      description: Returns a list of rides that are currently active and their current progress.
+      operationId: getActiveRides
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: status
+          in: query
+          required: false
+          description: Filter active rides by current status
+          schema:
+            type: string
+            enum:
+              - SEARCHING_DRIVER
+              - DRIVER_ASSIGNED
+              - ON_THE_WAY
+              - ARRIVED
+              - IN_PROGRESS
+          example: IN_PROGRESS
+
+        - name: page
+          in: query
+          required: false
+          description: Page number
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          example: 1
+
+        - name: limit
+          in: query
+          required: false
+          description: Number of rides per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          example: 10
+
+      responses:
+        '200':
+          description: Active rides retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveRideListResponse'
+              example:
+                page: 1
+                limit: 10
+                total: 2
+                data:
+                  - rideId: RID001
+                    customerId: CUS001
+                    driverId: DRV001
+                    serviceTypeCode: MOTORBIKE
+                    pickupAddress: 123 Nguyen Hue, District 1
+                    destinationAddress: 456 Dien Bien Phu, District 3
+                    status: IN_PROGRESS
+                    driverLatitude: 10.7765
+                    driverLongitude: 106.7009
+                    startedAt: "2026-09-07T19:50:00Z"
+                    updatedAt: "2026-09-07T20:05:00Z"
+
+                  - rideId: RID002
+                    customerId: CUS002
+                    driverId: DRV002
+                    serviceTypeCode: CAR
+                    pickupAddress: 10 Le Loi, District 1
+                    destinationAddress: 20 Vo Van Tan, District 3
+                    status: ON_THE_WAY
+                    driverLatitude: 10.7756
+                    driverLongitude: 106.7012
+                    startedAt: null
+                    updatedAt: "2026-09-07T20:06:00Z"
+
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              example:
+                message: Invalid pagination or status parameter.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only operators can monitor active rides.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    ActiveRideListResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+
+        limit:
+          type: integer
+          example: 10
+
+        total:
+          type: integer
+          example: 2
+
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActiveRide'
+
+    ActiveRide:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+
+        customerId:
+          type: string
+          example: CUS001
+
+        driverId:
+          type: string
+          example: DRV001
+
+        serviceTypeCode:
+          type: string
+          enum:
+            - MOTORBIKE
+            - CAR
+          example: MOTORBIKE
+
+        pickupAddress:
+          type: string
+          example: 123 Nguyen Hue, District 1
+
+        destinationAddress:
+          type: string
+          example: 456 Dien Bien Phu, District 3
+
+        status:
+          type: string
+          enum:
+            - SEARCHING_DRIVER
+            - DRIVER_ASSIGNED
+            - ON_THE_WAY
+            - ARRIVED
+            - IN_PROGRESS
+          example: IN_PROGRESS
+
+        driverLatitude:
+          type: number
+          format: double
+          example: 10.7765
+
+        driverLongitude:
+          type: number
+          format: double
+          example: 106.7009
+
+        startedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-09-07T19:50:00Z"
+
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T20:05:00Z"
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
