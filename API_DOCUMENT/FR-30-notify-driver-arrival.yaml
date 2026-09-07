@@ -1,0 +1,118 @@
+openapi: 3.0.3
+
+info:
+  title: Driver Arrival Notification API
+  description: API for notifying customers when the driver has arrived at the pickup location.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Arrival Notification
+    description: Driver arrival notification operations
+
+paths:
+  /rides/{rideId}/arrival-notification:
+    post:
+      tags:
+        - Driver Arrival Notification
+      summary: Notify customer that driver has arrived
+      description: Sends a notification to the customer when the assigned driver has arrived at the pickup location.
+      operationId: notifyDriverArrival
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      responses:
+        '200':
+          description: Driver arrival notification sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverArrivalNotificationResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                driverId: DRV001
+                rideStatus: ARRIVED
+                message: Driver has arrived at the pickup location.
+                notifiedAt: "2026-09-07T19:45:00Z"
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only the assigned driver can trigger this notification.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '409':
+          description: Ride is not in the appropriate state
+          content:
+            application/json:
+              example:
+                message: Driver has not arrived at the pickup location.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+  schemas:
+
+    DriverArrivalNotificationResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+        customerId:
+          type: string
+          example: CUS001
+        driverId:
+          type: string
+          example: DRV001
+        rideStatus:
+          type: string
+          enum:
+            - ARRIVED
+          example: ARRIVED
+        message:
+          type: string
+          example: Driver has arrived at the pickup location.
+        notifiedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T19:45:00Z"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
