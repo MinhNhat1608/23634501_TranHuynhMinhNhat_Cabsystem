@@ -1,0 +1,233 @@
+openapi: 3.0.3
+
+info:
+  title: Driver Account Status API
+  description: API cho phép Operator xem, khóa hoặc kích hoạt tài khoản tài xế.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Account Status
+    description: Quản lý trạng thái tài khoản tài xế
+
+paths:
+
+  /drivers/{driverId}/status:
+
+    get:
+      tags:
+        - Driver Account Status
+      summary: Xem trạng thái tài khoản tài xế
+      description: Trả về trạng thái hiện tại của tài khoản tài xế.
+      operationId: getDriverAccountStatus
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Mã tài xế
+          schema:
+            type: string
+          example: DRV001
+
+      responses:
+
+        '200':
+          description: Lấy trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+              example:
+                success: true
+                message: Lấy trạng thái thành công
+                data:
+                  driverId: DRV001
+                  status: ACTIVE
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Unauthorized
+
+        '403':
+          description: Không có quyền xem trạng thái tài khoản
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Forbidden
+
+        '404':
+          description: Không tìm thấy tài xế
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy tài xế
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      tags:
+        - Driver Account Status
+      summary: Khóa hoặc kích hoạt tài khoản tài xế
+      description: Cho phép Operator thay đổi trạng thái tài khoản tài xế.
+      operationId: updateDriverAccountStatus
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Mã tài xế
+          schema:
+            type: string
+          example: DRV001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStatusRequest'
+            examples:
+
+              activate:
+                summary: Kích hoạt tài khoản
+                value:
+                  status: ACTIVE
+
+              lock:
+                summary: Khóa tài khoản
+                value:
+                  status: LOCKED
+
+      responses:
+
+        '200':
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+              example:
+                success: true
+                message: Kích hoạt tài khoản tài xế thành công
+                data:
+                  driverId: DRV001
+                  status: ACTIVE
+
+        '400':
+          description: Trạng thái không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Trạng thái tài khoản không hợp lệ
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Unauthorized
+
+        '403':
+          description: Người dùng không có quyền thay đổi trạng thái
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Chỉ Operator mới có quyền khóa hoặc kích hoạt tài khoản
+
+        '404':
+          description: Không tìm thấy tài xế
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy tài xế
+
+        '409':
+          description: Không thể thay đổi trạng thái tài khoản
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Trạng thái tài khoản không thể thay đổi
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  schemas:
+
+    UpdateStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - LOCKED
+          description: Trạng thái mới của tài khoản tài xế
+
+    StatusResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            driverId:
+              type: string
+            status:
+              type: string
+              enum:
+                - ACTIVE
+                - LOCKED
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
