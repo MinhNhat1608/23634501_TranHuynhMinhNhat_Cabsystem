@@ -1,0 +1,167 @@
+openapi: 3.0.3
+
+info:
+  title: CAB System - FR-45 Protect Location Data
+  description: API for controlling access to driver GPS location data during an active ride.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: FR-45 Location Data Protection
+
+paths:
+  /rides/{rideId}/location-access:
+    get:
+      tags:
+        - FR-45 Location Data Protection
+      summary: Check access to driver location
+      description: Checks whether the authenticated user is allowed to access driver GPS location for an active ride.
+      operationId: checkLocationAccess
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: ID of the ride.
+          schema:
+            type: string
+            example: RIDE001
+
+      responses:
+        '200':
+          description: Location access is allowed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationAccessResponse'
+              example:
+                allowed: true
+                rideId: "RIDE001"
+                userId: "CUS001"
+                role: CUSTOMER
+                rideStatus: IN_PROGRESS
+                message: "Location access granted."
+
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: "Authentication required."
+
+        '403':
+          description: User is not allowed to access the driver's location.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: "Location access denied."
+
+        '404':
+          description: Ride not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: "Ride not found."
+
+        '409':
+          description: Ride is not active, so location data cannot be shared.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: "Location data is only available during an active ride."
+
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: "Internal server error."
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    LocationAccessResponse:
+      type: object
+      required:
+        - allowed
+        - rideId
+        - userId
+        - role
+        - rideStatus
+        - message
+      properties:
+
+        allowed:
+          type: boolean
+          example: true
+
+        rideId:
+          type: string
+          example: "RIDE001"
+
+        userId:
+          type: string
+          example: "CUS001"
+
+        role:
+          type: string
+          enum:
+            - CUSTOMER
+            - DRIVER
+            - OPERATOR
+          example: CUSTOMER
+
+        rideStatus:
+          type: string
+          enum:
+            - DRIVER_ASSIGNED
+            - ON_THE_WAY
+            - ARRIVED
+            - IN_PROGRESS
+          example: IN_PROGRESS
+
+        message:
+          type: string
+          example: "Location access granted."
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+
+        status:
+          type: integer
+          example: 403
+
+        message:
+          type: string
+          example: "Location access denied."
