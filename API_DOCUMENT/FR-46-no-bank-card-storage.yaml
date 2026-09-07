@@ -1,0 +1,372 @@
+openapi: 3.0.3
+
+info:
+  title: CAB System - FR-46 No Bank Card Storage
+  description: API for processing online payments without storing bank card information in the CAB system.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: FR-46 Bank Card Data Protection
+
+paths:
+
+  /payments/online:
+    post:
+      tags:
+        - FR-46 Bank Card Data Protection
+      summary: Process online payment without storing card information
+      description: Processes an online payment through the configured payment gateway. Bank card information is sent directly to the payment gateway and is not stored by the CAB system.
+      operationId: processOnlinePayment
+
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnlinePaymentRequest'
+            example:
+              rideId: "RIDE001"
+              amount: 37500
+              paymentGateway: "DEFAULT_GATEWAY"
+
+      responses:
+
+        '200':
+          description: Online payment processed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnlinePaymentResponse'
+              example:
+                paymentId: "PAY001"
+                rideId: "RIDE001"
+                transactionId: "TXN001"
+                amount: 37500
+                currency: "VND"
+                paymentMethod: "ONLINE"
+                paymentGateway: "DEFAULT_GATEWAY"
+                status: "SUCCESS"
+                gatewayReference: "GW-20260907-001"
+                processedAt: "2026-09-07T21:30:00Z"
+
+        '400':
+          description: Invalid payment request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: "Invalid payment request."
+
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: "Authentication required."
+
+        '403':
+          description: User is not authorized to make the payment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: "Only the customer who booked the ride can make the payment."
+
+        '404':
+          description: Ride not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: "Ride not found."
+
+        '409':
+          description: Payment cannot be processed for the current ride state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: "Online payment cannot be processed for this ride."
+
+        '502':
+          description: Payment gateway unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 502
+                message: "Payment gateway is unavailable."
+
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: "Internal server error."
+
+  /payments/{paymentId}:
+    get:
+      tags:
+        - FR-46 Bank Card Data Protection
+      summary: Get payment information
+      description: Returns payment information without exposing or storing bank card information.
+      operationId: getPaymentInformation
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          description: Payment ID.
+          schema:
+            type: string
+            example: PAY001
+
+      responses:
+
+        '200':
+          description: Payment information retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
+              example:
+                paymentId: "PAY001"
+                rideId: "RIDE001"
+                transactionId: "TXN001"
+                amount: 37500
+                currency: "VND"
+                paymentMethod: "ONLINE"
+                paymentGateway: "DEFAULT_GATEWAY"
+                status: "SUCCESS"
+                gatewayReference: "GW-20260907-001"
+                processedAt: "2026-09-07T21:30:00Z"
+
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '403':
+          description: User is not authorized to access the payment information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Payment not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    OnlinePaymentRequest:
+      type: object
+      required:
+        - rideId
+        - amount
+        - paymentGateway
+      properties:
+
+        rideId:
+          type: string
+          example: "RIDE001"
+
+        amount:
+          type: number
+          format: double
+          minimum: 0
+          example: 37500
+
+        paymentGateway:
+          type: string
+          enum:
+            - DEFAULT_GATEWAY
+          example: DEFAULT_GATEWAY
+
+    OnlinePaymentResponse:
+      type: object
+      required:
+        - paymentId
+        - rideId
+        - transactionId
+        - amount
+        - currency
+        - paymentMethod
+        - paymentGateway
+        - status
+        - gatewayReference
+        - processedAt
+      properties:
+
+        paymentId:
+          type: string
+          example: "PAY001"
+
+        rideId:
+          type: string
+          example: "RIDE001"
+
+        transactionId:
+          type: string
+          example: "TXN001"
+
+        amount:
+          type: number
+          format: double
+          example: 37500
+
+        currency:
+          type: string
+          enum:
+            - VND
+          example: VND
+
+        paymentMethod:
+          type: string
+          enum:
+            - ONLINE
+          example: ONLINE
+
+        paymentGateway:
+          type: string
+          example: DEFAULT_GATEWAY
+
+        status:
+          type: string
+          enum:
+            - PENDING
+            - SUCCESS
+            - FAILED
+          example: SUCCESS
+
+        gatewayReference:
+          type: string
+          description: Reference returned by the payment gateway. This is not bank card information.
+          example: "GW-20260907-001"
+
+        processedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T21:30:00Z"
+
+    PaymentInformationResponse:
+      type: object
+      required:
+        - paymentId
+        - rideId
+        - transactionId
+        - amount
+        - currency
+        - paymentMethod
+        - paymentGateway
+        - status
+        - gatewayReference
+        - processedAt
+      properties:
+
+        paymentId:
+          type: string
+          example: "PAY001"
+
+        rideId:
+          type: string
+          example: "RIDE001"
+
+        transactionId:
+          type: string
+          example: "TXN001"
+
+        amount:
+          type: number
+          example: 37500
+
+        currency:
+          type: string
+          example: VND
+
+        paymentMethod:
+          type: string
+          enum:
+            - ONLINE
+          example: ONLINE
+
+        paymentGateway:
+          type: string
+          example: DEFAULT_GATEWAY
+
+        status:
+          type: string
+          enum:
+            - PENDING
+            - SUCCESS
+            - FAILED
+          example: SUCCESS
+
+        gatewayReference:
+          type: string
+          description: Payment gateway reference used for reconciliation.
+          example: "GW-20260907-001"
+
+        processedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T21:30:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: "Invalid payment request."
