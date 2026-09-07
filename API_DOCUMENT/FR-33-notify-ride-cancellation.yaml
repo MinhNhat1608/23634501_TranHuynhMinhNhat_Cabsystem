@@ -1,0 +1,176 @@
+openapi: 3.0.3
+
+info:
+  title: Ride Cancellation Notification API
+  description: API for notifying the other party when a ride is cancelled.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Ride Cancellation Notification
+    description: Ride cancellation notification operations
+
+paths:
+  /rides/{rideId}/cancellation-notification:
+    post:
+      tags:
+        - Ride Cancellation Notification
+      summary: Notify ride cancellation
+      description: Sends a notification to the other party when a ride is cancelled by the customer or driver.
+      operationId: notifyRideCancellation
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the cancelled ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancellationNotificationRequest'
+            example:
+              cancelledBy: CUSTOMER
+              reason: Customer changed the destination.
+
+      responses:
+        '200':
+          description: Cancellation notification sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancellationNotificationResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                driverId: DRV001
+                rideStatus: CANCELLED
+                cancelledBy: CUSTOMER
+                reason: Customer changed the destination.
+                message: The ride has been cancelled by the customer.
+                notifiedAt: "2026-09-07T20:10:00Z"
+
+        '400':
+          description: Invalid cancellation notification data
+          content:
+            application/json:
+              example:
+                message: Invalid cancellation information.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: You do not have permission to send this notification.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '409':
+          description: Ride cannot be cancelled
+          content:
+            application/json:
+              example:
+                message: The ride is already in progress or completed.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    CancellationNotificationRequest:
+      type: object
+      required:
+        - cancelledBy
+        - reason
+      properties:
+        cancelledBy:
+          type: string
+          enum:
+            - CUSTOMER
+            - DRIVER
+          description: Party who cancelled the ride
+          example: CUSTOMER
+
+        reason:
+          type: string
+          minLength: 1
+          description: Reason for cancelling the ride
+          example: Customer changed the destination.
+
+    CancellationNotificationResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+
+        customerId:
+          type: string
+          example: CUS001
+
+        driverId:
+          type: string
+          nullable: true
+          example: DRV001
+
+        rideStatus:
+          type: string
+          enum:
+            - CANCELLED
+          example: CANCELLED
+
+        cancelledBy:
+          type: string
+          enum:
+            - CUSTOMER
+            - DRIVER
+          example: CUSTOMER
+
+        reason:
+          type: string
+          example: Customer changed the destination.
+
+        message:
+          type: string
+          example: The ride has been cancelled by the customer.
+
+        notifiedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T20:10:00Z"
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
