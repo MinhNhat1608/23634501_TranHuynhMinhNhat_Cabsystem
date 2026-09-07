@@ -1,0 +1,254 @@
+openapi: 3.0.3
+
+info:
+  title: CAB System - FR-41 Ride Count Report
+  description: API for reporting the number of completed and cancelled rides over time.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: FR-41 Ride Count Report
+
+paths:
+  /reports/rides/count:
+    get:
+      tags:
+        - FR-41 Ride Count Report
+      summary: Get ride count report
+      description: Operator retrieves the number of completed and cancelled rides within a specified time period.
+      operationId: getRideCountReport
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: fromDate
+          in: query
+          required: true
+          description: Start date of the reporting period.
+          schema:
+            type: string
+            format: date
+            example: "2026-09-01"
+
+        - name: toDate
+          in: query
+          required: true
+          description: End date of the reporting period.
+          schema:
+            type: string
+            format: date
+            example: "2026-09-07"
+
+        - name: groupBy
+          in: query
+          required: false
+          description: Time unit used to group the report.
+          schema:
+            type: string
+            enum:
+              - DAY
+              - WEEK
+              - MONTH
+            default: DAY
+            example: DAY
+
+        - name: status
+          in: query
+          required: false
+          description: Ride status to include in the report. If omitted, both completed and cancelled rides are included.
+          schema:
+            type: string
+            enum:
+              - COMPLETED
+              - CANCELLED
+            example: COMPLETED
+
+      responses:
+        '200':
+          description: Ride count report retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideCountReportResponse'
+              example:
+                fromDate: "2026-09-01"
+                toDate: "2026-09-07"
+                groupBy: DAY
+                totalCompleted: 120
+                totalCancelled: 15
+                totalRides: 135
+                data:
+                  - period: "2026-09-01"
+                    completed: 20
+                    cancelled: 2
+                    total: 22
+                  - period: "2026-09-02"
+                    completed: 18
+                    cancelled: 3
+                    total: 21
+                  - period: "2026-09-03"
+                    completed: 17
+                    cancelled: 1
+                    total: 18
+                  - period: "2026-09-04"
+                    completed: 22
+                    cancelled: 2
+                    total: 24
+                  - period: "2026-09-05"
+                    completed: 16
+                    cancelled: 3
+                    total: 19
+                  - period: "2026-09-06"
+                    completed: 14
+                    cancelled: 2
+                    total: 16
+                  - period: "2026-09-07"
+                    completed: 13
+                    cancelled: 2
+                    total: 15
+
+        '400':
+          description: Invalid date range or query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: "Invalid date range."
+
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: "Authentication required."
+
+        '403':
+          description: User does not have permission to view reports.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: "Access denied. Operator role required."
+
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: "Internal server error."
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    RideCountReportResponse:
+      type: object
+      required:
+        - fromDate
+        - toDate
+        - groupBy
+        - totalCompleted
+        - totalCancelled
+        - totalRides
+        - data
+      properties:
+
+        fromDate:
+          type: string
+          format: date
+          example: "2026-09-01"
+
+        toDate:
+          type: string
+          format: date
+          example: "2026-09-07"
+
+        groupBy:
+          type: string
+          enum:
+            - DAY
+            - WEEK
+            - MONTH
+          example: DAY
+
+        totalCompleted:
+          type: integer
+          minimum: 0
+          example: 120
+
+        totalCancelled:
+          type: integer
+          minimum: 0
+          example: 15
+
+        totalRides:
+          type: integer
+          minimum: 0
+          example: 135
+
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RideCountItem'
+
+    RideCountItem:
+      type: object
+      required:
+        - period
+        - completed
+        - cancelled
+        - total
+      properties:
+
+        period:
+          type: string
+          example: "2026-09-01"
+
+        completed:
+          type: integer
+          minimum: 0
+          example: 20
+
+        cancelled:
+          type: integer
+          minimum: 0
+          example: 2
+
+        total:
+          type: integer
+          minimum: 0
+          example: 22
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: "Invalid request."
