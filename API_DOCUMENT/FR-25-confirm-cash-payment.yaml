@@ -1,0 +1,159 @@
+openapi: 3.0.3
+
+info:
+  title: Cash Payment Confirmation API
+  description: API for drivers to confirm cash payment after completing a ride.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Cash Payment
+    description: Cash payment confirmation operations
+
+paths:
+  /rides/{rideId}/cash-payment:
+    patch:
+      tags:
+        - Cash Payment
+      summary: Confirm cash payment
+      description: Driver confirms that the full cash fare has been collected from the customer.
+      operationId: confirmCashPayment
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CashPaymentConfirmationRequest'
+            example:
+              amount: 41000
+              confirmed: true
+
+      responses:
+        '200':
+          description: Cash payment confirmed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashPaymentConfirmationResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                driverId: DRV001
+                paymentMethod: CASH
+                amount: 41000
+                paymentStatus: PAID
+                confirmedAt: "2026-09-07T19:30:00Z"
+
+        '400':
+          description: Invalid payment confirmation data
+          content:
+            application/json:
+              example:
+                message: Invalid payment amount or confirmation data.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only the assigned driver can confirm cash payment.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '409':
+          description: Payment cannot be confirmed
+          content:
+            application/json:
+              example:
+                message: Cash payment cannot be confirmed for this ride.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+  schemas:
+
+    CashPaymentConfirmationRequest:
+      type: object
+      required:
+        - amount
+        - confirmed
+      properties:
+        amount:
+          type: number
+          format: double
+          minimum: 0
+          description: Actual amount of cash collected from the customer
+          example: 41000
+        confirmed:
+          type: boolean
+          description: Indicates whether the driver confirms receiving the full cash amount
+          example: true
+
+    CashPaymentConfirmationResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+        customerId:
+          type: string
+          example: CUS001
+        driverId:
+          type: string
+          example: DRV001
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+          example: CASH
+        amount:
+          type: number
+          format: double
+          example: 41000
+        paymentStatus:
+          type: string
+          enum:
+            - PAID
+          example: PAID
+        confirmedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T19:30:00Z"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
