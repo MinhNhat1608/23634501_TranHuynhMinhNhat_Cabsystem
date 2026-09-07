@@ -1,0 +1,165 @@
+openapi: 3.0.3
+
+info:
+  title: Pickup Progress API
+  description: API for drivers to update pickup progress
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Pickup Progress
+    description: Pickup progress management
+
+paths:
+
+  /rides/{rideId}/pickup-status:
+
+    patch:
+      tags:
+        - Pickup Progress
+      summary: Update pickup status
+      description: Driver updates the pickup progress of a ride
+      operationId: updatePickupStatus
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: "RID001"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePickupStatusRequest'
+            example:
+              status: "ON_THE_WAY"
+
+      responses:
+
+        '200':
+          description: Pickup status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PickupStatusResponse'
+              example:
+                rideId: "RID001"
+                driverId: "DRV001"
+                status: "ON_THE_WAY"
+                updatedAt: "2026-09-07T18:30:00Z"
+
+        '400':
+          description: Invalid pickup status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '403':
+          description: User does not have permission to update pickup status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '409':
+          description: Invalid ride state for pickup status update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    UpdatePickupStatusRequest:
+      type: object
+      required:
+        - status
+
+      properties:
+
+        status:
+          type: string
+          enum:
+            - ON_THE_WAY
+            - ARRIVED
+          description: Current pickup progress status
+          example: "ON_THE_WAY"
+
+    PickupStatusResponse:
+      type: object
+
+      properties:
+
+        rideId:
+          type: string
+          example: "RID001"
+
+        driverId:
+          type: string
+          example: "DRV001"
+
+        status:
+          type: string
+          enum:
+            - ON_THE_WAY
+            - ARRIVED
+          example: "ON_THE_WAY"
+
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:30:00Z"
+
+    ErrorResponse:
+      type: object
+
+      properties:
+
+        code:
+          type: string
+          example: "INVALID_REQUEST"
+
+        message:
+          type: string
+          example: "Invalid pickup status."
