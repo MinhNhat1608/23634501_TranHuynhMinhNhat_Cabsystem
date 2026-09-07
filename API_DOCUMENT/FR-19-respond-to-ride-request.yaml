@@ -1,0 +1,199 @@
+openapi: 3.0.3
+
+info:
+  title: Respond to Ride Request API
+  description: API for drivers to accept or reject a ride request.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Matching
+    description: APIs for driver matching and ride requests
+
+paths:
+  /ride-requests/{requestId}/response:
+    patch:
+      tags:
+        - Driver Matching
+      summary: Respond to ride request
+      description: >
+        Allows the assigned driver to accept or reject a ride request
+        before the countdown expires.
+      operationId: respondToRideRequest
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          description: Unique identifier of the ride request
+          schema:
+            type: string
+          example: REQ001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RideRequestResponse'
+
+            example:
+              response: ACCEPTED
+
+      responses:
+        '200':
+          description: Driver response processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideRequestResponseResult'
+
+              example:
+                requestId: REQ001
+                rideId: RID001
+                driverId: DRV001
+                response: ACCEPTED
+                rideStatus: DRIVER_ASSIGNED
+                respondedAt: "2026-09-07T18:30:15Z"
+
+        '400':
+          description: Invalid response data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: Invalid response value
+
+        '401':
+          description: Unauthorized - missing or invalid JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: Unauthorized
+
+        '403':
+          description: Forbidden - user is not the requested driver
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: You are not authorized to respond to this request
+
+        '404':
+          description: Ride request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: Ride request not found
+
+        '409':
+          description: Ride request has expired or is no longer available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: Ride request has expired
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: Internal server error
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    RideRequestResponse:
+      type: object
+      required:
+        - response
+      properties:
+        response:
+          type: string
+          enum:
+            - ACCEPTED
+            - REJECTED
+          example: ACCEPTED
+
+    RideRequestResponseResult:
+      type: object
+      required:
+        - requestId
+        - rideId
+        - driverId
+        - response
+        - rideStatus
+        - respondedAt
+      properties:
+        requestId:
+          type: string
+          example: REQ001
+
+        rideId:
+          type: string
+          example: RID001
+
+        driverId:
+          type: string
+          example: DRV001
+
+        response:
+          type: string
+          enum:
+            - ACCEPTED
+            - REJECTED
+          example: ACCEPTED
+
+        rideStatus:
+          type: string
+          enum:
+            - DRIVER_ASSIGNED
+            - SEARCHING_DRIVER
+          example: DRIVER_ASSIGNED
+
+        respondedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:30:15Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: Invalid request
