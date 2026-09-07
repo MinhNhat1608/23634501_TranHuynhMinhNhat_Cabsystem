@@ -1,0 +1,225 @@
+openapi: 3.0.3
+
+info:
+  title: Driver Availability API
+  description: API cho phép tài xế xem và cập nhật trạng thái nhận chuyến.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Availability
+    description: Quản lý trạng thái nhận chuyến của tài xế
+
+paths:
+
+  /drivers/{driverId}/availability:
+
+    get:
+      tags:
+        - Driver Availability
+      summary: Xem trạng thái nhận chuyến
+      description: Trả về trạng thái nhận chuyến hiện tại của tài xế.
+      operationId: getDriverAvailability
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Mã tài xế
+          schema:
+            type: string
+          example: DRV001
+
+      responses:
+
+        '200':
+          description: Lấy trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailabilityResponse'
+              example:
+                success: true
+                message: Lấy trạng thái thành công
+                data:
+                  driverId: DRV001
+                  isAvailable: true
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Unauthorized
+
+        '403':
+          description: Không có quyền truy cập
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Forbidden
+
+        '404':
+          description: Không tìm thấy tài xế
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy tài xế
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      tags:
+        - Driver Availability
+      summary: Bật hoặc tắt trạng thái nhận chuyến
+      description: Cho phép tài xế bật hoặc tắt trạng thái sẵn sàng nhận chuyến.
+      operationId: updateDriverAvailability
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Mã tài xế
+          schema:
+            type: string
+          example: DRV001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvailabilityRequest'
+            examples:
+              enable:
+                summary: Bật nhận chuyến
+                value:
+                  isAvailable: true
+              disable:
+                summary: Tắt nhận chuyến
+                value:
+                  isAvailable: false
+
+      responses:
+
+        '200':
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailabilityResponse'
+              example:
+                success: true
+                message: Đã bật trạng thái nhận chuyến
+                data:
+                  driverId: DRV001
+                  isAvailable: true
+
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: isAvailable phải là kiểu boolean
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Unauthorized
+
+        '403':
+          description: Người dùng không có quyền thay đổi trạng thái
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Chỉ tài xế mới có quyền thay đổi trạng thái nhận chuyến
+
+        '404':
+          description: Không tìm thấy tài xế
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy tài xế
+
+        '409':
+          description: Không thể thay đổi trạng thái
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Tài xế đang trong chuyến đi
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  schemas:
+
+    AvailabilityRequest:
+      type: object
+      required:
+        - isAvailable
+      properties:
+        isAvailable:
+          type: boolean
+          description: Trạng thái nhận chuyến của tài xế
+
+    AvailabilityResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            driverId:
+              type: string
+            isAvailable:
+              type: boolean
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
