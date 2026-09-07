@@ -1,0 +1,165 @@
+openapi: 3.0.3
+
+info:
+  title: Update Profile API
+  description: API cho phép người dùng cập nhật thông tin hồ sơ cá nhân.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Profile
+    description: Quản lý hồ sơ cá nhân
+
+paths:
+
+  /users/{userId}/profile:
+    put:
+      tags:
+        - Profile
+      summary: Cập nhật hồ sơ cá nhân
+      description: Cho phép người dùng cập nhật thông tin hồ sơ cá nhân.
+      operationId: updateUserProfile
+
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Mã người dùng
+          schema:
+            type: string
+          example: USR001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+            example:
+              fullName: Nguyen Van B
+              email: nguyenvanb@gmail.com
+              phone: "0912345678"
+              address: "123 Nguyen Trai, District 1, Ho Chi Minh City"
+
+      responses:
+
+        '200':
+          description: Cập nhật hồ sơ thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+              example:
+                success: true
+                message: Cập nhật hồ sơ thành công
+                data:
+                  userId: USR001
+                  fullName: Nguyen Van B
+                  email: nguyenvanb@gmail.com
+                  phone: "0912345678"
+                  address: "123 Nguyen Trai, District 1, Ho Chi Minh City"
+
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Dữ liệu hồ sơ không hợp lệ
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Unauthorized
+
+        '404':
+          description: Không tìm thấy người dùng
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy người dùng
+
+        '409':
+          description: Thông tin đã được sử dụng bởi tài khoản khác
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Số điện thoại hoặc email đã được sử dụng
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Internal server error
+
+components:
+
+  schemas:
+
+    UpdateProfileRequest:
+      type: object
+      required:
+        - fullName
+        - phone
+      properties:
+        fullName:
+          type: string
+          description: Họ và tên người dùng
+        email:
+          type: string
+          format: email
+          description: Địa chỉ email
+        phone:
+          type: string
+          description: Số điện thoại
+        address:
+          type: string
+          description: Địa chỉ người dùng
+
+    ProfileResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            fullName:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            address:
+              type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
