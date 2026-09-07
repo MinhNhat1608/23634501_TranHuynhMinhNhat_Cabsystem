@@ -1,0 +1,149 @@
+openapi: 3.0.3
+
+info:
+  title: New Ride Driver Notification API
+  description: API for notifying drivers when a new ride request is available.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Ride Notification
+    description: Notifications for new ride requests sent to drivers
+
+paths:
+  /rides/{rideId}/driver-notification:
+    post:
+      tags:
+        - Driver Ride Notification
+      summary: Notify driver about a new ride
+      description: Sends a notification to the selected driver when a new ride request is available.
+      operationId: notifyDriverNewRide
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverNotificationRequest'
+            example:
+              driverId: DRV001
+
+      responses:
+        '200':
+          description: Driver notification sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverNotificationResponse'
+              example:
+                rideId: RID001
+                driverId: DRV001
+                rideStatus: SEARCHING_DRIVER
+                notificationStatus: SENT
+                message: New ride request is available.
+                notifiedAt: "2026-09-07T20:05:00Z"
+
+        '400':
+          description: Invalid notification request
+          content:
+            application/json:
+              example:
+                message: Driver ID is required.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: You do not have permission to send this notification.
+
+        '404':
+          description: Ride or driver not found
+          content:
+            application/json:
+              example:
+                message: Ride or driver not found.
+
+        '409':
+          description: Ride is not available for driver notification
+          content:
+            application/json:
+              example:
+                message: The ride is no longer available for driver assignment.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    DriverNotificationRequest:
+      type: object
+      required:
+        - driverId
+      properties:
+        driverId:
+          type: string
+          description: Unique identifier of the driver receiving the ride request
+          example: DRV001
+
+    DriverNotificationResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+        driverId:
+          type: string
+          example: DRV001
+        rideStatus:
+          type: string
+          enum:
+            - SEARCHING_DRIVER
+            - DRIVER_ASSIGNED
+          example: SEARCHING_DRIVER
+        notificationStatus:
+          type: string
+          enum:
+            - SENT
+          example: SENT
+        message:
+          type: string
+          example: New ride request is available.
+        notifiedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T20:05:00Z"
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
