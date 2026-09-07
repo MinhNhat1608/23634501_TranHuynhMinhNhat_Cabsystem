@@ -1,0 +1,222 @@
+openapi: 3.0.3
+
+info:
+  title: Auto Transfer Driver API
+  description: API for automatically transferring a ride request to the next available driver.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Matching
+    description: APIs for driver matching and ride requests
+
+paths:
+  /rides/{rideId}/driver-requests/next:
+    post:
+      tags:
+        - Driver Matching
+      summary: Transfer ride request to the next driver
+      description: >
+        Automatically transfers the ride request to the next suitable driver
+        when the current driver rejects the request or the response timeout expires.
+      operationId: transferToNextDriver
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
+            example:
+              previousRequestId: REQ001
+              reason: DRIVER_REJECTED
+
+      responses:
+        '201':
+          description: Ride request transferred successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+              example:
+                rideId: RID001
+                previousRequestId: REQ001
+                previousDriverId: DRV001
+                newRequestId: REQ002
+                newDriverId: DRV002
+                status: PENDING
+                timeoutSeconds: 30
+                reason: DRIVER_REJECTED
+                createdAt: "2026-09-07T18:31:00Z"
+
+        '400':
+          description: Invalid transfer request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: Invalid transfer request
+
+        '401':
+          description: Unauthorized - missing or invalid JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: Unauthorized
+
+        '403':
+          description: Forbidden - user does not have permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: Only the system can transfer the ride request
+
+        '404':
+          description: Ride or previous request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: No suitable next driver found
+
+        '409':
+          description: Ride cannot be transferred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: Ride is no longer searching for a driver
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: Internal server error
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    TransferRequest:
+      type: object
+      required:
+        - previousRequestId
+        - reason
+      properties:
+        previousRequestId:
+          type: string
+          description: ID of the previous driver request
+          example: REQ001
+
+        reason:
+          type: string
+          enum:
+            - DRIVER_REJECTED
+            - REQUEST_TIMEOUT
+          description: Reason for transferring the request
+          example: DRIVER_REJECTED
+
+    TransferResponse:
+      type: object
+      required:
+        - rideId
+        - previousRequestId
+        - previousDriverId
+        - newRequestId
+        - newDriverId
+        - status
+        - timeoutSeconds
+        - reason
+        - createdAt
+      properties:
+        rideId:
+          type: string
+          example: RID001
+
+        previousRequestId:
+          type: string
+          example: REQ001
+
+        previousDriverId:
+          type: string
+          example: DRV001
+
+        newRequestId:
+          type: string
+          example: REQ002
+
+        newDriverId:
+          type: string
+          example: DRV002
+
+        status:
+          type: string
+          enum:
+            - PENDING
+          example: PENDING
+
+        timeoutSeconds:
+          type: integer
+          example: 30
+
+        reason:
+          type: string
+          enum:
+            - DRIVER_REJECTED
+            - REQUEST_TIMEOUT
+          example: DRIVER_REJECTED
+
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:31:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: Invalid request
