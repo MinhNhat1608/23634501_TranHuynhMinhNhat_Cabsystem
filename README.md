@@ -996,8 +996,8 @@ Không
 ### Tiền điều kiện
 
 1. Khách hàng, Tài xế hoặc Nhân viên vận hành đã có tài khoản trên hệ thống.
-2. Tài khoản đang ở trạng thái hoạt động.
-3. Người dùng chưa đăng nhập vào hệ thống.
+2. Đối với chức năng Đăng nhập, người dùng chưa đăng nhập vào hệ thống.
+3. Đối với chức năng Đăng xuất, người dùng đã đăng nhập vào hệ thống.
 
 ### Hậu điều kiện
 
@@ -1093,7 +1093,7 @@ Không
 2. Tài khoản của Khách hàng hoặc Tài xế đang ở trạng thái hoạt động.
 3. Hồ sơ cá nhân của Khách hàng hoặc Tài xế đã tồn tại trên hệ thống.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, thông tin hồ sơ cá nhân được xem hoặc cập nhật theo chức năng được lựa chọn. Ngược lại, thông tin hồ sơ cá nhân không thay đổi.
 
@@ -1183,7 +1183,7 @@ Không
 1. Nhân viên vận hành đã đăng nhập thành công.
 2. Nhân viên vận hành có quyền quản lý tài xế và phương tiện.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, thông tin tài xế và phương tiện được thêm mới hoặc cập nhật theo chức năng được lựa chọn. Ngược lại, thông tin tài xế và phương tiện không thay đổi.
 
@@ -1307,7 +1307,7 @@ Không
 2. Tài khoản Tài xế đang ở trạng thái hoạt động.
 3. Tài xế chưa bị khóa khỏi hệ thống.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, trạng thái hoạt động của Tài xế được cập nhật theo lựa chọn. Khi Tài xế nhận và thực hiện chuyến, hệ thống có thể chuyển trạng thái sang **Busy**. Ngược lại, trạng thái của Tài xế không thay đổi.
 
@@ -1396,7 +1396,7 @@ Nhà cung cấp bản đồ/GPS
 3. Tài xế đang ở trạng thái **Online** hoặc đang thực hiện chuyến.
 4. Thiết bị của Tài xế có khả năng cung cấp vị trí GPS.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, vị trí GPS mới nhất của Tài xế được cập nhật và có thể được sử dụng cho việc tìm kiếm, phân công hoặc theo dõi chuyến đi. Ngược lại, vị trí hiện tại của Tài xế không được cập nhật.
 
@@ -1462,7 +1462,7 @@ Nhà cung cấp bản đồ/GPS
 2. Tài khoản Khách hàng đang ở trạng thái hoạt động.
 3. Dịch vụ đặt xe đang sẵn sàng.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, yêu cầu đặt xe được tạo với trạng thái **Đang tìm tài xế** và hệ thống bắt đầu tìm kiếm tài xế phù hợp. Ngược lại, yêu cầu đặt xe không được tạo.
 
@@ -1551,7 +1551,7 @@ Tài xế
 2. Yêu cầu đặt xe đang ở trạng thái **Đang tìm tài xế**.
 3. Có thông tin điểm đón và loại phương tiện cần tìm.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, một Tài xế phù hợp được phân công cho yêu cầu đặt xe và trạng thái chuyến được cập nhật. Nếu không tìm được Tài xế phù hợp, hệ thống thông báo cho Khách hàng.
 
@@ -1619,7 +1619,7 @@ Không
 3. Tài xế đang ở trạng thái **Online**.
 4. Tài xế đã nhận được yêu cầu nhận chuyến từ hệ thống.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu Tài xế chấp nhận, chuyến xe được phân công cho Tài xế và trạng thái chuyến được cập nhật. Nếu Tài xế từ chối hoặc không phản hồi trong thời gian quy định, hệ thống ghi nhận kết quả và tiếp tục xử lý tìm Tài xế khác. 
 
@@ -1717,7 +1717,7 @@ Nhà cung cấp bản đồ/GPS
 3. Chuyến xe đang ở trạng thái **Đã nhận chuyến**.
 4. Thông tin điểm đón và điểm đến của chuyến đã tồn tại.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, chuyến xe được cập nhật trạng thái **Hoàn thành**, thông tin thực hiện chuyến được ghi nhận và hệ thống chuyển sang chức năng **Tính cước**. Nếu không thành công, trạng thái chuyến được giữ nguyên tại thời điểm xảy ra lỗi.
 
@@ -1815,7 +1815,7 @@ Nhà cung cấp bản đồ/GPS
 2. Khách hàng có chuyến xe đang được xử lý.
 3. Chuyến xe đã được Tài xế chấp nhận.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, Khách hàng xem được trạng thái hiện tại của chuyến xe, thông tin Tài xế và vị trí của Tài xế trong quá trình thực hiện chuyến. Nếu không thể cập nhật vị trí, hệ thống vẫn hiển thị thông tin chuyến đã nhận được gần nhất.
 
@@ -1876,7 +1876,7 @@ Không
 2. Chuyến xe đã được tạo và đang được xử lý.
 3. Chuyến xe chưa bắt đầu di chuyển.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, chuyến xe được cập nhật trạng thái **Đã hủy**, lý do hủy được ghi nhận và bên còn lại được thông báo. Nếu hủy không thành công, trạng thái chuyến xe không thay đổi.
 
@@ -1950,7 +1950,7 @@ Không
 2. Đối với tính cước thực tế: chuyến xe đã hoàn thành và có thông tin quãng đường thực tế.
 3. Mức giá mở cửa và đơn giá theo quãng đường của loại phương tiện đã được xác định.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, hệ thống tính được cước chuyến xe, hiển thị cước tương ứng và ghi nhận cước để sử dụng cho các bước tiếp theo. Nếu không thể tính cước, cước chuyến xe không được xác định.
 
@@ -2048,7 +2048,7 @@ Nhà cung cấp thanh toán
 3. Cước thực tế của chuyến xe đã được xác định.
 4. Khách hàng chưa hoàn tất thanh toán cho chuyến xe.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, khoản thanh toán được ghi nhận với trạng thái **Thành công** và Khách hàng nhận được thông báo kết quả thanh toán.
 
@@ -2159,7 +2159,7 @@ Nhà cung cấp thông báo
 2. Có thông tin người nhận thông báo.
 3. Nội dung thông báo tương ứng với sự kiện đã được xác định.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, thông báo được gửi đến đúng người nhận và hệ thống ghi nhận kết quả gửi thông báo.
 
@@ -2265,7 +2265,7 @@ Không
 2. Nhân viên vận hành có quyền giám sát và xử lý chuyến.
 3. Hệ thống có thông tin các chuyến xe đang được xử lý hoặc các chuyến xe cần xử lý.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, Nhân viên vận hành xem được tình trạng chuyến xe và có thể xử lý chuyến xe gặp sự cố. Kết quả xử lý, thời gian xử lý và người xử lý được ghi nhận.
 
@@ -2371,7 +2371,7 @@ Không
 2. Khách hàng hoặc Tài xế có quyền xem lịch sử của các chuyến xe liên quan.
 3. Hệ thống có thông tin lịch sử chuyến xe hoặc giao dịch cần tra cứu.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, Khách hàng hoặc Tài xế xem được thông tin lịch sử phù hợp với quyền truy cập.
 
@@ -2469,7 +2469,7 @@ Không
 3. Chuyến xe đã được xác định Tài xế thực hiện.
 4. Chuyến xe chưa hoàn tất quá trình đánh giá.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, đánh giá và nhận xét của Khách hàng được ghi nhận cho chuyến xe và hệ thống cập nhật điểm đánh giá trung bình của Tài xế.
 
@@ -2554,7 +2554,7 @@ Không
 2. Nhân viên vận hành có quyền xem báo cáo.
 3. Khoảng thời gian cần lập báo cáo đã được xác định.
 
-### Post-Conditions
+### Hậu điều kiện
 
 Nếu use case thành công, hệ thống tạo và hiển thị báo cáo số lượng chuyến đi hoặc doanh thu theo khoảng thời gian được lựa chọn.
 
