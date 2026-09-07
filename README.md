@@ -329,10 +329,588 @@ Trong thời gian giới hạn **7 tuần**, dự án tập trung xây dựng **
 | **FR-45** | Bảo vệ dữ liệu vị trí             | Tọa độ GPS chỉ được chia sẻ cho khách hàng liên kết với chuyến đang diễn ra. |
 | **FR-46** | Không lưu thông tin thẻ ngân hàng | Hệ thống không lưu số thẻ, ngày hết hạn hoặc mã bảo mật thẻ.                 |
 | **FR-47** | Lưu mã tham chiếu giao dịch       | Hệ thống chỉ lưu mã tham chiếu do cổng thanh toán cung cấp để tra soát.      |
-# B7 Usecase tổng quát
+# B7. Acceptance Criteria
+
+## 1. Quản lý người dùng
+
+### FR-01 – Đăng ký tài khoản
+
+**AC-01:** Khi Khách hàng hoặc Tài xế nhập số điện thoại/email và mật khẩu hợp lệ, hệ thống cho phép tạo tài khoản mới.
+
+**AC-02:** Nếu số điện thoại/email đã tồn tại, hệ thống từ chối đăng ký và thông báo cho người dùng.
+
+**AC-03:** Nếu thông tin đăng ký hoặc mật khẩu không hợp lệ, hệ thống không tạo tài khoản và yêu cầu người dùng nhập lại.
+
+**AC-04:** Khi đăng ký thành công, thông tin tài khoản được lưu vào hệ thống và người dùng nhận được thông báo đăng ký thành công.
+
+---
+
+### FR-02 – Đăng nhập / Đăng xuất
+
+**AC-01:** Khi người dùng nhập thông tin đăng nhập hợp lệ, hệ thống xác thực tài khoản và tạo phiên đăng nhập.
+
+**AC-02:** Sau khi đăng nhập thành công, người dùng chỉ được truy cập các chức năng tương ứng với vai trò được cấp.
+
+**AC-03:** Nếu thông tin đăng nhập không chính xác, hệ thống từ chối đăng nhập và thông báo lỗi.
+
+**AC-04:** Khi người dùng xác nhận đăng xuất, hệ thống kết thúc phiên đăng nhập và thông báo đăng xuất thành công.
+
+---
+
+### FR-03 – Phân quyền 3 vai trò
+
+**AC-01:** Hệ thống xác định đúng vai trò của tài khoản gồm `Customer`, `Driver` hoặc `Operator`.
+
+**AC-02:** Người dùng chỉ được truy cập các chức năng được cấp cho vai trò của mình.
+
+**AC-03:** Khi người dùng cố truy cập chức năng không thuộc quyền, hệ thống từ chối truy cập.
+
+**AC-04:** Quyền truy cập được áp dụng thống nhất cho các chức năng yêu cầu xác thực và phân quyền.
+
+---
+
+### FR-04 – Cập nhật hồ sơ cá nhân
+
+**AC-01:** Khách hàng hoặc Tài xế có thể xem thông tin hồ sơ cá nhân của tài khoản đang đăng nhập.
+
+**AC-02:** Khi nhập thông tin cập nhật hợp lệ và xác nhận, hệ thống lưu thông tin mới.
+
+**AC-03:** Nếu thông tin cập nhật không hợp lệ, hệ thống từ chối cập nhật và thông báo lỗi.
+
+**AC-04:** Sau khi cập nhật thành công, hệ thống hiển thị thông tin hồ sơ đã được cập nhật.
+
+---
+
+# 2. Quản lý tài xế & phương tiện
+
+### FR-05 – Quản lý thông tin tài xế & xe
+
+**AC-01:** Nhân viên vận hành có thể thêm mới thông tin tài xế và phương tiện.
+
+**AC-02:** Hệ thống liên kết phương tiện với đúng tài xế được quản lý.
+
+**AC-03:** Nhân viên vận hành có thể tìm kiếm và cập nhật thông tin tài xế hoặc phương tiện.
+
+**AC-04:** Nếu thông tin nhập hoặc cập nhật không hợp lệ, hệ thống không lưu dữ liệu và thông báo lỗi.
+
+**AC-05:** Khi thao tác thành công, thông tin mới hoặc thông tin cập nhật được lưu vào hệ thống.
+
+---
+
+### FR-06 – Bật/tắt trạng thái nhận chuyến
+
+**AC-01:** Tài xế có thể chuyển trạng thái sang `Online` khi tài khoản đang hoạt động.
+
+**AC-02:** Tài xế có thể chuyển trạng thái sang `Offline` khi không muốn nhận chuyến.
+
+**AC-03:** Tài xế đang thực hiện chuyến được hệ thống quản lý ở trạng thái `Busy`.
+
+**AC-04:** Hệ thống không cho phép tài xế bị khóa chuyển sang trạng thái nhận chuyến.
+
+**AC-05:** Trạng thái mới được lưu và sử dụng cho quá trình tìm kiếm tài xế.
+
+---
+
+### FR-07 – Cập nhật tọa độ GPS
+
+**AC-01:** Khi Tài xế ở trạng thái `Online` hoặc đang thực hiện chuyến, thiết bị có thể gửi tọa độ GPS về hệ thống.
+
+**AC-02:** Hệ thống lưu nhận tọa độ mới nhất của Tài xế.
+
+**AC-03:** Khi Tài xế không `Online` và không thực hiện chuyến, hệ thống không yêu cầu cập nhật tọa độ định kỳ.
+
+**AC-04:** Tọa độ GPS được sử dụng cho các chức năng nghiệp vụ được phép như tìm tài xế và theo dõi chuyến.
+
+---
+
+### FR-08 – Khóa/Kích hoạt tài khoản tài xế
+
+**AC-01:** Nhân viên vận hành có quyền có thể khóa tài khoản Tài xế đang hoạt động.
+
+**AC-02:** Khi tài khoản bị khóa, Tài xế không thể sử dụng các chức năng yêu cầu tài khoản hoạt động.
+
+**AC-03:** Nhân viên vận hành có thể kích hoạt lại tài khoản Tài xế đã bị khóa.
+
+**AC-04:** Sau khi kích hoạt, Tài xế có thể sử dụng lại các chức năng theo quyền được cấp.
+
+---
+
+# 3. Quản lý chuyến đi
+
+### FR-09 – Chọn lộ trình di chuyển
+
+**AC-01:** Khách hàng có thể chọn điểm đón và điểm đến trên bản đồ.
+
+**AC-02:** Hệ thống xác định và hiển thị thông tin vị trí điểm đón và điểm đến đã chọn.
+
+**AC-03:** Hệ thống không cho phép tạo yêu cầu đặt xe nếu thiếu điểm đón hoặc điểm đến hợp lệ.
+
+**AC-04:** Thông tin điểm đón và điểm đến được sử dụng cho quá trình tạo chuyến và tìm tài xế.
+
+---
+
+### FR-10 – Lựa chọn loại dịch vụ
+
+**AC-01:** Khách hàng có thể lựa chọn loại phương tiện được hệ thống hỗ trợ gồm xe máy hoặc ô tô.
+
+**AC-02:** Hệ thống ghi nhận đúng loại dịch vụ mà Khách hàng đã lựa chọn.
+
+**AC-03:** Loại dịch vụ được lựa chọn được sử dụng trong quá trình tìm tài xế phù hợp.
+
+**AC-04:** Hệ thống không cho phép tiếp tục nếu Khách hàng chưa chọn loại dịch vụ hợp lệ.
+
+---
+
+### FR-11 – Tạo yêu cầu đặt xe
+
+**AC-01:** Khi Khách hàng cung cấp đầy đủ điểm đón, điểm đến và loại dịch vụ hợp lệ, hệ thống cho phép tạo yêu cầu đặt xe.
+
+**AC-02:** Hệ thống tạo một bản ghi chuyến mới với thông tin đặt xe tương ứng.
+
+**AC-03:** Sau khi tạo thành công, chuyến được chuyển sang trạng thái tìm tài xế.
+
+**AC-04:** Nếu dữ liệu đặt xe không hợp lệ, hệ thống không tạo chuyến và thông báo lỗi.
+
+---
+
+### FR-12 – Cập nhật tiến trình đón khách
+
+**AC-01:** Tài xế đã nhận chuyến có thể cập nhật trạng thái đang đến điểm đón.
+
+**AC-02:** Khi Tài xế đã đến điểm đón, Tài xế có thể cập nhật trạng thái đã có mặt.
+
+**AC-03:** Hệ thống lưu trạng thái mới của quá trình đón khách.
+
+**AC-04:** Khách hàng nhận được trạng thái cập nhật tương ứng của chuyến.
+
+---
+
+### FR-13 – Bắt đầu và hoàn thành cuốc
+
+**AC-01:** Tài xế chỉ có thể bắt đầu chuyến sau khi đã nhận chuyến và đủ điều kiện bắt đầu.
+
+**AC-02:** Khi Tài xế xác nhận bắt đầu, hệ thống chuyển chuyến sang trạng thái đang thực hiện.
+
+**AC-03:** Tài xế có thể xác nhận hoàn thành khi chuyến đang được thực hiện.
+
+**AC-04:** Khi hoàn thành, hệ thống chuyển chuyến sang trạng thái hoàn thành và ghi nhận thời điểm kết thúc.
+
+---
+
+### FR-14 – Theo dõi xe trên bản đồ
+
+**AC-01:** Khách hàng có chuyến đang diễn ra có thể xem vị trí của Tài xế trên bản đồ.
+
+**AC-02:** Hệ thống cập nhật vị trí xe theo dữ liệu GPS mới nhất.
+
+**AC-03:** Chỉ Khách hàng liên kết với chuyến đang diễn ra được phép xem vị trí xe của chuyến đó.
+
+**AC-04:** Khi chuyến kết thúc hoặc bị hủy, chức năng theo dõi vị trí trực tiếp của chuyến được kết thúc.
+
+---
+
+### FR-15 – Hủy chuyến đi
+
+**AC-01:** Khách hàng hoặc Tài xế có thể yêu cầu hủy chuyến trước khi chuyến bắt đầu di chuyển.
+
+**AC-02:** Hệ thống yêu cầu và ghi nhận lý do hủy chuyến.
+
+**AC-03:** Khi hủy thành công, trạng thái chuyến được cập nhật thành đã hủy.
+
+**AC-04:** Hệ thống thông báo việc hủy chuyến cho bên còn lại.
+
+**AC-05:** Hệ thống không cho phép hủy theo FR này khi chuyến đã bắt đầu di chuyển.
+
+---
+
+### FR-16 – Xem lịch sử chuyến
+
+**AC-01:** Khách hàng hoặc Tài xế đã đăng nhập có thể xem danh sách các chuyến của mình.
+
+**AC-02:** Hệ thống chỉ hiển thị các chuyến thuộc tài khoản đang đăng nhập.
+
+**AC-03:** Thông tin lịch sử chuyến hiển thị trạng thái và các thông tin liên quan của chuyến.
+
+**AC-04:** Nếu không có lịch sử chuyến, hệ thống hiển thị trạng thái không có dữ liệu.
+
+---
+
+# 4. Phân công tài xế (Matching)
+
+### FR-17 – Quét tài xế gần nhất
+
+**AC-01:** Hệ thống chỉ xem xét các Tài xế đang ở trạng thái `Online`.
+
+**AC-02:** Hệ thống chỉ lựa chọn Tài xế có loại phương tiện phù hợp với dịch vụ Khách hàng yêu cầu.
+
+**AC-03:** Hệ thống lọc các Tài xế nằm trong bán kính được cấu hình quanh điểm đón.
+
+**AC-04:** Hệ thống ưu tiên Tài xế phù hợp và gần điểm đón để gửi yêu cầu nhận chuyến.
+
+---
+
+### FR-18 – Phát yêu cầu nhận chuyến
+
+**AC-01:** Hệ thống gửi thông tin chuyến đến Tài xế phù hợp.
+
+**AC-02:** Yêu cầu nhận chuyến hiển thị các thông tin cần thiết để Tài xế quyết định nhận hoặc từ chối.
+
+**AC-03:** Hệ thống hiển thị thời gian đếm ngược phản hồi theo thời gian được cấu hình.
+
+**AC-04:** Khi hết thời gian phản hồi, yêu cầu được xem là không được chấp nhận.
+
+---
+
+### FR-19 – Phản hồi nhận chuyến
+
+**AC-01:** Tài xế có thể chấp nhận yêu cầu trong thời gian cho phép.
+
+**AC-02:** Tài xế có thể từ chối yêu cầu trong thời gian cho phép.
+
+**AC-03:** Khi Tài xế chấp nhận, hệ thống ghi nhận Tài xế nhận chuyến và cập nhật trạng thái chuyến.
+
+**AC-04:** Khi Tài xế từ chối, hệ thống ghi nhận kết quả từ chối và tiếp tục quy trình tìm Tài xế khác.
+
+---
+
+### FR-20 – Tự động chuyển tài xế
+
+**AC-01:** Khi Tài xế từ chối yêu cầu, hệ thống tự động chuyển yêu cầu sang Tài xế phù hợp tiếp theo.
+
+**AC-02:** Khi Tài xế không phản hồi trong thời gian quy định, hệ thống tự động chuyển yêu cầu sang Tài xế tiếp theo.
+
+**AC-03:** Tài xế đã được gửi yêu cầu trước đó không được nhận lại cùng yêu cầu trong cùng vòng tìm kiếm.
+
+**AC-04:** Hệ thống tiếp tục quá trình cho đến khi có Tài xế nhận hoặc không còn Tài xế phù hợp.
+
+---
+
+### FR-21 – Thông báo không có tài xế
+
+**AC-01:** Khi hệ thống không còn Tài xế phù hợp để nhận chuyến, hệ thống xác định yêu cầu không tìm được tài xế.
+
+**AC-02:** Hệ thống thông báo cho Khách hàng rằng không tìm được Tài xế.
+
+**AC-03:** Chuyến không được gán cho Tài xế khi không có Tài xế phù hợp.
+
+**AC-04:** Hệ thống lưu trạng thái kết quả tìm kiếm của chuyến.
+
+---
+
+# 5. Quản lý cước & thanh toán
+
+### FR-22 – Tính cước cố định
+
+**AC-01:** Hệ thống tính cước dựa trên công thức: `Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)`.
+
+**AC-02:** Hệ thống sử dụng đúng khoảng cách của chuyến để tính phần cước theo km.
+
+**AC-03:** Hệ thống áp dụng đúng đơn giá và giá mở cửa theo loại dịch vụ.
+
+**AC-04:** Kết quả tính cước được làm tròn và hiển thị theo quy định của hệ thống.
+
+---
+
+### FR-23 – Hiển thị & lưu cước phí
+
+**AC-01:** Hệ thống hiển thị cước dự kiến cho Khách hàng trước khi đặt xe.
+
+**AC-02:** Cước dự kiến được tính dựa trên thông tin chuyến hiện tại.
+
+**AC-03:** Sau khi chuyến hoàn thành, hệ thống xác định và lưu cước thực tế.
+
+**AC-04:** Cước thực tế được liên kết với đúng chuyến đi.
+
+---
+
+### FR-24 – Chọn phương thức thanh toán
+
+**AC-01:** Khách hàng có thể lựa chọn thanh toán bằng tiền mặt.
+
+**AC-02:** Khách hàng có thể lựa chọn thanh toán trực tuyến.
+
+**AC-03:** Hệ thống ghi nhận phương thức thanh toán được lựa chọn cho chuyến.
+
+**AC-04:** Hệ thống không cho phép sử dụng phương thức thanh toán không được hỗ trợ.
+
+---
+
+### FR-25 – Xác nhận thanh toán tiền mặt
+
+**AC-01:** Khi chuyến hoàn thành và Khách hàng thanh toán tiền mặt, Tài xế có thể xác nhận đã thu tiền.
+
+**AC-02:** Hệ thống ghi nhận trạng thái thanh toán tiền mặt thành công sau khi Tài xế xác nhận.
+
+**AC-03:** Kết quả thanh toán được liên kết với đúng chuyến đi.
+
+**AC-04:** Hệ thống lưu thời điểm xác nhận thanh toán.
+
+---
+
+### FR-26 – Xử lý thanh toán trực tuyến
+
+**AC-01:** Khi Khách hàng chọn thanh toán trực tuyến, hệ thống gửi yêu cầu thanh toán đến cổng thanh toán được tích hợp.
+
+**AC-02:** Hệ thống tiếp nhận kết quả giao dịch từ cổng thanh toán.
+
+**AC-03:** Hệ thống liên kết kết quả giao dịch với đúng chuyến và giao dịch tương ứng.
+
+**AC-04:** Nếu không nhận được kết quả hợp lệ từ cổng thanh toán, hệ thống không xác nhận giao dịch thành công.
+
+---
+
+### FR-27 – Quản lý trạng thái giao dịch
+
+**AC-01:** Khi giao dịch được tạo, hệ thống có thể ghi nhận trạng thái `Pending`.
+
+**AC-02:** Khi thanh toán thành công, hệ thống cập nhật trạng thái thành `Success`.
+
+**AC-03:** Khi thanh toán thất bại, hệ thống cập nhật trạng thái thành `Failed`.
+
+**AC-04:** Trạng thái giao dịch được lưu và liên kết với đúng giao dịch/chuyến đi.
+
+---
+
+### FR-28 – Xử lý thanh toán lỗi
+
+**AC-01:** Khi giao dịch trực tuyến thất bại, hệ thống thông báo kết quả thất bại cho Khách hàng.
+
+**AC-02:** Hệ thống không ghi nhận giao dịch thất bại là thanh toán thành công.
+
+**AC-03:** Khách hàng được phép thực hiện lại thanh toán theo quy trình được hỗ trợ.
+
+**AC-04:** Khách hàng có thể lựa chọn phương thức thanh toán khác nếu hệ thống cho phép.
+
+---
+
+# 6. Thông báo
+
+### FR-29 – Thông báo nhận chuyến
+
+**AC-01:** Khi Tài xế chấp nhận chuyến, hệ thống tạo thông báo cho Khách hàng.
+
+**AC-02:** Thông báo chứa thông tin cần thiết về việc Tài xế đã nhận chuyến.
+
+**AC-03:** Thông báo được gửi đến đúng Khách hàng của chuyến.
+
+---
+
+### FR-30 – Thông báo tài xế đến điểm đón
+
+**AC-01:** Khi Tài xế cập nhật trạng thái đã có mặt tại điểm đón, hệ thống tạo thông báo cho Khách hàng.
+
+**AC-02:** Thông báo được gửi đến đúng Khách hàng của chuyến.
+
+**AC-03:** Hệ thống không gửi thông báo này khi Tài xế chưa xác nhận đã đến điểm đón.
+
+---
+
+### FR-31 – Thông báo hoàn thành & thanh toán
+
+**AC-01:** Khi chuyến hoàn thành, hệ thống thông báo cho Khách hàng về việc kết thúc chuyến.
+
+**AC-02:** Hệ thống thông báo kết quả thanh toán tương ứng với chuyến.
+
+**AC-03:** Thông báo phản ánh đúng trạng thái thanh toán của giao dịch.
+
+---
+
+### FR-32 – Thông báo phát cuốc cho tài xế
+
+**AC-01:** Khi hệ thống phát một yêu cầu chuyến phù hợp, Tài xế được gửi thông báo nhận chuyến mới.
+
+**AC-02:** Thông báo được gửi đến đúng Tài xế được chọn trong quá trình matching.
+
+**AC-03:** Thông báo cho phép Tài xế biết có yêu cầu nhận chuyến đang chờ phản hồi.
+
+---
+
+### FR-33 – Thông báo hủy chuyến
+
+**AC-01:** Khi chuyến bị hủy, hệ thống xác định bên còn lại cần được thông báo.
+
+**AC-02:** Hệ thống gửi thông báo hủy chuyến đến bên còn lại.
+
+**AC-03:** Thông báo thể hiện chuyến đã bị hủy và trạng thái hiện tại của chuyến.
+
+---
+
+# 7. Quản lý vận hành, đánh giá & báo cáo
+
+### FR-34 – Giám sát chuyến đang diễn ra
+
+**AC-01:** Nhân viên vận hành có quyền có thể xem danh sách các chuyến đang hoạt động.
+
+**AC-02:** Hệ thống hiển thị trạng thái và tiến trình của từng chuyến đang hoạt động.
+
+**AC-03:** Thông tin giám sát được cập nhật khi trạng thái chuyến thay đổi.
+
+**AC-04:** Nhân viên vận hành không thể xem hoặc can thiệp vào dữ liệu nếu không có quyền phù hợp.
+
+---
+
+### FR-35 – Giám sát trạng thái tài xế
+
+**AC-01:** Nhân viên vận hành có thể xem trạng thái `Online`, `Busy` hoặc `Offline` của Tài xế.
+
+**AC-02:** Hệ thống hiển thị đúng trạng thái hiện tại của Tài xế.
+
+**AC-03:** Khi trạng thái Tài xế thay đổi, thông tin giám sát được cập nhật tương ứng.
+
+---
+
+### FR-36 – Can thiệp xử lý chuyến lỗi
+
+**AC-01:** Nhân viên vận hành có quyền có thể lựa chọn chuyến đang gặp sự cố để xử lý.
+
+**AC-02:** Nhân viên vận hành có thể hủy chuyến gặp sự cố.
+
+**AC-03:** Nhân viên vận hành có thể kết thúc chuyến gặp sự cố theo quyền được cấp.
+
+**AC-04:** Hệ thống cập nhật trạng thái chuyến sau khi thao tác xử lý thành công.
+
+---
+
+### FR-37 – Lưu vết xử lý sự cố
+
+**AC-01:** Khi Nhân viên vận hành thực hiện xử lý sự cố, hệ thống tạo bản ghi xử lý.
+
+**AC-02:** Bản ghi lưu thông tin người thực hiện xử lý.
+
+**AC-03:** Bản ghi lưu thời gian thực hiện xử lý.
+
+**AC-04:** Bản ghi lưu kết quả xử lý sự cố.
+
+**AC-05:** Thông tin xử lý được liên kết với đúng chuyến gặp sự cố.
+
+---
+
+### FR-38 – Tra cứu lịch sử chuyến & giao dịch
+
+**AC-01:** Nhân viên vận hành có quyền có thể tìm kiếm lịch sử chuyến và giao dịch.
+
+**AC-02:** Hệ thống trả về các bản ghi phù hợp với điều kiện tìm kiếm.
+
+**AC-03:** Thông tin chuyến và giao dịch được hiển thị đúng với dữ liệu đã lưu.
+
+**AC-04:** Nhân viên vận hành không thể xem dữ liệu ngoài phạm vi quyền được cấp.
+
+---
+
+### FR-39 – Đánh giá sau chuyến đi
+
+**AC-01:** Khách hàng chỉ có thể đánh giá chuyến đã hoàn thành.
+
+**AC-02:** Khách hàng có thể chọn mức đánh giá từ 1 đến 5 sao.
+
+**AC-03:** Khách hàng có thể nhập nhận xét cho Tài xế.
+
+**AC-04:** Hệ thống lưu đánh giá gắn với đúng chuyến và Tài xế.
+
+**AC-05:** Hệ thống không cho phép đánh giá một chuyến không thuộc Khách hàng hoặc chưa hoàn thành.
+
+---
+
+### FR-40 – Tính điểm đánh giá trung bình
+
+**AC-01:** Hệ thống tự động tính điểm trung bình dựa trên các đánh giá hợp lệ của Tài xế.
+
+**AC-02:** Chỉ các đánh giá hợp lệ được sử dụng để tính điểm trung bình.
+
+**AC-03:** Khi có đánh giá mới hợp lệ, điểm trung bình của Tài xế được cập nhật.
+
+**AC-04:** Điểm trung bình được hiển thị đúng theo quy định làm tròn của hệ thống.
+
+---
+
+### FR-41 – Báo cáo số lượng chuyến
+
+**AC-01:** Người có quyền có thể yêu cầu thống kê số lượng chuyến theo khoảng thời gian.
+
+**AC-02:** Hệ thống thống kê số chuyến hoàn thành trong khoảng thời gian được chọn.
+
+**AC-03:** Hệ thống thống kê số chuyến bị hủy trong khoảng thời gian được chọn.
+
+**AC-04:** Kết quả báo cáo chỉ sử dụng dữ liệu chuyến thuộc khoảng thời gian được yêu cầu.
+
+---
+
+### FR-42 – Báo cáo tổng doanh thu
+
+**AC-01:** Người có quyền có thể xem báo cáo doanh thu theo ngày, tuần hoặc tháng.
+
+**AC-02:** Hệ thống chỉ tính doanh thu từ các chuyến đã hoàn thành theo quy định.
+
+**AC-03:** Hệ thống tổng hợp chính xác doanh thu trong khoảng thời gian được chọn.
+
+**AC-04:** Báo cáo hiển thị tổng doanh thu tương ứng với khoảng thời gian và đơn vị thống kê được chọn.
+
+---
+
+# 8. Bảo mật & an toàn dữ liệu
+
+### FR-43 – Xác thực trước khi thực thi
+
+**AC-01:** Trước khi thực hiện tác vụ yêu cầu đăng nhập, hệ thống kiểm tra phiên đăng nhập của người dùng.
+
+**AC-02:** Nếu phiên đăng nhập hợp lệ, hệ thống cho phép tiếp tục thực hiện tác vụ.
+
+**AC-03:** Nếu phiên đăng nhập không tồn tại, không hợp lệ hoặc đã hết hạn, hệ thống từ chối thực hiện tác vụ.
+
+**AC-04:** Khi phiên hết hạn, hệ thống yêu cầu người dùng đăng nhập lại.
+
+---
+
+### FR-44 – Kiểm soát quyền truy cập dữ liệu
+
+**AC-01:** Hệ thống kiểm tra quyền của người dùng trước khi cho phép xem dữ liệu.
+
+**AC-02:** Hệ thống kiểm tra quyền trước khi cho phép chỉnh sửa dữ liệu.
+
+**AC-03:** Người dùng không có quyền không thể xem dữ liệu ngoài phạm vi được cấp.
+
+**AC-04:** Người dùng không có quyền không thể chỉnh sửa hoặc xóa dữ liệu ngoài phạm vi được cấp.
+
+---
+
+### FR-45 – Bảo vệ dữ liệu vị trí
+
+**AC-01:** Hệ thống chỉ chia sẻ tọa độ GPS của Tài xế cho Khách hàng liên kết với chuyến đang diễn ra.
+
+**AC-02:** Người không liên quan đến chuyến không được phép xem tọa độ GPS của Tài xế.
+
+**AC-03:** Khi chuyến kết thúc hoặc bị hủy, quyền xem vị trí trực tiếp của chuyến được kết thúc.
+
+**AC-04:** Hệ thống áp dụng kiểm soát quyền truy cập đối với dữ liệu vị trí.
+
+---
+
+### FR-46 – Không lưu thông tin thẻ ngân hàng
+
+**AC-01:** Hệ thống không lưu số thẻ thanh toán của Khách hàng.
+
+**AC-02:** Hệ thống không lưu ngày hết hạn của thẻ thanh toán.
+
+**AC-03:** Hệ thống không lưu mã bảo mật của thẻ thanh toán.
+
+**AC-04:** Thông tin thẻ được xử lý bởi cổng thanh toán bên ngoài theo cơ chế tích hợp được hỗ trợ.
+
+---
+
+### FR-47 – Lưu mã tham chiếu giao dịch
+
+**AC-01:** Khi giao dịch trực tuyến được xử lý, hệ thống có thể tiếp nhận mã tham chiếu do cổng thanh toán cung cấp.
+
+**AC-02:** Hệ thống lưu mã tham chiếu gắn với đúng giao dịch.
+
+**AC-03:** Mã tham chiếu được sử dụng để tra cứu hoặc đối soát giao dịch khi cần thiết.
+
+**AC-04:** Hệ thống không thay thế mã tham chiếu bằng việc lưu thông tin thẻ thanh toán nhạy cảm.
+
+# B8 Usecase tổng quát
 <img width="1159" height="821" alt="image" src="https://github.com/user-attachments/assets/b7d2b9ec-62fa-4581-95da-7bcd0b445a61" />
 
-# B8 ĐẶC TẢ USE CASE – CAB SYSTEM
+# B9 ĐẶC TẢ USE CASE – CAB SYSTEM
 
 ---
 ## UC01 – Đăng ký tài khoản
@@ -2058,7 +2636,7 @@ Nếu không có dữ liệu phù hợp, hệ thống thông báo không có d�
 | | 3. Hệ thống không hiển thị báo cáo không đầy đủ. |
 | | 4. Use case kết thúc. |
 
-# B9 Phân Tích Business Process
+# B10 Phân Tích Business Process
 ### Đăng ký tài khoản
 <img width="1325" height="668" alt="{850511AA-5C38-4294-A37C-F877FEF3B697}" src="https://github.com/user-attachments/assets/b7229cc1-30ce-48d3-a739-2cb6848cbcb0" />
 
@@ -2114,7 +2692,7 @@ Nếu không có dữ liệu phù hợp, hệ thống thông báo không có d�
 
 ### Báo cáo chuyến đi & doanh thu(Thiếu)
 
-# B10 Phân tích các quy tắc Business Rule
+# B11 Phân tích các quy tắc Business Rule
 
 | Mã | Business Rule | Phân tích / Quy tắc |
 |---|---|---|
