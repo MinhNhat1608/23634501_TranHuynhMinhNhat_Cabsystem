@@ -1,0 +1,271 @@
+openapi: 3.0.3
+
+info:
+  title: Display and Store Fare API
+  description: API for displaying estimated fare before booking and storing actual fare after ride completion.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Fare Management
+    description: APIs for displaying and storing ride fares
+
+paths:
+
+  /rides/{rideId}/fare-estimate:
+    get:
+      tags:
+        - Fare Management
+      summary: Get estimated fare
+      description: Get the estimated fare of a ride before the ride is booked.
+      operationId: getFareEstimate
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      responses:
+        '200':
+          description: Estimated fare retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FareResponse'
+              example:
+                rideId: RID001
+                fareType: ESTIMATED
+                distanceKm: 5.5
+                fare: 37500
+                currency: VND
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: Unauthorized
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: Ride not found
+
+        '409':
+          description: Estimated fare is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: Fare estimate is not available
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: Internal server error
+
+  /rides/{rideId}/fare:
+    post:
+      tags:
+        - Fare Management
+      summary: Store actual fare
+      description: Store the actual fare after the ride is completed.
+      operationId: storeActualFare
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActualFareRequest'
+            example:
+              distanceKm: 6.2
+              fare: 41000
+
+      responses:
+        '201':
+          description: Actual fare stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FareResponse'
+              example:
+                rideId: RID001
+                fareType: ACTUAL
+                distanceKm: 6.2
+                fare: 41000
+                currency: VND
+
+        '400':
+          description: Invalid fare data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: Invalid fare data
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: Unauthorized
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: Only the assigned driver can store the actual fare
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: Ride not found
+
+        '409':
+          description: Ride is not completed or fare already stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: Ride must be completed before storing actual fare
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: Internal server error
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    ActualFareRequest:
+      type: object
+      required:
+        - distanceKm
+        - fare
+      properties:
+        distanceKm:
+          type: number
+          format: double
+          exclusiveMinimum: 0
+          description: Actual ride distance in kilometers
+          example: 6.2
+
+        fare:
+          type: number
+          format: double
+          minimum: 0
+          description: Actual ride fare
+          example: 41000
+
+    FareResponse:
+      type: object
+      required:
+        - rideId
+        - fareType
+        - distanceKm
+        - fare
+        - currency
+      properties:
+        rideId:
+          type: string
+          example: RID001
+
+        fareType:
+          type: string
+          enum:
+            - ESTIMATED
+            - ACTUAL
+          example: ESTIMATED
+
+        distanceKm:
+          type: number
+          format: double
+          example: 5.5
+
+        fare:
+          type: number
+          format: double
+          example: 37500
+
+        currency:
+          type: string
+          example: VND
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: Invalid request
