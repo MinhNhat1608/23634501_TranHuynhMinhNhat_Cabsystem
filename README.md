@@ -501,10 +501,6 @@ Không
 ---
 ## UC03 – Quản lý hồ sơ cá nhân
 
-### Tóm tắt
-
-Use case này cho phép Khách hàng và Tài xế duy trì thông tin hồ sơ cá nhân trong hệ thống, bao gồm xem và cập nhật hồ sơ cá nhân.
-
 ### Actor chính
 
 Khách hàng, Tài xế
@@ -593,699 +589,1471 @@ Nếu use case thành công, thông tin hồ sơ cá nhân được xem hoặc c
 
 ---
 
-# UC04 – Quản lý tài xế & phương tiện
+## UC04 – Quản lý tài xế & phương tiện
 
-| **Quản lý tài xế & phương tiện** |                                                                       |
-| -------------------------------- | --------------------------------------------------------------------- |
-| **Mã Use Case**                  | UC04                                                                  |
-| **Tiền điều kiện**               | Nhân viên vận hành đã đăng nhập và có quyền quản lý tài xế.           |
-| **Hậu điều kiện**                | Thông tin tài xế/phương tiện được thêm, cập nhật hoặc lưu thành công. |
-| **Actor chính**                  | Nhân viên vận hành                                                    |
-| **Actor phụ**                    | Không                                                                 |
-| **Mức độ**                       | Must Have                                                             |
+### Actor chính
 
-## Basic Flow
+Nhân viên vận hành
 
-| **Nhân viên vận hành**                    | **Hệ thống**                                 |
-| ----------------------------------------- | -------------------------------------------- |
-| 1. Chọn **Quản lý tài xế & phương tiện**. | 2. Hiển thị danh sách tài xế và phương tiện. |
-| 3. Chọn thêm hoặc cập nhật thông tin.     | 4. Hiển thị biểu mẫu.                        |
-| 5. Nhập thông tin tài xế và phương tiện.  | 6. Kiểm tra dữ liệu.                         |
-| 7. Xác nhận lưu.                          | 8. Lưu thông tin vào CSDL.                   |
-|                                           | 9. Hiển thị kết quả cập nhật.                |
+### Actor phụ
 
-## Alternative Flow
+Không
 
-### 5.1. Thông tin không hợp lệ
+### Tiền điều kiện
 
-1. Hệ thống thông báo lỗi.
-2. Nhân viên sửa thông tin.
-3. Quay lại bước 5.
+1. Nhân viên vận hành đã đăng nhập thành công.
+2. Nhân viên vận hành có quyền quản lý tài xế và phương tiện.
 
-## Exception Flow
+### Post-Conditions
 
-### 8.1. Lỗi CSDL
+Nếu use case thành công, thông tin tài xế và phương tiện được thêm mới hoặc cập nhật theo chức năng được lựa chọn. Ngược lại, thông tin tài xế và phương tiện không thay đổi.
 
-1. Hệ thống không thể lưu dữ liệu.
-2. Thông báo thao tác thất bại.
-3. Kết thúc Use Case.
+### Dòng sự kiện
 
----
+#### Basic Flow
 
-# UC05 – Quản lý trạng thái tài xế
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn chức năng muốn thực hiện: **Thêm tài xế & phương tiện** hoặc **Cập nhật tài xế & phương tiện**. | |
+| | 2. Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Nhân viên vận hành chọn **“Thêm tài xế & phương tiện”**, subflow **Thêm tài xế & phương tiện** được thực hiện.<br><br>Nếu Nhân viên vận hành chọn **“Cập nhật tài xế & phương tiện”**, subflow **Cập nhật tài xế & phương tiện** được thực hiện. |
 
-| **Quản lý trạng thái tài xế** |                                             |
-| ----------------------------- | ------------------------------------------- |
-| **Mã Use Case**               | UC05                                        |
-| **Tiền điều kiện**            | Tài xế đã đăng nhập.                        |
-| **Hậu điều kiện**             | Trạng thái tài xế được cập nhật thành công. |
-| **Actor chính**               | Tài xế                                      |
-| **Actor phụ**                 | Nhân viên vận hành                          |
-| **Mức độ**                    | Must Have                                   |
+### Thêm tài xế & phương tiện
 
-## Basic Flow
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn chức năng thêm tài xế và phương tiện. | |
+| | 2. Hệ thống yêu cầu nhập thông tin tài xế và phương tiện. |
+| 3. Nhân viên vận hành nhập thông tin tài xế và phương tiện. | |
+| 4. Nhân viên vận hành xác nhận lưu thông tin. | |
+| | 5. Hệ thống kiểm tra thông tin tài xế và phương tiện. |
+| | 6. Hệ thống tạo thông tin tài xế và liên kết với thông tin phương tiện tương ứng. |
+| | 7. Hệ thống lưu thông tin tài xế và phương tiện. |
+| | 8. Hệ thống thông báo thêm tài xế và phương tiện thành công. |
 
-| **Tài xế**                    | **Hệ thống**                                            |
-| ----------------------------- | ------------------------------------------------------- |
-| 1. Chọn trạng thái hoạt động. | 2. Hiển thị các trạng thái `Online`, `Busy`, `Offline`. |
-| 3. Chọn trạng thái mong muốn. | 4. Kiểm tra trạng thái hiện tại.                        |
-|                               | 5. Cập nhật trạng thái.                                 |
-|                               | 6. Lưu trạng thái vào CSDL.                             |
+### Cập nhật tài xế & phương tiện
 
-## Alternative Flow
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn chức năng cập nhật tài xế và phương tiện. | |
+| | 2. Hệ thống yêu cầu nhập thông tin tìm kiếm tài xế hoặc phương tiện cần cập nhật. |
+| 3. Nhân viên vận hành nhập thông tin tìm kiếm. | |
+| | 4. Hệ thống tìm kiếm và hiển thị thông tin tài xế và phương tiện tương ứng. |
+| 5. Nhân viên vận hành thay đổi các thông tin cần cập nhật. | |
+| 6. Nhân viên vận hành xác nhận cập nhật thông tin. | |
+| | 7. Hệ thống kiểm tra thông tin cập nhật. |
+| | 8. Hệ thống cập nhật thông tin tài xế và phương tiện. |
+| | 9. Hệ thống thông báo cập nhật tài xế và phương tiện thành công. |
 
-### 3.1. Tài xế đang thực hiện chuyến
+### Alternative Flow
 
-1. Tài xế yêu cầu chuyển sang `Offline`.
-2. Hệ thống kiểm tra đang có chuyến.
-3. Hệ thống không cho phép chuyển `Offline`.
-4. Thông báo lý do.
+#### Subflow Thêm tài xế & phương tiện
 
-## Exception Flow
+**5.1. Thông tin nhập không hợp lệ**
 
-### 5.1. Không thể cập nhật trạng thái
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện thông tin tài xế hoặc phương tiện không hợp lệ. |
+| | 2. Hệ thống thông báo thông tin không hợp lệ. |
+| 3. Nhân viên vận hành chỉnh sửa lại thông tin. | |
+| | 4. Quay lại bước 5 của subflow **Thêm tài xế & phương tiện**. |
 
-1. Hệ thống thông báo lỗi.
-2. Giữ nguyên trạng thái trước đó.
-3. Kết thúc Use Case.
+#### Subflow Cập nhật tài xế & phương tiện
 
----
+**4.1. Không tìm thấy thông tin**
 
-# UC06 – Cập nhật vị trí GPS
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không tìm thấy tài xế hoặc phương tiện phù hợp. |
+| | 2. Hệ thống thông báo không tìm thấy thông tin cần cập nhật. |
+| 3. Nhân viên vận hành nhập lại thông tin tìm kiếm. | |
+| | 4. Quay lại bước 2 của subflow **Cập nhật tài xế & phương tiện**. |
 
-| **Cập nhật vị trí GPS** |                                                                  |
-| ----------------------- | ---------------------------------------------------------------- |
-| **Mã Use Case**         | UC06                                                             |
-| **Tiền điều kiện**      | Tài xế đã đăng nhập và đang `Online` hoặc đang thực hiện chuyến. |
-| **Hậu điều kiện**       | Vị trí hiện tại của tài xế được cập nhật vào hệ thống.           |
-| **Actor chính**         | Tài xế                                                           |
-| **Actor phụ**           | Nhà cung cấp bản đồ/GPS                                          |
-| **Mức độ**              | Must Have                                                        |
+**7.1. Thông tin cập nhật không hợp lệ**
 
-## Basic Flow
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện thông tin cập nhật không hợp lệ. |
+| | 2. Hệ thống thông báo thông tin không hợp lệ. |
+| 3. Nhân viên vận hành chỉnh sửa lại thông tin. | |
+| | 4. Quay lại bước 7 của subflow **Cập nhật tài xế & phương tiện**. |
 
-| **Tài xế / Thiết bị**            | **Hệ thống**                                          |
-| -------------------------------- | ----------------------------------------------------- |
-| 1. Thiết bị gửi tọa độ hiện tại. | 2. Tiếp nhận dữ liệu GPS.                             |
-|                                  | 3. Kiểm tra dữ liệu tọa độ.                           |
-|                                  | 4. Lưu/cập nhật vị trí tài xế.                        |
-|                                  | 5. Cập nhật vị trí trên bản đồ.                       |
-|                                  | 6. Chia sẻ vị trí cho khách hàng liên kết với chuyến. |
+**6.1. Hủy cập nhật**
 
-## Alternative Flow
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành hủy xác nhận cập nhật. | |
+| | 2. Hệ thống không cập nhật thông tin tài xế và phương tiện. |
+| | 3. Quay lại bước 1 của Basic Flow. |
 
-### 1.1. GPS tạm thời không khả dụng
+### Exception Flow
 
-1. Hệ thống không nhận được tọa độ.
-2. Hệ thống giữ vị trí gần nhất.
-3. Tiếp tục chờ dữ liệu GPS mới.
+#### Subflow Thêm tài xế & phương tiện
 
-## Exception Flow
+**7.1. Không thể lưu thông tin**
 
-### 3.1. Tọa độ không hợp lệ
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể lưu thông tin tài xế và phương tiện. |
+| | 2. Hệ thống thông báo thêm tài xế và phương tiện không thành công. |
+| | 3. Hệ thống không tạo thông tin tài xế và phương tiện mới. |
+| | 4. Use case kết thúc. |
 
-1. Hệ thống từ chối dữ liệu.
-2. Không cập nhật vị trí.
-3. Chờ dữ liệu tiếp theo.
+#### Subflow Cập nhật tài xế & phương tiện
 
----
+**8.1. Không thể cập nhật thông tin**
 
-# UC07 – Đặt xe
-
-| **Đặt xe**         |                                                                  |
-| ------------------ | ---------------------------------------------------------------- |
-| **Mã Use Case**    | UC07                                                             |
-| **Tiền điều kiện** | Khách hàng đã đăng nhập.                                         |
-| **Hậu điều kiện**  | Chuyến được tạo và chuyển sang trạng thái **“Đang tìm tài xế”**. |
-| **Actor chính**    | Khách hàng                                                       |
-| **Actor phụ**      | Nhà cung cấp bản đồ/GPS                                          |
-| **Mức độ**         | Must Have                                                        |
-
-## Basic Flow
-
-| **Khách hàng**                | **Hệ thống**                                         |
-| ----------------------------- | ---------------------------------------------------- |
-| 1. Chọn **Đặt xe**.           | 2. Hiển thị giao diện đặt xe.                        |
-| 3. Chọn điểm đón và điểm đến. | 4. Lấy thông tin vị trí/bản đồ.                      |
-|                               | 5. Tính khoảng cách.                                 |
-| 6. Chọn loại dịch vụ.         | 7. Tính cước dự kiến.                                |
-|                               | 8. Hiển thị thông tin chuyến và cước dự kiến.        |
-| 9. Xác nhận đặt xe.           | 10. Kiểm tra dữ liệu.                                |
-|                               | 11. Tạo chuyến đi.                                   |
-|                               | 12. Lưu chuyến với trạng thái **“Đang tìm tài xế”**. |
-|                               | 13. Chuyển sang UC08.                                |
-
-## Alternative Flow
-
-### 3.1. Thay đổi điểm đón/điểm đến
-
-1. Khách hàng thay đổi vị trí.
-2. Hệ thống cập nhật vị trí.
-3. Tính lại khoảng cách và cước.
-4. Quay lại bước 8.
-
-### 6.1. Thay đổi loại dịch vụ
-
-1. Khách hàng chọn loại xe khác.
-2. Hệ thống tính lại cước.
-3. Quay lại bước 8.
-
-## Exception Flow
-
-### 4.1. Không lấy được dữ liệu bản đồ
-
-1. Hệ thống thông báo không thể xác định vị trí.
-2. Khách hàng chọn lại vị trí.
-3. Kết thúc hoặc quay lại bước 3.
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể cập nhật thông tin tài xế và phương tiện. |
+| | 2. Hệ thống thông báo cập nhật không thành công. |
+| | 3. Hệ thống giữ nguyên thông tin tài xế và phương tiện hiện tại. |
+| | 4. Use case kết thúc. |
 
 ---
 
-# UC08 – Tìm & phân công tài xế
+## UC05 – Quản lý trạng thái tài xế
 
-| **Tìm & phân công tài xế** |                                                                                             |
-| -------------------------- | ------------------------------------------------------------------------------------------- |
-| **Mã Use Case**            | UC08                                                                                        |
-| **Tiền điều kiện**         | Có chuyến đang ở trạng thái **“Đang tìm tài xế”**.                                          |
-| **Hậu điều kiện**          | Chuyến được gán cho tài xế phù hợp hoặc chuyển sang trạng thái **“Không tìm thấy tài xế”**. |
-| **Actor chính**            | Không có actor trực tiếp                                                                    |
-| **Actor phụ**              | Tài xế                                                                                      |
-| **Mức độ**                 | Must Have                                                                                   |
+### Actor chính
 
-## Basic Flow
+Tài xế
 
-| **Tài xế**              | **Hệ thống**                   |
-| ----------------------- | ------------------------------ |
-|                         | 1. Nhận yêu cầu tìm tài xế.    |
-|                         | 2. Tìm tài xế `Online`.        |
-|                         | 3. Lọc theo loại xe và vị trí. |
-|                         | 4. Xác định tài xế phù hợp.    |
-|                         | 5. Gửi yêu cầu nhận chuyến.    |
-| 6. Nhận yêu cầu chuyến. |                                |
-| 7. Chấp nhận chuyến.    | 8. Gán tài xế vào chuyến.      |
-|                         | 9. Cập nhật trạng thái chuyến. |
-|                         | 10. Thông báo cho khách hàng.  |
+### Actor phụ
 
-## Alternative Flow
+Không
 
-### 5.1. Tài xế từ chối
+### Tiền điều kiện
 
-1. Tài xế từ chối chuyến.
-2. Hệ thống ghi nhận.
-3. Tìm tài xế tiếp theo.
-4. Quay lại bước 5.
+1. Tài xế đã đăng nhập thành công.
+2. Tài khoản Tài xế đang ở trạng thái hoạt động.
+3. Tài xế chưa bị khóa khỏi hệ thống.
 
-### 5.2. Tài xế hết thời gian phản hồi
+### Post-Conditions
 
-1. Hệ thống xác định yêu cầu hết hạn.
-2. Chuyển sang tài xế tiếp theo.
-3. Quay lại bước 5.
+Nếu use case thành công, trạng thái hoạt động của Tài xế được cập nhật theo lựa chọn. Khi Tài xế nhận và thực hiện chuyến, hệ thống có thể chuyển trạng thái sang **Busy**. Ngược lại, trạng thái của Tài xế không thay đổi.
 
-## Exception Flow
+### Dòng sự kiện
 
-### 2.1. Không có tài xế phù hợp
+#### Basic Flow
 
-1. Hệ thống không tìm thấy tài xế.
-2. Cập nhật trạng thái chuyến.
-3. Thông báo cho khách hàng.
-4. Kết thúc Use Case.
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế chọn chức năng **Quản lý trạng thái tài xế**. | |
+| | 2. Hệ thống xác định trạng thái hiện tại của Tài xế và hiển thị các trạng thái có thể lựa chọn.<br><br>Nếu Tài xế chọn **“Online”**, subflow **Chuyển sang Online** được thực hiện.<br><br>Nếu Tài xế chọn **“Offline”**, subflow **Chuyển sang Offline** được thực hiện. |
 
----
+### Chuyển sang Online
 
-# UC09 – Nhận / từ chối chuyến
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế chọn trạng thái **Online**. | |
+| | 2. Hệ thống kiểm tra tài khoản Tài xế đang hoạt động và cho phép nhận chuyến. |
+| | 3. Hệ thống cập nhật trạng thái Tài xế thành **Online**. |
+| | 4. Hệ thống thông báo trạng thái Online được cập nhật thành công. |
 
-| **Nhận / từ chối chuyến** |                                                          |
-| ------------------------- | -------------------------------------------------------- |
-| **Mã Use Case**           | UC09                                                     |
-| **Tiền điều kiện**        | Tài xế đang `Online` và nhận được yêu cầu chuyến.        |
-| **Hậu điều kiện**         | Chuyến được chấp nhận hoặc yêu cầu được từ chối/hết hạn. |
-| **Actor chính**           | Tài xế                                                   |
-| **Actor phụ**             | Không                                                    |
-| **Mức độ**                | Must Have                                                |
+### Chuyển sang Offline
 
-## Basic Flow
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế chọn trạng thái **Offline**. | |
+| | 2. Hệ thống kiểm tra trạng thái chuyến hiện tại của Tài xế. |
+| | 3. Hệ thống xác định Tài xế không có chuyến đang thực hiện. |
+| | 4. Hệ thống cập nhật trạng thái Tài xế thành **Offline**. |
+| | 5. Hệ thống thông báo trạng thái Offline được cập nhật thành công. |
 
-| **Tài xế**                    | **Hệ thống**                     |
-| ----------------------------- | -------------------------------- |
-| 1. Nhận thông báo chuyến mới. | 2. Hiển thị thông tin chuyến.    |
-| 3. Chọn **Chấp nhận**.        | 4. Kiểm tra chuyến còn khả dụng. |
-|                               | 5. Gán chuyến cho tài xế.        |
-|                               | 6. Cập nhật tài xế thành `Busy`. |
-|                               | 7. Cập nhật trạng thái chuyến.   |
-|                               | 8. Thông báo cho khách hàng.     |
+### Alternative Flow
 
-## Alternative Flow
+#### Subflow Chuyển sang Offline
 
-### 3.1. Tài xế từ chối
+**3.1. Tài xế đang thực hiện chuyến**
 
-1. Tài xế chọn **Từ chối**.
-2. Hệ thống ghi nhận.
-3. Chuyển yêu cầu sang tài xế tiếp theo.
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện Tài xế đang thực hiện chuyến. |
+| | 2. Hệ thống thông báo Tài xế không thể chuyển sang trạng thái Offline khi đang thực hiện chuyến. |
+| | 3. Hệ thống giữ nguyên trạng thái hiện tại của Tài xế. |
+| | 4. Use case kết thúc. |
 
-### 3.2. Không phản hồi
+### Exception Flow
 
-1. Hết thời gian quy định.
-2. Hệ thống đánh dấu yêu cầu hết hạn.
-3. Chuyển sang tài xế tiếp theo.
+#### Subflow Chuyển sang Online
 
-## Exception Flow
+**3.1. Không thể cập nhật trạng thái**
 
-### 4.1. Chuyến đã được nhận
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể cập nhật trạng thái Tài xế. |
+| | 2. Hệ thống thông báo cập nhật trạng thái không thành công. |
+| | 3. Hệ thống giữ nguyên trạng thái hiện tại của Tài xế. |
+| | 4. Use case kết thúc. |
 
-1. Hệ thống phát hiện chuyến đã được tài xế khác nhận.
-2. Thông báo cho tài xế.
-3. Kết thúc Use Case.
+#### Subflow Chuyển sang Offline
+
+**4.1. Không thể cập nhật trạng thái**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể cập nhật trạng thái Tài xế. |
+| | 2. Hệ thống thông báo cập nhật trạng thái không thành công. |
+| | 3. Hệ thống giữ nguyên trạng thái hiện tại của Tài xế. |
+| | 4. Use case kết thúc. |
 
 ---
 
-# UC10 – Thực hiện chuyến
+## UC06 – Cập nhật vị trí GPS
 
-| **Thực hiện chuyến** |                                                       |
-| -------------------- | ----------------------------------------------------- |
-| **Mã Use Case**      | UC10                                                  |
-| **Tiền điều kiện**   | Tài xế đã nhận chuyến.                                |
-| **Hậu điều kiện**    | Chuyến được hoàn thành và chuyển sang bước tính cước. |
-| **Actor chính**      | Tài xế                                                |
-| **Actor phụ**        | Nhà cung cấp bản đồ/GPS                               |
-| **Mức độ**           | Must Have                                             |
+### Actor chính
 
-## Basic Flow
+Tài xế
 
-| **Tài xế**                      | **Hệ thống**                                 |
-| ------------------------------- | -------------------------------------------- |
-| 1. Xem thông tin chuyến.        | 2. Hiển thị điểm đón/điểm đến.               |
-| 3. Di chuyển đến điểm đón.      | 4. Cập nhật vị trí.                          |
-| 5. Xác nhận đã đến.             | 6. Cập nhật trạng thái.                      |
-| 7. Chọn **Bắt đầu chuyến**.     | 8. Cập nhật trạng thái **“Đang thực hiện”**. |
-| 9. Thực hiện chuyến.            | 10. Ghi nhận quãng đường.                    |
-| 11. Chọn **Hoàn thành chuyến**. | 12. Cập nhật trạng thái **“Hoàn thành”**.    |
-|                                 | 13. Chuyển sang UC13 – Tính cước.            |
+### Actor phụ
 
-## Alternative Flow
+Nhà cung cấp bản đồ/GPS
 
-### 11.1. Tài xế hủy chuyến
+### Tiền điều kiện
 
-1. Tài xế chọn hủy.
-2. Hệ thống yêu cầu lý do.
-3. Tài xế nhập lý do.
-4. Hệ thống ghi nhận hủy chuyến.
+1. Tài xế đã đăng nhập thành công.
+2. Tài khoản Tài xế đang ở trạng thái hoạt động.
+3. Tài xế đang ở trạng thái **Online** hoặc đang thực hiện chuyến.
+4. Thiết bị của Tài xế có khả năng cung cấp vị trí GPS.
 
-## Exception Flow
+### Post-Conditions
 
-### 10.1. Không cập nhật được GPS
+Nếu use case thành công, vị trí GPS mới nhất của Tài xế được cập nhật và có thể được sử dụng cho việc tìm kiếm, phân công hoặc theo dõi chuyến đi. Ngược lại, vị trí hiện tại của Tài xế không được cập nhật.
 
-1. Hệ thống không nhận được vị trí.
-2. Tiếp tục duy trì vị trí gần nhất.
-3. Thử nhận dữ liệu GPS mới.
+### Dòng sự kiện
 
----
+#### Basic Flow
 
-# UC11 – Theo dõi chuyến
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế bật chức năng cung cấp vị trí GPS khi Online hoặc đang thực hiện chuyến. | |
+| | 2. Hệ thống nhận vị trí GPS hiện tại từ thiết bị của Tài xế. |
+| | 3. Hệ thống kiểm tra tính hợp lệ của thông tin vị trí GPS. |
+| | 4. Hệ thống cập nhật vị trí GPS mới nhất của Tài xế. |
+| | 5. Hệ thống cung cấp thông tin vị trí cho chức năng tìm kiếm, phân công hoặc theo dõi chuyến đi tương ứng. |
+| | 6. Hệ thống tiếp tục nhận vị trí GPS mới khi có thông tin vị trí được gửi từ thiết bị của Tài xế. |
 
-| **Theo dõi chuyến** |                                                           |
-| ------------------- | --------------------------------------------------------- |
-| **Mã Use Case**     | UC11                                                      |
-| **Tiền điều kiện**  | Khách hàng có chuyến đang được xử lý hoặc đang thực hiện. |
-| **Hậu điều kiện**   | Khách hàng xem được trạng thái và vị trí tài xế.          |
-| **Actor chính**     | Khách hàng                                                |
-| **Actor phụ**       | Nhà cung cấp bản đồ/GPS                                   |
-| **Mức độ**          | Must Have                                                 |
+### Alternative Flow
 
-## Basic Flow
+#### Bước 3.1. Vị trí GPS không hợp lệ
 
-| **Khách hàng**          | **Hệ thống**                           |
-| ----------------------- | -------------------------------------- |
-| 1. Mở thông tin chuyến. | 2. Hiển thị trạng thái chuyến.         |
-|                         | 3. Hiển thị thông tin tài xế.          |
-|                         | 4. Lấy vị trí tài xế.                  |
-|                         | 5. Hiển thị vị trí tài xế trên bản đồ. |
-| 6. Theo dõi chuyến.     | 7. Cập nhật vị trí định kỳ.            |
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện thông tin vị trí GPS không hợp lệ. |
+| | 2. Hệ thống không cập nhật vị trí GPS mới. |
+| | 3. Hệ thống chờ thông tin vị trí GPS tiếp theo. |
+| | 4. Quay lại bước 2 của Basic Flow. |
 
-## Alternative Flow
+#### Bước 2.1. Không nhận được vị trí GPS
 
-### 4.1. Không có dữ liệu GPS mới
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không nhận được thông tin vị trí GPS từ thiết bị của Tài xế. |
+| | 2. Hệ thống giữ nguyên vị trí GPS gần nhất đã nhận được. |
+| | 3. Hệ thống chờ thông tin vị trí GPS tiếp theo. |
+| | 4. Quay lại bước 2 của Basic Flow. |
 
-1. Hệ thống hiển thị vị trí gần nhất.
-2. Tiếp tục chờ dữ liệu mới.
+### Exception Flow
 
-## Exception Flow
+#### Bước 4.1. Không thể cập nhật vị trí GPS
 
-### 5.1. Không thể hiển thị bản đồ
-
-1. Hệ thống thông báo không thể tải bản đồ.
-2. Hiển thị thông tin trạng thái chuyến dạng văn bản.
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể cập nhật vị trí GPS mới. |
+| | 2. Hệ thống thông báo cập nhật vị trí GPS không thành công. |
+| | 3. Hệ thống giữ nguyên vị trí GPS gần nhất đã nhận được. |
+| | 4. Use case kết thúc. |
 
 ---
 
-# UC12 – Hủy chuyến
+## UC07 – Đặt xe
 
-| **Hủy chuyến**     |                                                                |
-| ------------------ | -------------------------------------------------------------- |
-| **Mã Use Case**    | UC12                                                           |
-| **Tiền điều kiện** | Chuyến chưa bắt đầu di chuyển.                                 |
-| **Hậu điều kiện**  | Chuyến được cập nhật trạng thái **“Đã hủy”** và lưu lý do hủy. |
-| **Actor chính**    | Khách hàng / Tài xế                                            |
-| **Actor phụ**      | Không                                                          |
-| **Mức độ**         | Should Have                                                    |
+### Actor chính
 
-## Basic Flow
+Khách hàng
 
-| **Khách hàng / Tài xế** | **Hệ thống**                                      |
-| ----------------------- | ------------------------------------------------- |
-| 1. Chọn **Hủy chuyến**. | 2. Kiểm tra trạng thái chuyến.                    |
-|                         | 3. Hiển thị yêu cầu nhập lý do.                   |
-| 4. Nhập lý do hủy.      | 5. Kiểm tra lý do.                                |
-| 6. Xác nhận hủy.        | 7. Cập nhật trạng thái chuyến thành **“Đã hủy”**. |
-|                         | 8. Lưu lý do hủy.                                 |
-|                         | 9. Thông báo cho bên còn lại.                     |
+### Actor phụ
 
-## Alternative Flow
+Nhà cung cấp bản đồ/GPS
 
-### 6.1. Không xác nhận hủy
+### Tiền điều kiện
 
-1. Người dùng chọn quay lại.
-2. Hệ thống giữ nguyên chuyến.
-3. Kết thúc Use Case.
+1. Khách hàng đã đăng nhập thành công.
+2. Tài khoản Khách hàng đang ở trạng thái hoạt động.
+3. Dịch vụ đặt xe đang sẵn sàng.
 
-## Exception Flow
+### Post-Conditions
 
-### 2.1. Chuyến đã bắt đầu
+Nếu use case thành công, yêu cầu đặt xe được tạo với trạng thái **Đang tìm tài xế** và hệ thống bắt đầu tìm kiếm tài xế phù hợp. Ngược lại, yêu cầu đặt xe không được tạo.
 
-1. Hệ thống phát hiện chuyến đã bắt đầu.
-2. Không cho phép hủy theo quy tắc MVP.
-3. Thông báo cho người dùng.
-4. Kết thúc Use Case.
+### Dòng sự kiện
 
----
+#### Basic Flow
 
-# UC13 – Tính cước
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng chọn chức năng **Đặt xe**. | |
+| | 2. Hệ thống xác định chức năng đặt xe và yêu cầu Khách hàng cung cấp điểm đón, điểm đến và loại dịch vụ. |
+| 3. Khách hàng nhập hoặc lựa chọn **điểm đón** và **điểm đến**. | |
+| | 4. Hệ thống kiểm tra và xác định vị trí điểm đón, điểm đến thông qua dịch vụ bản đồ/GPS. |
+| | 5. Hệ thống xác định quãng đường dự kiến giữa điểm đón và điểm đến. |
+| 6. Khách hàng chọn loại dịch vụ: **Xe máy** hoặc **Ô tô**. | |
+| | 7. Hệ thống tính cước dự kiến dựa trên quãng đường và loại dịch vụ. |
+| | 8. Hệ thống hiển thị thông tin đặt xe gồm điểm đón, điểm đến, loại dịch vụ và cước dự kiến. |
+| 9. Khách hàng kiểm tra và xác nhận yêu cầu đặt xe. | |
+| | 10. Hệ thống kiểm tra thông tin đặt xe. |
+| | 11. Hệ thống tạo yêu cầu đặt xe với trạng thái **Đang tìm tài xế**. |
+| | 12. Hệ thống lưu thông tin yêu cầu đặt xe. |
+| | 13. Hệ thống bắt đầu chức năng **Tìm & phân công tài xế**. |
 
-| **Tính cước**      |                                                  |
-| ------------------ | ------------------------------------------------ |
-| **Mã Use Case**    | UC13                                             |
-| **Tiền điều kiện** | Chuyến đã hoàn thành hoặc cần tính cước dự kiến. |
-| **Hậu điều kiện**  | Cước phí được tính và lưu vào thông tin chuyến.  |
-| **Actor chính**    | Không có actor trực tiếp                         |
-| **Actor phụ**      | Không                                            |
-| **Mức độ**         | Must Have                                        |
+### Alternative Flow
 
-## Basic Flow
+#### Bước 4.1. Điểm đón hoặc điểm đến không hợp lệ
 
-| **Actor** | **Hệ thống**                     |
-| --------- | -------------------------------- |
-|           | 1. Nhận thông tin chuyến.        |
-|           | 2. Lấy khoảng cách di chuyển.    |
-|           | 3. Xác định loại dịch vụ.        |
-|           | 4. Lấy giá mở cửa và đơn giá/km. |
-|           | 5. Tính cước theo công thức.     |
-|           | 6. Hiển thị cước.                |
-|           | 7. Lưu cước vào CSDL.            |
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện điểm đón hoặc điểm đến không hợp lệ. |
+| | 2. Hệ thống thông báo vị trí không hợp lệ. |
+| 3. Khách hàng nhập hoặc lựa chọn lại điểm đón, điểm đến. | |
+| | 4. Quay lại bước 4 của Basic Flow. |
 
-### Công thức tính cước
+#### Bước 7.1. Khách hàng thay đổi loại dịch vụ
 
-```text
-Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)
-```
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng thay đổi loại dịch vụ. | |
+| | 2. Hệ thống tính lại cước dự kiến theo loại dịch vụ mới. |
+| | 3. Quay lại bước 8 của Basic Flow. |
 
-## Alternative Flow
+#### Bước 9.1. Khách hàng không xác nhận đặt xe
 
-### 2.1. Chưa có quãng đường thực tế
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng hủy xác nhận đặt xe. | |
+| | 2. Hệ thống không tạo yêu cầu đặt xe. |
+| | 3. Use case kết thúc. |
 
-1. Hệ thống sử dụng thông tin khoảng cách hiện có.
-2. Tính cước dự kiến.
-3. Sau khi chuyến hoàn thành, hệ thống tính lại cước thực tế.
+### Exception Flow
 
-## Exception Flow
+#### Bước 4.1. Không thể xác định vị trí
 
-### 5.1. Không xác định được đơn giá
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không thể xác định điểm đón hoặc điểm đến thông qua dịch vụ bản đồ/GPS. |
+| | 2. Hệ thống thông báo không thể xác định vị trí. |
+| | 3. Hệ thống không tạo yêu cầu đặt xe. |
+| | 4. Use case kết thúc. |
 
-1. Hệ thống không thể tính cước.
-2. Thông báo lỗi.
-3. Không hoàn tất bước thanh toán.
-4. Kết thúc Use Case.
+#### Bước 12.1. Không thể tạo yêu cầu đặt xe
 
----
-
-# UC14 – Thanh toán chuyến đi
-
-| **Thanh toán chuyến đi** |                                                                            |
-| ------------------------ | -------------------------------------------------------------------------- |
-| **Mã Use Case**          | UC14                                                                       |
-| **Tiền điều kiện**       | Chuyến đã hoàn thành và hệ thống đã xác định cước thực tế.                 |
-| **Hậu điều kiện**        | Giao dịch được ghi nhận với trạng thái `Success`, `Failed` hoặc `Pending`. |
-| **Actor chính**          | Khách hàng                                                                 |
-| **Actor phụ**            | Tài xế; Nhà cung cấp thanh toán                                            |
-| **Mức độ**               | Must Have                                                                  |
-
-## Basic Flow
-
-| **Khách hàng / Tài xế**                              | **Hệ thống**                                                |
-| ---------------------------------------------------- | ----------------------------------------------------------- |
-| 1. Chọn phương thức thanh toán.                      | 2. Hiển thị số tiền cần thanh toán.                         |
-| 3. Chọn **Thanh toán tiền mặt** hoặc **Trực tuyến**. | 4. Kiểm tra phương thức thanh toán.                         |
-|                                                      | 5. Nếu tiền mặt, chuyển sang bước 6.                        |
-|                                                      | 6. Nếu trực tuyến, gửi yêu cầu đến Nhà cung cấp thanh toán. |
-|                                                      | 7. Nhận kết quả giao dịch.                                  |
-|                                                      | 8. Lưu trạng thái giao dịch.                                |
-|                                                      | 9. Lưu mã tham chiếu giao dịch nếu có.                      |
-|                                                      | 10. Thông báo kết quả thanh toán.                           |
-
-## Alternative Flow
-
-### 3.1. Thanh toán tiền mặt
-
-1. Tài xế nhận tiền từ khách hàng.
-2. Tài xế xác nhận đã thu đủ tiền.
-3. Hệ thống ghi nhận thanh toán thành công.
-4. Kết thúc Use Case.
-
-## Exception Flow
-
-### 7.1. Thanh toán trực tuyến thất bại
-
-1. Nhà cung cấp thanh toán trả kết quả thất bại.
-2. Hệ thống cập nhật giao dịch `Failed`.
-3. Thông báo cho khách hàng.
-4. Khách hàng thực hiện lại hoặc đổi phương thức thanh toán.
-
-### 7.2. Không nhận được kết quả
-
-1. Hệ thống cập nhật giao dịch `Pending`.
-2. Thông báo giao dịch đang được xử lý.
-3. Kết thúc Use Case.
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể tạo yêu cầu đặt xe. |
+| | 2. Hệ thống thông báo đặt xe không thành công. |
+| | 3. Hệ thống không tạo yêu cầu đặt xe. |
+| | 4. Use case kết thúc. |
 
 ---
 
-# UC15 – Gửi thông báo
+## UC08 – Tìm & phân công tài xế
 
-| **Gửi thông báo**  |                                                                          |
-| ------------------ | ------------------------------------------------------------------------ |
-| **Mã Use Case**    | UC15                                                                     |
-| **Tiền điều kiện** | Có sự kiện cần gửi thông báo.                                            |
-| **Hậu điều kiện**  | Thông báo được gửi đến người nhận hoặc ghi nhận trạng thái gửi thất bại. |
-| **Actor chính**    | Không có actor trực tiếp                                                 |
-| **Actor phụ**      | Nhà cung cấp thông báo                                                   |
-| **Mức độ**         | Must Have                                                                |
+### Actor chính
 
-## Basic Flow
+Không có
 
-| **Nhà cung cấp thông báo** | **Hệ thống**                               |
-| -------------------------- | ------------------------------------------ |
-|                            | 1. Phát sinh sự kiện cần thông báo.        |
-|                            | 2. Xác định người nhận.                    |
-|                            | 3. Xác định nội dung thông báo.            |
-|                            | 4. Gửi yêu cầu đến Nhà cung cấp thông báo. |
-| 5. Tiếp nhận yêu cầu gửi.  |                                            |
-|                            | 6. Nhận kết quả gửi.                       |
-|                            | 7. Ghi nhận trạng thái gửi.                |
+### Actor phụ
 
-## Alternative Flow
+Tài xế
 
-### 4.1. Có nhiều kênh thông báo
+### Tiền điều kiện
 
-1. Hệ thống xác định kênh phù hợp.
-2. Gửi thông báo qua kênh được cấu hình.
+1. Yêu cầu đặt xe của Khách hàng đã được tạo thành công.
+2. Yêu cầu đặt xe đang ở trạng thái **Đang tìm tài xế**.
+3. Có thông tin điểm đón và loại phương tiện cần tìm.
 
-## Exception Flow
+### Post-Conditions
 
-### 6.1. Gửi thông báo thất bại
+Nếu use case thành công, một Tài xế phù hợp được phân công cho yêu cầu đặt xe và trạng thái chuyến được cập nhật. Nếu không tìm được Tài xế phù hợp, hệ thống thông báo cho Khách hàng.
 
-1. Nhà cung cấp thông báo trả kết quả thất bại.
-2. Hệ thống ghi nhận trạng thái gửi thất bại.
-3. Thực hiện gửi lại nếu chính sách cho phép.
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống nhận yêu cầu tìm và phân công Tài xế từ yêu cầu đặt xe. |
+| | 2. Hệ thống xác định các Tài xế đang ở trạng thái **Online**. |
+| | 3. Hệ thống lọc các Tài xế có loại phương tiện phù hợp và đang ở gần điểm đón trong phạm vi quy định. |
+| | 4. Hệ thống xác định Tài xế phù hợp để gửi yêu cầu nhận chuyến. |
+| | 5. Hệ thống gửi yêu cầu nhận chuyến đến Tài xế được lựa chọn và chờ phản hồi trong thời gian quy định. |
+| 6. Tài xế nhận yêu cầu nhận chuyến. | |
+| | 7. Hệ thống nhận kết quả phản hồi từ Tài xế. |
+| | 8. Hệ thống phân công chuyến cho Tài xế đã chấp nhận. |
+| | 9. Hệ thống cập nhật trạng thái chuyến và thông báo cho Khách hàng về Tài xế được phân công. |
+
+### Alternative Flow
+
+#### Bước 7.1. Tài xế từ chối hoặc không phản hồi
+
+| Người dùng | Hệ thống |
+|---|---|
+| 7. Tài xế từ chối yêu cầu hoặc không phản hồi trong thời gian quy định. | |
+| | 8. Hệ thống ghi nhận kết quả từ chối hoặc hết thời gian phản hồi. |
+| | 9. Hệ thống loại Tài xế này khỏi lần tìm kiếm hiện tại và tiếp tục tìm Tài xế phù hợp khác. |
+| | 10. Quay lại bước 4 của Basic Flow. |
+
+#### Bước 4.1. Có nhiều Tài xế phù hợp
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định có nhiều Tài xế đáp ứng điều kiện tìm kiếm. |
+| | 2. Hệ thống lựa chọn Tài xế phù hợp theo vị trí gần điểm đón. |
+| | 3. Quay lại bước 5 của Basic Flow. |
+
+### Exception Flow
+
+#### Bước 3.1. Không tìm thấy Tài xế phù hợp
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không tìm thấy Tài xế đang Online, có phương tiện phù hợp và ở trong phạm vi tìm kiếm. |
+| | 2. Hệ thống thông báo cho Khách hàng rằng hiện không có Tài xế phù hợp. |
+| | 3. Hệ thống kết thúc quá trình tìm và phân công Tài xế. |
+| | 4. Use case kết thúc. |
+---
+
+## UC09 – Nhận / từ chối chuyến
+
+### Actor chính
+
+Tài xế
+
+### Actor phụ
+
+Không
+
+### Tiền điều kiện
+
+1. Tài xế đã đăng nhập thành công.
+2. Tài khoản Tài xế đang ở trạng thái hoạt động.
+3. Tài xế đang ở trạng thái **Online**.
+4. Tài xế đã nhận được yêu cầu nhận chuyến từ hệ thống.
+
+### Post-Conditions
+
+Nếu Tài xế chấp nhận, chuyến xe được phân công cho Tài xế và trạng thái chuyến được cập nhật. Nếu Tài xế từ chối hoặc không phản hồi trong thời gian quy định, hệ thống ghi nhận kết quả và tiếp tục xử lý tìm Tài xế khác. 
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế chọn chức năng **Nhận / từ chối chuyến** từ yêu cầu chuyến được gửi đến. | |
+| | 2. Hệ thống hiển thị thông tin chuyến gồm điểm đón, điểm đến và loại phương tiện.<br><br>Nếu Tài xế chọn **“Chấp nhận”**, subflow **Chấp nhận chuyến** được thực hiện.<br><br>Nếu Tài xế chọn **“Từ chối”**, subflow **Từ chối chuyến** được thực hiện. |
+
+### Chấp nhận chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế chọn **Chấp nhận chuyến**. | |
+| | 2. Hệ thống kiểm tra yêu cầu chuyến vẫn còn hiệu lực và Tài xế vẫn có thể nhận chuyến. |
+| | 3. Hệ thống xác nhận Tài xế nhận chuyến. |
+| | 4. Hệ thống cập nhật trạng thái Tài xế thành **Busy**. |
+| | 5. Hệ thống cập nhật trạng thái chuyến thành **Đã nhận chuyến**. |
+| | 6. Hệ thống thông báo cho Khách hàng về Tài xế đã nhận chuyến. |
+
+### Từ chối chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế chọn **Từ chối chuyến**. | |
+| | 2. Hệ thống ghi nhận kết quả từ chối của Tài xế. |
+| | 3. Hệ thống kết thúc yêu cầu nhận chuyến đối với Tài xế này. |
+| | 4. Hệ thống trả kết quả về chức năng **Tìm & phân công tài xế** để tiếp tục tìm Tài xế khác. |
+
+### Alternative Flow
+
+#### Subflow Chấp nhận chuyến
+
+**2.1. Yêu cầu chuyến không còn hiệu lực**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện yêu cầu chuyến không còn hiệu lực hoặc đã được Tài xế khác nhận. |
+| | 2. Hệ thống thông báo Tài xế không thể nhận chuyến. |
+| | 3. Hệ thống kết thúc yêu cầu nhận chuyến. |
+| | 4. Use case kết thúc. |
+
+#### Basic Flow – Không phản hồi yêu cầu
+
+**Bước 2.1. Tài xế không phản hồi trong thời gian quy định**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện Tài xế không phản hồi trong thời gian quy định. |
+| | 2. Hệ thống ghi nhận yêu cầu nhận chuyến đã hết thời gian phản hồi. |
+| | 3. Hệ thống kết thúc yêu cầu nhận chuyến đối với Tài xế này. |
+| | 4. Hệ thống trả kết quả về chức năng **Tìm & phân công tài xế** để tiếp tục tìm Tài xế khác. |
+
+### Exception Flow
+
+#### Subflow Chấp nhận chuyến
+
+**3.1. Không thể xác nhận nhận chuyến**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể xác nhận Tài xế nhận chuyến. |
+| | 2. Hệ thống thông báo nhận chuyến không thành công. |
+| | 3. Hệ thống không thay đổi trạng thái chuyến. |
+| | 4. Use case kết thúc. |
+
+#### Subflow Từ chối chuyến
+
+**2.1. Không thể ghi nhận kết quả từ chối**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể ghi nhận kết quả từ chối của Tài xế. |
+| | 2. Hệ thống thông báo xử lý yêu cầu không thành công. |
+| | 3. Use case kết thúc. |
+---
+
+## UC10 – Thực hiện chuyến
+
+### Actor chính
+
+Tài xế
+
+### Actor phụ
+
+Nhà cung cấp bản đồ/GPS
+
+### Tiền điều kiện
+
+1. Tài xế đã đăng nhập thành công.
+2. Tài xế đã chấp nhận chuyến.
+3. Chuyến xe đang ở trạng thái **Đã nhận chuyến**.
+4. Thông tin điểm đón và điểm đến của chuyến đã tồn tại.
+
+### Post-Conditions
+
+Nếu use case thành công, chuyến xe được cập nhật trạng thái **Hoàn thành**, thông tin thực hiện chuyến được ghi nhận và hệ thống chuyển sang chức năng **Tính cước**. Nếu không thành công, trạng thái chuyến được giữ nguyên tại thời điểm xảy ra lỗi.
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế chọn chức năng **Thực hiện chuyến**. | |
+| | 2. Hệ thống xác định chuyến xe mà Tài xế đã nhận và hiển thị thông tin điểm đón, điểm đến và trạng thái chuyến.<br><br>Tài xế thực hiện di chuyển đến điểm đón → subflow **Đến điểm đón** được thực hiện.<br><br>Sau khi Tài xế có mặt tại điểm đón → subflow **Bắt đầu chuyến** được thực hiện.<br><br>Sau khi chuyến được bắt đầu → subflow **Hoàn thành chuyến** được thực hiện. |
+
+### Đến điểm đón
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế di chuyển đến điểm đón của Khách hàng. | |
+| | 2. Hệ thống nhận vị trí GPS hiện tại của Tài xế. |
+| | 3. Hệ thống cập nhật vị trí của Tài xế trên bản đồ. |
+| | 4. Khi Tài xế đến điểm đón, hệ thống cập nhật trạng thái chuyến thành **Đã có mặt**. |
+| | 5. Hệ thống thông báo cho Khách hàng rằng Tài xế đã đến điểm đón. |
+
+### Bắt đầu chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế xác nhận bắt đầu chuyến sau khi đón Khách hàng. | |
+| | 2. Hệ thống kiểm tra chuyến vẫn ở trạng thái **Đã có mặt**. |
+| | 3. Hệ thống cập nhật trạng thái chuyến thành **Đang thực hiện**. |
+| | 4. Hệ thống bắt đầu ghi nhận thông tin thực hiện chuyến. |
+
+### Hoàn thành chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Tài xế di chuyển đến điểm đến của Khách hàng. | |
+| | 2. Hệ thống nhận thông tin vị trí GPS của Tài xế trong quá trình thực hiện chuyến. |
+| 3. Tài xế xác nhận đã đến điểm đến và hoàn thành chuyến. | |
+| | 4. Hệ thống xác nhận chuyến đã hoàn thành. |
+| | 5. Hệ thống cập nhật trạng thái chuyến thành **Hoàn thành**. |
+| | 6. Hệ thống ghi nhận thông tin chuyến đã thực hiện. |
+| | 7. Hệ thống chuyển sang chức năng **Tính cước**. |
+
+### Alternative Flow
+
+#### Subflow Đến điểm đón
+
+**2.1. Không nhận được vị trí GPS**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không nhận được vị trí GPS hiện tại của Tài xế. |
+| | 2. Hệ thống giữ thông tin vị trí gần nhất đã nhận được. |
+| | 3. Hệ thống tiếp tục chờ thông tin vị trí GPS mới. |
+| | 4. Khi nhận được vị trí GPS mới, quay lại bước 2 của subflow **Đến điểm đón**. |
+
+#### Subflow Bắt đầu chuyến
+
+**2.1. Chuyến không còn ở trạng thái Đã có mặt**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện chuyến không còn ở trạng thái **Đã có mặt**. |
+| | 2. Hệ thống thông báo Tài xế không thể bắt đầu chuyến. |
+| | 3. Use case kết thúc. |
+
+### Exception Flow
+
+#### Subflow Hoàn thành chuyến
+
+**4.1. Không thể cập nhật trạng thái chuyến**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể cập nhật trạng thái chuyến thành **Hoàn thành**. |
+| | 2. Hệ thống thông báo hoàn thành chuyến không thành công. |
+| | 3. Hệ thống giữ nguyên trạng thái chuyến hiện tại. |
+| | 4. Use case kết thúc. |
 
 ---
 
-# UC16 – Giám sát & xử lý chuyến
+## UC11 – Theo dõi chuyến
 
-| **Giám sát & xử lý chuyến** |                                                                                    |
-| --------------------------- | ---------------------------------------------------------------------------------- |
-| **Mã Use Case**             | UC16                                                                               |
-| **Tiền điều kiện**          | Nhân viên vận hành đã đăng nhập và có quyền vận hành.                              |
-| **Hậu điều kiện**           | Nhân viên vận hành xem được tình trạng chuyến và xử lý được các chuyến bất thường. |
-| **Actor chính**             | Nhân viên vận hành                                                                 |
-| **Actor phụ**               | Không                                                                              |
-| **Mức độ**                  | Must Have                                                                          |
+### Actor chính
 
-## Basic Flow
+Khách hàng
 
-| **Nhân viên vận hành**          | **Hệ thống**                                    |
-| ------------------------------- | ----------------------------------------------- |
-| 1. Chọn **Giám sát chuyến**.    | 2. Hiển thị danh sách chuyến đang hoạt động.    |
-| 3. Chọn một chuyến.             | 4. Hiển thị chi tiết chuyến.                    |
-|                                 | 5. Hiển thị trạng thái tài xế.                  |
-|                                 | 6. Hiển thị tiến trình chuyến.                  |
-| 7. Phát hiện chuyến bất thường. | 8. Hiển thị các phương án xử lý.                |
-| 9. Chọn xử lý chuyến.           | 10. Cập nhật trạng thái chuyến.                 |
-|                                 | 11. Ghi nhận người xử lý, thời gian và kết quả. |
+### Actor phụ
 
-## Alternative Flow
+Nhà cung cấp bản đồ/GPS
 
-### 9.1. Hủy chuyến
+### Tiền điều kiện
 
-1. Nhân viên chọn hủy chuyến.
-2. Nhập lý do.
-3. Hệ thống cập nhật trạng thái.
-4. Gửi thông báo cho các bên liên quan.
+1. Khách hàng đã đăng nhập thành công.
+2. Khách hàng có chuyến xe đang được xử lý.
+3. Chuyến xe đã được Tài xế chấp nhận.
 
-### 9.2. Kết thúc chuyến
+### Post-Conditions
 
-1. Nhân viên chọn kết thúc chuyến.
-2. Hệ thống yêu cầu xác nhận.
-3. Nhân viên xác nhận.
-4. Hệ thống cập nhật trạng thái hoàn thành.
+Nếu use case thành công, Khách hàng xem được trạng thái hiện tại của chuyến xe, thông tin Tài xế và vị trí của Tài xế trong quá trình thực hiện chuyến. Nếu không thể cập nhật vị trí, hệ thống vẫn hiển thị thông tin chuyến đã nhận được gần nhất.
 
-## Exception Flow
+### Dòng sự kiện
 
-### 10.1. Không thể cập nhật chuyến
+#### Basic Flow
 
-1. Hệ thống thông báo lỗi.
-2. Không thay đổi trạng thái chuyến.
-3. Ghi nhận lỗi hệ thống.
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng chọn chức năng **Theo dõi chuyến**. | |
+| | 2. Hệ thống xác định chuyến xe đang được Khách hàng theo dõi và hiển thị thông tin chuyến.<br><br>Hệ thống hiển thị **trạng thái chuyến** và **thông tin Tài xế**.<br><br>Hệ thống nhận vị trí GPS hiện tại của Tài xế từ Nhà cung cấp bản đồ/GPS và hiển thị vị trí Tài xế trên bản đồ.<br><br>Hệ thống tiếp tục cập nhật trạng thái chuyến và vị trí Tài xế trong quá trình chuyến đang được thực hiện. |
 
----
+### Alternative Flow
 
-# UC17 – Tra cứu lịch sử
+#### Bước 2.1. Không nhận được vị trí GPS mới
 
-| **Tra cứu lịch sử** |                                                                 |
-| ------------------- | --------------------------------------------------------------- |
-| **Mã Use Case**     | UC17                                                            |
-| **Tiền điều kiện**  | Người dùng đã đăng nhập.                                        |
-| **Hậu điều kiện**   | Danh sách lịch sử phù hợp với điều kiện tìm kiếm được hiển thị. |
-| **Actor chính**     | Khách hàng / Tài xế / Nhân viên vận hành                        |
-| **Actor phụ**       | Không                                                           |
-| **Mức độ**          | Should Have                                                     |
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không nhận được vị trí GPS mới của Tài xế. |
+| | 2. Hệ thống giữ và hiển thị vị trí gần nhất đã nhận được. |
+| | 3. Hệ thống tiếp tục chờ thông tin vị trí GPS mới. |
+| | 4. Khi nhận được vị trí GPS mới, hệ thống cập nhật vị trí Tài xế. |
 
-## Basic Flow
+#### Bước 2.2. Chuyến xe đã hoàn thành
 
-| **Người dùng**              | **Hệ thống**                                    |
-| --------------------------- | ----------------------------------------------- |
-| 1. Chọn **Lịch sử chuyến**. | 2. Hiển thị lịch sử phù hợp với quyền truy cập. |
-| 3. Nhập điều kiện tìm kiếm. | 4. Kiểm tra điều kiện.                          |
-| 5. Thực hiện tìm kiếm.      | 6. Truy vấn CSDL.                               |
-|                             | 7. Hiển thị danh sách kết quả.                  |
-| 8. Chọn một chuyến.         | 9. Hiển thị chi tiết chuyến.                    |
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện chuyến xe đã chuyển sang trạng thái **Hoàn thành**. |
+| | 2. Hệ thống hiển thị trạng thái chuyến **Hoàn thành** và thông tin chuyến cuối cùng. |
+| | 3. Use case kết thúc. |
 
-## Alternative Flow
+### Exception Flow
 
-### 5.1. Không có kết quả
+#### Bước 2.3. Không thể lấy thông tin vị trí từ Nhà cung cấp bản đồ/GPS
 
-1. Hệ thống không tìm thấy chuyến phù hợp.
-2. Thông báo không có dữ liệu.
-3. Người dùng thay đổi điều kiện tìm kiếm.
-
-## Exception Flow
-
-### 6.1. Lỗi truy vấn CSDL
-
-1. Hệ thống thông báo không thể tải dữ liệu.
-2. Kết thúc Use Case.
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể nhận thông tin vị trí từ Nhà cung cấp bản đồ/GPS. |
+| | 2. Hệ thống thông báo không thể cập nhật vị trí Tài xế. |
+| | 3. Hệ thống vẫn hiển thị trạng thái chuyến và thông tin Tài xế đã nhận được gần nhất. |
+| | 4. Use case tiếp tục theo dõi trạng thái chuyến. |
 
 ---
 
-# UC18 – Đánh giá tài xế
+## UC12 – Hủy chuyến
 
-| **Đánh giá tài xế** |                                                                                   |
-| ------------------- | --------------------------------------------------------------------------------- |
-| **Mã Use Case**     | UC18                                                                              |
-| **Tiền điều kiện**  | Chuyến đã hoàn thành và khách hàng đã thanh toán hoặc giao dịch đã được ghi nhận. |
-| **Hậu điều kiện**   | Đánh giá được lưu vào CSDL và điểm đánh giá trung bình của tài xế được cập nhật.  |
-| **Actor chính**     | Khách hàng                                                                        |
-| **Actor phụ**       | Không                                                                             |
-| **Mức độ**          | Must Have                                                                         |
+### Actor chính
 
-## Basic Flow
+Khách hàng, Tài xế
 
-| **Khách hàng**              | **Hệ thống**                                     |
-| --------------------------- | ------------------------------------------------ |
-| 1. Mở chuyến đã hoàn thành. | 2. Hiển thị chức năng **Đánh giá tài xế**.       |
-| 3. Chọn số sao từ 1–5.      | 4. Kiểm tra số sao hợp lệ.                       |
-| 5. Nhập nhận xét nếu muốn.  | 6. Kiểm tra nội dung.                            |
-| 7. Xác nhận đánh giá.       | 8. Lưu đánh giá vào CSDL.                        |
-|                             | 9. Tính lại điểm đánh giá trung bình của tài xế. |
-|                             | 10. Thông báo đánh giá thành công.               |
+### Actor phụ
 
-## Alternative Flow
+Không
 
-### 5.1. Khách hàng không nhập nhận xét
+### Tiền điều kiện
 
-1. Hệ thống chỉ lưu số sao.
-2. Tiếp tục bước 7.
+1. Khách hàng hoặc Tài xế đã đăng nhập thành công.
+2. Chuyến xe đã được tạo và đang được xử lý.
+3. Chuyến xe chưa bắt đầu di chuyển.
 
-## Exception Flow
+### Post-Conditions
 
-### 8.1. Khách hàng đã đánh giá chuyến này
+Nếu use case thành công, chuyến xe được cập nhật trạng thái **Đã hủy**, lý do hủy được ghi nhận và bên còn lại được thông báo. Nếu hủy không thành công, trạng thái chuyến xe không thay đổi.
 
-1. Hệ thống phát hiện chuyến đã có đánh giá.
-2. Không cho phép tạo đánh giá mới.
-3. Thông báo cho khách hàng.
-4. Kết thúc Use Case.
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng hoặc Tài xế chọn chức năng **Hủy chuyến**. | |
+| | 2. Hệ thống kiểm tra trạng thái hiện tại của chuyến.<br><br>Nếu chuyến xe chưa bắt đầu di chuyển, subflow **Xác nhận hủy chuyến** được thực hiện.<br><br>Nếu chuyến xe đã bắt đầu di chuyển, hệ thống thực hiện Alternative Flow **Chuyến xe đã bắt đầu di chuyển**. |
+
+### Xác nhận hủy chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống yêu cầu Khách hàng hoặc Tài xế cung cấp lý do hủy chuyến. |
+| 2. Khách hàng hoặc Tài xế nhập lý do hủy chuyến. | |
+| 3. Khách hàng hoặc Tài xế xác nhận hủy chuyến. | |
+| | 4. Hệ thống kiểm tra thông tin hủy chuyến. |
+| | 5. Hệ thống cập nhật trạng thái chuyến thành **Đã hủy**. |
+| | 6. Hệ thống ghi nhận lý do hủy chuyến. |
+| | 7. Hệ thống thông báo cho bên còn lại về việc chuyến xe đã bị hủy. |
+| | 8. Hệ thống kết thúc chức năng hủy chuyến. |
+
+### Alternative Flow
+
+#### Bước 2.1. Chuyến xe đã bắt đầu di chuyển
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện chuyến xe đã bắt đầu di chuyển. |
+| | 2. Hệ thống thông báo không thể hủy chuyến ở trạng thái hiện tại. |
+| | 3. Hệ thống giữ nguyên trạng thái chuyến xe. |
+| | 4. Use case kết thúc. |
+
+#### Bước 3.1. Khách hàng hoặc Tài xế không xác nhận hủy
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng hoặc Tài xế không xác nhận hủy chuyến. | |
+| | 2. Hệ thống không thực hiện hủy chuyến. |
+| | 3. Hệ thống giữ nguyên trạng thái chuyến xe. |
+| | 4. Use case kết thúc. |
+
+### Exception Flow
+
+#### Bước 5.1. Không thể cập nhật trạng thái chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể cập nhật trạng thái chuyến thành **Đã hủy**. |
+| | 2. Hệ thống thông báo hủy chuyến không thành công. |
+| | 3. Hệ thống giữ nguyên trạng thái chuyến xe. |
+| | 4. Use case kết thúc. |
 
 ---
 
-# UC19 – Báo cáo chuyến đi & doanh thu
+## UC13 – Tính cước
+### Actor chính
 
+Không có
 
-| **Báo cáo chuyến đi & doanh thu** |                                                                           |
-| --------------------------------- | ------------------------------------------------------------------------- |
-| **Mã Use Case**                   | UC19                                                                      |
-| **Tiền điều kiện**                | Nhân viên vận hành đã đăng nhập và có quyền xem báo cáo.                  |
-| **Hậu điều kiện**                 | Báo cáo số lượng chuyến và doanh thu được hiển thị theo khoảng thời gian. |
-| **Actor chính**                   | Nhân viên vận hành                                                        |
-| **Actor phụ**                     | Không                                                                     |
-| **Mức độ**                        | Should Have                                                               |
+### Actor phụ
 
-## Basic Flow
+Không
 
-| **Nhân viên vận hành**    | **Hệ thống**                                |
-| ------------------------- | ------------------------------------------- |
-| 1. Chọn **Báo cáo**.      | 2. Hiển thị giao diện báo cáo.              |
-| 3. Chọn khoảng thời gian. | 4. Kiểm tra khoảng thời gian.               |
-| 5. Chọn loại báo cáo.     | 6. Truy vấn dữ liệu chuyến đi và giao dịch. |
-|                           | 7. Tính số lượng chuyến.                    |
-|                           | 8. Tính tổng doanh thu.                     |
-|                           | 9. Hiển thị báo cáo.                        |
+### Tiền điều kiện
 
-## Alternative Flow
+1. Đối với tính cước dự kiến: thông tin điểm đón, điểm đến và loại phương tiện đã được cung cấp.
+2. Đối với tính cước thực tế: chuyến xe đã hoàn thành và có thông tin quãng đường thực tế.
+3. Mức giá mở cửa và đơn giá theo quãng đường của loại phương tiện đã được xác định.
 
-### 3.1. Chọn báo cáo số chuyến
+### Post-Conditions
 
-1. Hệ thống thống kê số chuyến hoàn thành.
-2. Thống kê số chuyến bị hủy.
-3. Hiển thị kết quả.
+Nếu use case thành công, hệ thống tính được cước chuyến xe, hiển thị cước tương ứng và ghi nhận cước để sử dụng cho các bước tiếp theo. Nếu không thể tính cước, cước chuyến xe không được xác định.
 
-### 3.2. Chọn báo cáo doanh thu
+### Dòng sự kiện
 
-1. Hệ thống lấy các chuyến hoàn thành.
-2. Tổng hợp doanh thu.
-3. Hiển thị kết quả.
+#### Basic Flow
 
-## Exception Flow
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống nhận yêu cầu tính cước.<br><br>Nếu yêu cầu tính **cước dự kiến trước khi đặt xe**, subflow **Tính cước dự kiến** được thực hiện.<br><br>Nếu chuyến xe đã **hoàn thành**, subflow **Tính cước thực tế** được thực hiện. |
 
-### 6.1. Không có dữ liệu
+### Tính cước dự kiến
 
-1. Hệ thống thông báo không có dữ liệu trong khoảng thời gian đã chọn.
-2. Hiển thị báo cáo rỗng.
-3. Kết thúc Use Case.
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống nhận điểm đón, điểm đến và loại phương tiện đã được Khách hàng lựa chọn. |
+| | 2. Hệ thống xác định quãng đường giữa điểm đón và điểm đến. |
+| | 3. Hệ thống xác định giá mở cửa và đơn giá theo quãng đường tương ứng với loại phương tiện. |
+| | 4. Hệ thống tính cước dự kiến theo công thức:<br>**Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)** |
+| | 5. Hệ thống hiển thị cước dự kiến cho Khách hàng. |
+
+### Tính cước thực tế
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống nhận thông tin chuyến xe đã hoàn thành và quãng đường thực tế. |
+| | 2. Hệ thống xác định loại phương tiện của chuyến xe. |
+| | 3. Hệ thống xác định giá mở cửa và đơn giá theo quãng đường tương ứng với loại phương tiện. |
+| | 4. Hệ thống tính cước thực tế theo công thức:<br>**Cước = Giá mở cửa + (Quãng đường × Đơn giá/km)** |
+| | 5. Hệ thống ghi nhận cước thực tế của chuyến xe. |
+| | 6. Hệ thống hiển thị cước thực tế để sử dụng cho chức năng **Thanh toán chuyến đi**. |
+
+### Alternative Flow
+
+#### Subflow Tính cước dự kiến
+
+**Bước 2.1. Không xác định được quãng đường**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không xác định được quãng đường giữa điểm đón và điểm đến. |
+| | 2. Hệ thống thông báo không thể tính cước dự kiến. |
+| | 3. Hệ thống kết thúc quá trình tính cước dự kiến. |
+
+#### Subflow Tính cước thực tế
+
+**Bước 1.1. Chưa có quãng đường thực tế**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện chưa có thông tin quãng đường thực tế của chuyến xe. |
+| | 2. Hệ thống chưa xác định cước thực tế. |
+| | 3. Hệ thống chờ thông tin quãng đường thực tế. |
+
+### Exception Flow
+
+#### Subflow Tính cước dự kiến
+
+**Bước 3.1. Không xác định được mức giá**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không xác định được giá mở cửa hoặc đơn giá theo quãng đường. |
+| | 2. Hệ thống thông báo không thể tính cước. |
+| | 3. Hệ thống không hiển thị cước dự kiến. |
+| | 4. Use case kết thúc. |
+
+#### Subflow Tính cước thực tế
+
+**Bước 3.1. Không xác định được mức giá**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không xác định được giá mở cửa hoặc đơn giá theo quãng đường. |
+| | 2. Hệ thống thông báo không thể tính cước thực tế. |
+| | 3. Hệ thống không xác định cước thực tế để thanh toán. |
+| | 4. Use case kết thúc. |
+
+---
+
+## UC14 – Thanh toán chuyến đi
+
+### Actor chính
+
+Khách hàng
+
+### Actor phụ
+
+Nhà cung cấp thanh toán
+
+### Tiền điều kiện
+
+1. Khách hàng đã đăng nhập thành công.
+2. Chuyến xe đã hoàn thành.
+3. Cước thực tế của chuyến xe đã được xác định.
+4. Khách hàng chưa hoàn tất thanh toán cho chuyến xe.
+
+### Post-Conditions
+
+Nếu use case thành công, khoản thanh toán được ghi nhận với trạng thái **Thành công** và Khách hàng nhận được thông báo kết quả thanh toán.
+
+Nếu thanh toán trực tuyến thất bại, hệ thống ghi nhận trạng thái **Thất bại**, thông báo cho Khách hàng và cho phép Khách hàng thử lại hoặc thay đổi phương thức thanh toán.
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng chọn chức năng **Thanh toán chuyến đi**. | |
+| | 2. Hệ thống xác định chuyến xe cần thanh toán và hiển thị cước thực tế cùng các phương thức thanh toán.<br><br>Nếu Khách hàng chọn **“Tiền mặt”**, subflow **Thanh toán bằng tiền mặt** được thực hiện.<br><br>Nếu Khách hàng chọn **“Thanh toán trực tuyến”**, subflow **Thanh toán trực tuyến** được thực hiện. |
+
+### Thanh toán bằng tiền mặt
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng chọn phương thức **Tiền mặt** và thanh toán cước cho Tài xế. | |
+| 2. Tài xế xác nhận đã nhận đủ tiền. | |
+| | 3. Hệ thống ghi nhận kết quả thanh toán tiền mặt là **Thành công**. |
+| | 4. Hệ thống cập nhật trạng thái thanh toán của chuyến xe. |
+| | 5. Hệ thống thông báo kết quả thanh toán cho Khách hàng. |
+
+### Thanh toán trực tuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng chọn phương thức **Thanh toán trực tuyến**. | |
+| | 2. Hệ thống tạo yêu cầu thanh toán với số tiền bằng cước thực tế của chuyến xe. |
+| | 3. Hệ thống gửi yêu cầu thanh toán đến **Nhà cung cấp thanh toán**. |
+| | 4. Nhà cung cấp thanh toán xử lý giao dịch và trả kết quả thanh toán. |
+| | 5. Hệ thống nhận kết quả giao dịch và xác định trạng thái **Pending**, **Success** hoặc **Failed**. |
+| | 6. Nếu trạng thái là **Success**, hệ thống ghi nhận thanh toán thành công và thông báo cho Khách hàng. |
+
+### Alternative Flow
+
+#### Bước 5.1. Thanh toán trực tuyến đang xử lý
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống nhận kết quả thanh toán có trạng thái **Pending** từ Nhà cung cấp thanh toán. |
+| | 2. Hệ thống ghi nhận trạng thái thanh toán là **Pending**. |
+| | 3. Hệ thống thông báo cho Khách hàng rằng giao dịch đang được xử lý. |
+| | 4. Hệ thống chờ kết quả thanh toán cuối cùng từ Nhà cung cấp thanh toán. |
+
+#### Bước 5.2. Thanh toán trực tuyến thất bại
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống nhận kết quả thanh toán có trạng thái **Failed** từ Nhà cung cấp thanh toán. |
+| | 2. Hệ thống ghi nhận trạng thái thanh toán là **Failed**. |
+| | 3. Hệ thống thông báo cho Khách hàng rằng thanh toán không thành công. |
+| | 4. Hệ thống cho phép Khách hàng **thử lại thanh toán hoặc thay đổi phương thức thanh toán**. |
+| 5. Khách hàng chọn thử lại hoặc thay đổi phương thức thanh toán. | |
+| | 6. Nếu Khách hàng chọn **thử lại**, quay lại bước 2 của subflow **Thanh toán trực tuyến**.<br><br>Nếu Khách hàng chọn **thay đổi phương thức thanh toán**, quay lại bước 2 của Basic Flow. |
+
+### Exception Flow
+
+#### Subflow Thanh toán bằng tiền mặt
+
+**Bước 2.1. Tài xế không xác nhận đã nhận tiền**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không nhận được xác nhận thanh toán tiền mặt từ Tài xế. |
+| | 2. Hệ thống không ghi nhận thanh toán thành công. |
+| | 3. Hệ thống thông báo chưa thể xác nhận thanh toán. |
+| | 4. Use case kết thúc. |
+
+#### Subflow Thanh toán trực tuyến
+
+**Bước 3.1. Không thể gửi yêu cầu đến Nhà cung cấp thanh toán**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể gửi yêu cầu thanh toán đến Nhà cung cấp thanh toán. |
+| | 2. Hệ thống ghi nhận giao dịch không thực hiện thành công. |
+| | 3. Hệ thống thông báo cho Khách hàng rằng không thể thực hiện thanh toán trực tuyến. |
+| | 4. Use case kết thúc. |
+
+#### Subflow Thanh toán trực tuyến
+
+**Bước 4.1. Không nhận được kết quả giao dịch**
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không nhận được kết quả giao dịch từ Nhà cung cấp thanh toán. |
+| | 2. Hệ thống ghi nhận trạng thái thanh toán là **Pending**. |
+| | 3. Hệ thống thông báo cho Khách hàng rằng giao dịch đang được xử lý. |
+| | 4. Use case kết thúc. |
+
+---
+
+## UC15 – Gửi thông báo
+
+### Actor chính
+
+Không có
+
+### Actor phụ
+
+Nhà cung cấp thông báo
+
+### Tiền điều kiện
+
+1. Hệ thống đã phát sinh một sự kiện cần gửi thông báo.
+2. Có thông tin người nhận thông báo.
+3. Nội dung thông báo tương ứng với sự kiện đã được xác định.
+
+### Post-Conditions
+
+Nếu use case thành công, thông báo được gửi đến đúng người nhận và hệ thống ghi nhận kết quả gửi thông báo.
+
+Nếu gửi thông báo không thành công, hệ thống ghi nhận kết quả gửi thất bại và không làm thay đổi trạng thái nghiệp vụ của chuyến xe.
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống nhận sự kiện cần gửi thông báo.<br><br>Nếu sự kiện là **Tài xế nhận chuyến**, subflow **Thông báo Tài xế nhận chuyến** được thực hiện.<br><br>Nếu sự kiện là **Tài xế đã đến điểm đón**, subflow **Thông báo Tài xế đã đến** được thực hiện.<br><br>Nếu sự kiện là **Hoàn thành chuyến hoặc có kết quả thanh toán**, subflow **Thông báo hoàn thành và thanh toán** được thực hiện.<br><br>Nếu sự kiện là **Hủy chuyến**, subflow **Thông báo hủy chuyến** được thực hiện.<br><br>Nếu sự kiện là **Có chuyến mới cần nhận**, subflow **Thông báo chuyến mới cho Tài xế** được thực hiện. |
+
+### Thông báo Tài xế nhận chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định Khách hàng của chuyến xe. |
+| | 2. Hệ thống tạo nội dung thông báo Tài xế đã nhận chuyến. |
+| | 3. Hệ thống gửi thông báo đến Khách hàng thông qua Nhà cung cấp thông báo. |
+| | 4. Hệ thống ghi nhận kết quả gửi thông báo. |
+
+### Thông báo Tài xế đã đến
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định Khách hàng của chuyến xe. |
+| | 2. Hệ thống tạo nội dung thông báo Tài xế đã đến điểm đón. |
+| | 3. Hệ thống gửi thông báo đến Khách hàng thông qua Nhà cung cấp thông báo. |
+| | 4. Hệ thống ghi nhận kết quả gửi thông báo. |
+
+### Thông báo hoàn thành và thanh toán
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định Khách hàng của chuyến xe. |
+| | 2. Hệ thống tạo nội dung thông báo chuyến xe đã hoàn thành và kết quả thanh toán. |
+| | 3. Hệ thống gửi thông báo đến Khách hàng thông qua Nhà cung cấp thông báo. |
+| | 4. Hệ thống ghi nhận kết quả gửi thông báo. |
+
+### Thông báo hủy chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định bên còn lại của chuyến xe cần nhận thông báo. |
+| | 2. Hệ thống tạo nội dung thông báo chuyến xe đã bị hủy. |
+| | 3. Hệ thống gửi thông báo đến người nhận thông qua Nhà cung cấp thông báo. |
+| | 4. Hệ thống ghi nhận kết quả gửi thông báo. |
+
+### Thông báo chuyến mới cho Tài xế
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định Tài xế được phân công nhận yêu cầu chuyến. |
+| | 2. Hệ thống tạo nội dung thông báo có chuyến mới. |
+| | 3. Hệ thống gửi thông báo đến Tài xế thông qua Nhà cung cấp thông báo. |
+| | 4. Hệ thống ghi nhận kết quả gửi thông báo. |
+
+### Alternative Flow
+
+#### Bước 3.1. Người nhận không còn hợp lệ
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện người nhận không còn đủ điều kiện nhận thông báo. |
+| | 2. Hệ thống không gửi thông báo đến người nhận. |
+| | 3. Hệ thống ghi nhận thông báo không được gửi. |
+| | 4. Use case kết thúc. |
+
+#### Bước 3.2. Người nhận đã nhận được thông báo
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống nhận kết quả thông báo đã được gửi thành công. |
+| | 2. Hệ thống ghi nhận kết quả gửi thành công. |
+| | 3. Use case kết thúc. |
+
+### Exception Flow
+
+#### Bước 3.3. Nhà cung cấp thông báo không thể gửi thông báo
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện Nhà cung cấp thông báo không thể thực hiện việc gửi thông báo. |
+| | 2. Hệ thống ghi nhận kết quả gửi thông báo là **Thất bại**. |
+| | 3. Hệ thống không thay đổi trạng thái chuyến xe hoặc kết quả nghiệp vụ đã phát sinh. |
+| | 4. Use case kết thúc. |
+
+---
+
+## UC16 – Giám sát & xử lý chuyến
+### Actor chính
+
+Nhân viên vận hành
+
+### Actor phụ
+
+Không
+
+### Tiền điều kiện
+
+1. Nhân viên vận hành đã đăng nhập thành công.
+2. Nhân viên vận hành có quyền giám sát và xử lý chuyến.
+3. Hệ thống có thông tin các chuyến xe đang được xử lý hoặc các chuyến xe cần xử lý.
+
+### Post-Conditions
+
+Nếu use case thành công, Nhân viên vận hành xem được tình trạng chuyến xe và có thể xử lý chuyến xe gặp sự cố. Kết quả xử lý, thời gian xử lý và người xử lý được ghi nhận.
+
+Nếu xử lý không thành công, trạng thái chuyến xe được giữ nguyên và hệ thống thông báo cho Nhân viên vận hành.
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn chức năng **Giám sát & xử lý chuyến**. | |
+| | 2. Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Nhân viên vận hành chọn **“Giám sát chuyến đang hoạt động”**, subflow **Giám sát chuyến** được thực hiện.<br><br>Nếu Nhân viên vận hành chọn **“Xử lý chuyến gặp sự cố”**, subflow **Xử lý chuyến** được thực hiện. |
+
+### Giám sát chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống hiển thị danh sách các chuyến xe đang hoạt động. |
+| | 2. Hệ thống hiển thị thông tin và trạng thái hiện tại của từng chuyến xe. |
+| | 3. Hệ thống cập nhật thông tin tiến trình chuyến xe khi có thay đổi. |
+| | 4. Nhân viên vận hành theo dõi tình trạng các chuyến xe đang hoạt động. |
+| | 5. Hệ thống tiếp tục cập nhật thông tin chuyến xe. |
+
+### Xử lý chuyến
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn chuyến xe cần xử lý. | |
+| | 2. Hệ thống hiển thị thông tin và trạng thái hiện tại của chuyến xe. |
+| | 3. Hệ thống xác định chuyến xe đang gặp sự cố hoặc cần can thiệp. |
+| 4. Nhân viên vận hành xác định phương án xử lý chuyến xe. | |
+| 5. Nhân viên vận hành xác nhận xử lý chuyến xe. | |
+| | 6. Hệ thống thực hiện xử lý theo phương án đã được xác nhận. |
+| | 7. Hệ thống cập nhật trạng thái chuyến xe sau khi xử lý. |
+| | 8. Hệ thống ghi nhận người xử lý, thời gian và kết quả xử lý. |
+| | 9. Hệ thống thông báo kết quả xử lý cho Nhân viên vận hành. |
+
+### Alternative Flow
+
+#### Bước 2.1. Không có chuyến xe đang hoạt động
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không tìm thấy chuyến xe đang hoạt động. |
+| | 2. Hệ thống thông báo hiện không có chuyến xe đang hoạt động. |
+| | 3. Use case kết thúc. |
+
+#### Bước 3.1. Chuyến xe không cần xử lý
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định chuyến xe không có sự cố hoặc không cần Nhân viên vận hành can thiệp. |
+| | 2. Hệ thống thông báo chuyến xe không cần xử lý. |
+| | 3. Hệ thống giữ nguyên trạng thái chuyến xe. |
+| | 4. Use case kết thúc. |
+
+#### Bước 5.1. Nhân viên vận hành hủy thao tác xử lý
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành không xác nhận xử lý chuyến xe. | |
+| | 2. Hệ thống không thực hiện xử lý chuyến xe. |
+| | 3. Hệ thống giữ nguyên trạng thái chuyến xe. |
+| | 4. Use case kết thúc. |
+
+### Exception Flow
+
+#### Bước 6.1. Không thể xử lý chuyến xe
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể thực hiện phương án xử lý chuyến xe. |
+| | 2. Hệ thống thông báo xử lý chuyến xe không thành công. |
+| | 3. Hệ thống giữ nguyên trạng thái chuyến xe. |
+| | 4. Hệ thống ghi nhận kết quả xử lý là **Thất bại**. |
+| | 5. Use case kết thúc. |
+
+#### Bước 8.1. Không thể ghi nhận kết quả xử lý
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không thể ghi nhận thông tin người xử lý, thời gian hoặc kết quả xử lý. |
+| | 2. Hệ thống thông báo không thể hoàn tất việc ghi nhận kết quả xử lý. |
+| | 3. Trạng thái chuyến xe được giữ theo kết quả xử lý đã thực hiện. |
+| | 4. Use case kết thúc. |
+
+---
+
+## UC17 – Tra cứu lịch sử
+
+### Actor chính
+
+Khách hàng, Tài xế
+
+### Actor phụ
+
+Không
+
+### Tiền điều kiện
+
+1. Khách hàng hoặc Tài xế đã đăng nhập thành công.
+2. Khách hàng hoặc Tài xế có quyền xem lịch sử của các chuyến xe liên quan.
+3. Hệ thống có thông tin lịch sử chuyến xe hoặc giao dịch cần tra cứu.
+
+### Post-Conditions
+
+Nếu use case thành công, Khách hàng hoặc Tài xế xem được thông tin lịch sử phù hợp với quyền truy cập.
+
+Nếu không tìm thấy thông tin phù hợp, hệ thống thông báo không có dữ liệu lịch sử tương ứng.
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng hoặc Tài xế chọn chức năng **Tra cứu lịch sử**. | |
+| | 2. Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Khách hàng hoặc Tài xế chọn **“Lịch sử chuyến đi”**, subflow **Tra cứu lịch sử chuyến đi** được thực hiện.<br><br>Nếu Khách hàng hoặc Tài xế chọn **“Lịch sử giao dịch”**, subflow **Tra cứu lịch sử giao dịch** được thực hiện. |
+
+### Tra cứu lịch sử chuyến đi
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định các chuyến xe có liên quan đến Khách hàng hoặc Tài xế. |
+| | 2. Hệ thống hiển thị danh sách lịch sử chuyến xe. |
+| 3. Khách hàng hoặc Tài xế chọn một chuyến xe cần xem chi tiết. | |
+| | 4. Hệ thống hiển thị thông tin chi tiết của chuyến xe gồm điểm đón, điểm đến, loại phương tiện, trạng thái chuyến và cước chuyến xe. |
+| | 5. Use case kết thúc. |
+
+### Tra cứu lịch sử giao dịch
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống xác định các giao dịch liên quan đến Khách hàng hoặc Tài xế. |
+| | 2. Hệ thống hiển thị danh sách lịch sử giao dịch. |
+| 3. Khách hàng hoặc Tài xế chọn một giao dịch cần xem chi tiết. | |
+| | 4. Hệ thống hiển thị thông tin giao dịch gồm chuyến xe liên quan, số tiền và trạng thái thanh toán. |
+| | 5. Use case kết thúc. |
+
+### Alternative Flow
+
+#### Bước 2.1. Không tìm thấy lịch sử chuyến đi
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không tìm thấy chuyến xe nào liên quan đến Khách hàng hoặc Tài xế. |
+| | 2. Hệ thống thông báo **Không có lịch sử chuyến đi**. |
+| | 3. Use case kết thúc. |
+
+#### Bước 2.2. Không tìm thấy lịch sử giao dịch
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không tìm thấy giao dịch nào liên quan đến Khách hàng hoặc Tài xế. |
+| | 2. Hệ thống thông báo **Không có lịch sử giao dịch**. |
+| | 3. Use case kết thúc. |
+
+#### Bước 3.1. Người dùng không chọn chuyến xe hoặc giao dịch
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng hoặc Tài xế không chọn chuyến xe hoặc giao dịch cần xem chi tiết. | |
+| | 2. Hệ thống giữ nguyên danh sách lịch sử đang hiển thị. |
+| | 3. Use case kết thúc. |
+
+### Exception Flow
+
+#### Bước 2.3. Không thể tải thông tin lịch sử
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể tải thông tin lịch sử chuyến xe hoặc giao dịch. |
+| | 2. Hệ thống thông báo **Không thể tải lịch sử**. |
+| | 3. Hệ thống không hiển thị dữ liệu không đầy đủ hoặc không xác định. |
+| | 4. Use case kết thúc. |
+
+#### Bước 4.1. Không thể tải chi tiết lịch sử
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không thể lấy thông tin chi tiết của chuyến xe hoặc giao dịch được chọn. |
+| | 2. Hệ thống thông báo **Không thể hiển thị thông tin chi tiết**. |
+| | 3. Use case kết thúc. |
+---
+
+## UC18 – Đánh giá tài xế
+
+### Actor chính
+
+Khách hàng
+
+### Actor phụ
+
+Không
+
+### Tiền điều kiện
+
+1. Khách hàng đã đăng nhập thành công.
+2. Khách hàng đã hoàn thành một chuyến xe.
+3. Chuyến xe đã được xác định Tài xế thực hiện.
+4. Chuyến xe chưa hoàn tất quá trình đánh giá.
+
+### Post-Conditions
+
+Nếu use case thành công, đánh giá và nhận xét của Khách hàng được ghi nhận cho chuyến xe và hệ thống cập nhật điểm đánh giá trung bình của Tài xế.
+
+Nếu đánh giá không thành công, thông tin đánh giá chưa được ghi nhận và điểm đánh giá của Tài xế không thay đổi.
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng chọn chức năng **Đánh giá tài xế**. | |
+| | 2. Hệ thống xác định chuyến xe đã hoàn thành và Tài xế liên quan.<br><br>Hệ thống thực hiện subflow **Đánh giá tài xế**. |
+
+### Đánh giá tài xế
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống hiển thị thông tin chuyến xe và Tài xế. |
+| | 2. Hệ thống yêu cầu Khách hàng chọn mức đánh giá từ **1 đến 5 sao** và nhập nhận xét. |
+| 3. Khách hàng chọn số sao từ **1 đến 5** và nhập nhận xét. | |
+| 4. Khách hàng xác nhận gửi đánh giá. | |
+| | 5. Hệ thống kiểm tra thông tin đánh giá. |
+| | 6. Hệ thống ghi nhận số sao và nhận xét của Khách hàng cho chuyến xe. |
+| | 7. Hệ thống cập nhật điểm đánh giá trung bình của Tài xế. |
+| | 8. Hệ thống thông báo Khách hàng đã đánh giá Tài xế thành công. |
+
+### Alternative Flow
+
+#### Bước 5.1. Số sao đánh giá không hợp lệ
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện mức đánh giá không nằm trong phạm vi từ **1 đến 5 sao**. |
+| | 2. Hệ thống thông báo mức đánh giá không hợp lệ. |
+| | 3. Khách hàng được yêu cầu chọn lại mức đánh giá. |
+| | 4. Quay lại bước 3 của subflow **Đánh giá tài xế**. |
+
+#### Bước 4.1. Khách hàng hủy đánh giá
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Khách hàng hủy thao tác đánh giá trước khi xác nhận. | |
+| | 2. Hệ thống không ghi nhận đánh giá và nhận xét. |
+| | 3. Hệ thống giữ nguyên thông tin đánh giá của Tài xế. |
+| | 4. Use case kết thúc. |
+
+### Exception Flow
+
+#### Bước 6.1. Không thể ghi nhận đánh giá
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể ghi nhận số sao hoặc nhận xét của Khách hàng. |
+| | 2. Hệ thống thông báo đánh giá không thành công. |
+| | 3. Hệ thống không cập nhật điểm đánh giá trung bình của Tài xế. |
+| | 4. Use case kết thúc. |
+
+#### Bước 7.1. Không thể cập nhật điểm đánh giá trung bình
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể cập nhật điểm đánh giá trung bình của Tài xế. |
+| | 2. Hệ thống thông báo không thể hoàn tất việc cập nhật đánh giá. |
+| | 3. Hệ thống giữ nguyên thông tin đánh giá hiện tại của Tài xế. |
+| | 4. Use case kết thúc. |
+---
+
+## UC19 – Báo cáo chuyến đi & doanh thu
+
+### Actor chính
+
+Nhân viên vận hành
+
+### Actor phụ
+
+Không
+
+### Tiền điều kiện
+
+1. Nhân viên vận hành đã đăng nhập thành công.
+2. Nhân viên vận hành có quyền xem báo cáo.
+3. Khoảng thời gian cần lập báo cáo đã được xác định.
+
+### Post-Conditions
+
+Nếu use case thành công, hệ thống tạo và hiển thị báo cáo số lượng chuyến đi hoặc doanh thu theo khoảng thời gian được lựa chọn.
+
+Nếu không có dữ liệu phù hợp, hệ thống thông báo không có dữ liệu để lập báo cáo.
+
+### Dòng sự kiện
+
+#### Basic Flow
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn chức năng **Báo cáo chuyến đi & doanh thu**. | |
+| | 2. Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Nhân viên vận hành chọn **“Báo cáo số lượng chuyến đi”**, subflow **Báo cáo số lượng chuyến đi** được thực hiện.<br><br>Nếu Nhân viên vận hành chọn **“Báo cáo doanh thu”**, subflow **Báo cáo doanh thu** được thực hiện. |
+
+### Báo cáo số lượng chuyến đi
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn khoảng thời gian cần báo cáo: **ngày, tuần hoặc tháng**. | |
+| | 2. Hệ thống xác định khoảng thời gian được lựa chọn. |
+| | 3. Hệ thống tổng hợp số lượng chuyến đi trong khoảng thời gian đã chọn. |
+| | 4. Hệ thống tạo báo cáo số lượng chuyến đi. |
+| | 5. Hệ thống hiển thị báo cáo cho Nhân viên vận hành. |
+
+### Báo cáo doanh thu
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn khoảng thời gian cần báo cáo: **ngày, tuần hoặc tháng**. | |
+| | 2. Hệ thống xác định khoảng thời gian được lựa chọn. |
+| | 3. Hệ thống tổng hợp doanh thu trong khoảng thời gian đã chọn. |
+| | 4. Hệ thống tạo báo cáo doanh thu. |
+| | 5. Hệ thống hiển thị báo cáo cho Nhân viên vận hành. |
+
+### Alternative Flow
+
+#### Bước 3.1. Không có dữ liệu chuyến đi
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không tìm thấy dữ liệu chuyến đi trong khoảng thời gian được lựa chọn. |
+| | 2. Hệ thống thông báo **Không có dữ liệu chuyến đi trong khoảng thời gian đã chọn**. |
+| | 3. Use case kết thúc. |
+
+#### Bước 3.1. Không có dữ liệu doanh thu
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống không tìm thấy dữ liệu doanh thu trong khoảng thời gian được lựa chọn. |
+| | 2. Hệ thống thông báo **Không có dữ liệu doanh thu trong khoảng thời gian đã chọn**. |
+| | 3. Use case kết thúc. |
+
+#### Bước 1.1. Khoảng thời gian không hợp lệ
+
+| Người dùng | Hệ thống |
+|---|---|
+| 1. Nhân viên vận hành chọn khoảng thời gian không hợp lệ. | |
+| | 2. Hệ thống thông báo khoảng thời gian không hợp lệ. |
+| | 3. Nhân viên vận hành được yêu cầu chọn lại khoảng thời gian. |
+| | 4. Quay lại bước 1 của subflow tương ứng. |
+
+### Exception Flow
+
+#### Bước 3.1. Không thể tổng hợp dữ liệu chuyến đi
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể tổng hợp dữ liệu chuyến đi. |
+| | 2. Hệ thống thông báo **Không thể tạo báo cáo số lượng chuyến đi**. |
+| | 3. Hệ thống không hiển thị báo cáo không đầy đủ. |
+| | 4. Use case kết thúc. |
+
+#### Bước 3.1. Không thể tổng hợp dữ liệu doanh thu
+
+| Người dùng | Hệ thống |
+|---|---|
+| | 1. Hệ thống phát hiện không thể tổng hợp dữ liệu doanh thu. |
+| | 2. Hệ thống thông báo **Không thể tạo báo cáo doanh thu**. |
+| | 3. Hệ thống không hiển thị báo cáo không đầy đủ. |
+| | 4. Use case kết thúc. |
 
 # B9 Phân Tích Business Process
 ### Đăng ký tài khoản
