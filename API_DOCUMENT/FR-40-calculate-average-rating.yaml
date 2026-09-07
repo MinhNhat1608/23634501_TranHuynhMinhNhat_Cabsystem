@@ -1,0 +1,144 @@
+openapi: 3.0.3
+
+info:
+  title: Driver Average Rating API
+  description: API for calculating and retrieving the average rating of a driver.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Rating
+    description: APIs for driver average rating
+
+paths:
+
+  /drivers/{driverId}/rating:
+    get:
+      tags:
+        - Driver Rating
+      summary: Get driver average rating
+      description: Returns the driver's average rating calculated from all valid customer ratings.
+      operationId: getDriverAverageRating
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Unique identifier of the driver
+          schema:
+            type: string
+          example: DRV001
+
+      responses:
+
+        '200':
+          description: Driver average rating retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverRatingResponse'
+              example:
+                driverId: DRV001
+                averageRating: 4.6
+                totalRatings: 25
+                ratingBreakdown:
+                  "1": 1
+                  "2": 1
+                  "3": 2
+                  "4": 5
+                  "5": 16
+                calculatedAt: "2026-09-07T20:35:00Z"
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: You do not have permission to view this rating.
+
+        '404':
+          description: Driver not found
+          content:
+            application/json:
+              example:
+                message: Driver not found.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    DriverRatingResponse:
+      type: object
+      properties:
+
+        driverId:
+          type: string
+          example: DRV001
+
+        averageRating:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 5
+          example: 4.6
+
+        totalRatings:
+          type: integer
+          minimum: 0
+          example: 25
+
+        ratingBreakdown:
+          type: object
+          description: Number of ratings for each star level
+          properties:
+            "1":
+              type: integer
+              minimum: 0
+              example: 1
+            "2":
+              type: integer
+              minimum: 0
+              example: 1
+            "3":
+              type: integer
+              minimum: 0
+              example: 2
+            "4":
+              type: integer
+              minimum: 0
+              example: 5
+            "5":
+              type: integer
+              minimum: 0
+              example: 16
+
+        calculatedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T20:35:00Z"
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
