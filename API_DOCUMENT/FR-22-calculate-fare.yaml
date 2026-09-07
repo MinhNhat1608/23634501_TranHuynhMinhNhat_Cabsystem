@@ -1,0 +1,175 @@
+openapi: 3.0.3
+
+info:
+  title: Calculate Fare API
+  description: API for calculating ride fare using a fixed fare formula.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Fare Management
+    description: APIs for calculating and managing ride fares
+
+paths:
+  /fares/calculate:
+    post:
+      tags:
+        - Fare Management
+      summary: Calculate ride fare
+      description: >
+        Calculates the ride fare using the formula:
+        Fare = Base Fare + (Distance × Price Per Kilometer).
+      operationId: calculateFare
+
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FareCalculationRequest'
+            example:
+              serviceTypeCode: MOTORBIKE
+              distanceKm: 5.5
+
+      responses:
+        '200':
+          description: Fare calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FareCalculationResponse'
+              example:
+                serviceTypeCode: MOTORBIKE
+                distanceKm: 5.5
+                baseFare: 10000
+                pricePerKm: 5000
+                fare: 37500
+
+        '400':
+          description: Invalid fare calculation data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: Distance must be greater than zero
+
+        '401':
+          description: Unauthorized - missing or invalid JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: Unauthorized
+
+        '404':
+          description: Service type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: Service type not found
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: Internal server error
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    FareCalculationRequest:
+      type: object
+      required:
+        - serviceTypeCode
+        - distanceKm
+      properties:
+        serviceTypeCode:
+          type: string
+          enum:
+            - MOTORBIKE
+            - CAR
+          description: Type of ride service
+          example: MOTORBIKE
+
+        distanceKm:
+          type: number
+          format: double
+          exclusiveMinimum: 0
+          description: Ride distance in kilometers
+          example: 5.5
+
+    FareCalculationResponse:
+      type: object
+      required:
+        - serviceTypeCode
+        - distanceKm
+        - baseFare
+        - pricePerKm
+        - fare
+      properties:
+        serviceTypeCode:
+          type: string
+          enum:
+            - MOTORBIKE
+            - CAR
+          example: MOTORBIKE
+
+        distanceKm:
+          type: number
+          format: double
+          example: 5.5
+
+        baseFare:
+          type: number
+          format: double
+          description: Opening fare
+          example: 10000
+
+        pricePerKm:
+          type: number
+          format: double
+          description: Price per kilometer
+          example: 5000
+
+        fare:
+          type: number
+          format: double
+          description: Calculated total fare
+          example: 37500
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: Invalid request
