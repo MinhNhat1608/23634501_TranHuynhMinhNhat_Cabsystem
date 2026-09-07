@@ -1,4 +1,4 @@
-```yaml
+
 openapi: 3.0.3
 
 info:
@@ -240,4 +240,4 @@ components:
         message:
           type: string
           example: "Invalid login information"
-```
+
