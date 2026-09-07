@@ -1,0 +1,156 @@
+openapi: 3.0.3
+
+info:
+  title: No Driver Notification API
+  description: API for notifying customers when no suitable driver is available.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Matching
+    description: APIs for driver matching and ride requests
+
+paths:
+  /rides/{rideId}/driver-search/notification:
+    post:
+      tags:
+        - Driver Matching
+      summary: Notify customer when no driver is available
+      description: >
+        Sends a notification to the customer when the system cannot find
+        any suitable driver after the driver matching process is completed.
+      operationId: notifyNoDriver
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      responses:
+        '200':
+          description: No-driver notification sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoDriverNotificationResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                status: NO_DRIVER_AVAILABLE
+                message: No available driver was found for your ride.
+                notifiedAt: "2026-09-07T18:35:00Z"
+
+        '401':
+          description: Unauthorized - missing or invalid JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: Unauthorized
+
+        '403':
+          description: Forbidden - user does not have permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: You are not authorized to access this ride
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: Ride not found
+
+        '409':
+          description: Driver search is not completed or a driver is already assigned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: A driver has already been assigned to this ride
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: Internal server error
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    NoDriverNotificationResponse:
+      type: object
+      required:
+        - rideId
+        - customerId
+        - status
+        - message
+        - notifiedAt
+      properties:
+        rideId:
+          type: string
+          example: RID001
+
+        customerId:
+          type: string
+          example: CUS001
+
+        status:
+          type: string
+          enum:
+            - NO_DRIVER_AVAILABLE
+          example: NO_DRIVER_AVAILABLE
+
+        message:
+          type: string
+          example: No available driver was found for your ride.
+
+        notifiedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:35:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 404
+
+        message:
+          type: string
+          example: Ride not found
