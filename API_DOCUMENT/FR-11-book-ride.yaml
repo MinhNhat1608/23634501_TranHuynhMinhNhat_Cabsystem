@@ -1,0 +1,226 @@
+openapi: 3.0.3
+
+info:
+  title: Ride Booking API
+  description: API for customers to book a ride
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Ride Booking
+    description: Ride booking management
+
+paths:
+
+  /rides:
+    post:
+      tags:
+        - Ride Booking
+      summary: Book a ride
+      description: Customer creates a new ride booking request
+      operationId: bookRide
+
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRideRequest'
+            example:
+              customerId: "CUS001"
+              pickup:
+                latitude: 10.7769
+                longitude: 106.7009
+                address: "227 Nguyen Van Cu, District 5, Ho Chi Minh City"
+              destination:
+                latitude: 10.8231
+                longitude: 106.6297
+                address: "Tan Son Nhat International Airport"
+              serviceTypeCode: "MOTORBIKE"
+              paymentMethod: "CASH"
+
+      responses:
+
+        '201':
+          description: Ride booked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideResponse'
+
+        '400':
+          description: Invalid booking information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Customer or service type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '409':
+          description: Customer already has an active ride
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    BookRideRequest:
+      type: object
+      required:
+        - customerId
+        - pickup
+        - destination
+        - serviceTypeCode
+        - paymentMethod
+
+      properties:
+
+        customerId:
+          type: string
+          description: Customer ID
+          example: "CUS001"
+
+        pickup:
+          $ref: '#/components/schemas/Location'
+
+        destination:
+          $ref: '#/components/schemas/Location'
+
+        serviceTypeCode:
+          type: string
+          enum:
+            - MOTORBIKE
+            - CAR
+          description: Selected service type
+          example: "MOTORBIKE"
+
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+            - ONLINE
+          description: Selected payment method
+          example: "CASH"
+
+    Location:
+      type: object
+      required:
+        - latitude
+        - longitude
+        - address
+
+      properties:
+
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+          example: 10.7769
+
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+          example: 106.7009
+
+        address:
+          type: string
+          example: "227 Nguyen Van Cu, District 5, Ho Chi Minh City"
+
+    RideResponse:
+      type: object
+
+      properties:
+
+        rideId:
+          type: string
+          example: "RID001"
+
+        customerId:
+          type: string
+          example: "CUS001"
+
+        pickup:
+          $ref: '#/components/schemas/Location'
+
+        destination:
+          $ref: '#/components/schemas/Location'
+
+        serviceTypeCode:
+          type: string
+          enum:
+            - MOTORBIKE
+            - CAR
+          example: "MOTORBIKE"
+
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+            - ONLINE
+          example: "CASH"
+
+        status:
+          type: string
+          enum:
+            - SEARCHING_DRIVER
+            - DRIVER_ASSIGNED
+            - IN_PROGRESS
+            - COMPLETED
+            - CANCELLED
+          example: "SEARCHING_DRIVER"
+
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:30:00Z"
+
+    ErrorResponse:
+      type: object
+
+      properties:
+
+        code:
+          type: string
+          example: "INVALID_REQUEST"
+
+        message:
+          type: string
+          example: "Invalid booking information"
