@@ -1,0 +1,208 @@
+openapi: 3.0.3
+
+info:
+  title: CAB System - FR-47 Store Transaction Reference
+  description: API for storing the payment gateway transaction reference for reconciliation.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: FR-47 Transaction Reference
+
+paths:
+  /transactions/{transactionId}/reference:
+    post:
+      tags:
+        - FR-47 Transaction Reference
+      summary: Store transaction reference
+      description: Stores only the transaction reference returned by the configured payment gateway for reconciliation. The system does not store bank card information.
+      operationId: storeTransactionReference
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Internal transaction ID.
+          schema:
+            type: string
+            example: TXN001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionReferenceRequest'
+            example:
+              gatewayReference: "GW-20260907-ABC123456"
+
+      responses:
+        '201':
+          description: Transaction reference stored successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionReferenceResponse'
+              example:
+                transactionId: "TXN001"
+                rideId: "RIDE001"
+                paymentMethod: ONLINE
+                paymentGateway: DEFAULT_GATEWAY
+                gatewayReference: "GW-20260907-ABC123456"
+                status: SUCCESS
+                storedAt: "2026-09-07T21:30:00Z"
+
+        '400':
+          description: Invalid or missing transaction reference.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: "Gateway reference is required."
+
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: "Authentication required."
+
+        '403':
+          description: User does not have permission to store the transaction reference.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: "Access denied."
+
+        '404':
+          description: Transaction not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: "Transaction not found."
+
+        '409':
+          description: Transaction reference already exists or transaction is not eligible.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                duplicateReference:
+                  value:
+                    status: 409
+                    message: "Transaction reference already exists."
+                invalidPaymentMethod:
+                  value:
+                    status: 409
+                    message: "Transaction must use ONLINE payment."
+
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: "Internal server error."
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    TransactionReferenceRequest:
+      type: object
+      required:
+        - gatewayReference
+      properties:
+        gatewayReference:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Transaction reference returned by the payment gateway.
+          example: "GW-20260907-ABC123456"
+
+    TransactionReferenceResponse:
+      type: object
+      required:
+        - transactionId
+        - rideId
+        - paymentMethod
+        - paymentGateway
+        - gatewayReference
+        - status
+        - storedAt
+      properties:
+
+        transactionId:
+          type: string
+          example: "TXN001"
+
+        rideId:
+          type: string
+          example: "RIDE001"
+
+        paymentMethod:
+          type: string
+          enum:
+            - ONLINE
+          example: ONLINE
+
+        paymentGateway:
+          type: string
+          example: DEFAULT_GATEWAY
+
+        gatewayReference:
+          type: string
+          example: "GW-20260907-ABC123456"
+
+        status:
+          type: string
+          enum:
+            - PENDING
+            - SUCCESS
+            - FAILED
+          example: SUCCESS
+
+        storedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T21:30:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: "Gateway reference is required."
