@@ -1,0 +1,192 @@
+openapi: 3.0.3
+
+info:
+  title: Faulty Ride Intervention API
+  description: API for operators to cancel or complete rides that encounter operational problems.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Faulty Ride Intervention
+    description: APIs for operators to intervene in problematic rides
+
+paths:
+  /rides/{rideId}/operator-action:
+    patch:
+      tags:
+        - Faulty Ride Intervention
+      summary: Intervene in a faulty ride
+      description: Allows an operator to cancel or complete an active ride when an operational problem occurs.
+      operationId: interveneFaultyRide
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperatorActionRequest'
+            example:
+              action: CANCEL
+              reason: Driver vehicle encountered a technical problem.
+
+      responses:
+        '200':
+          description: Ride intervention completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorActionResponse'
+              examples:
+                cancelRide:
+                  summary: Cancel ride
+                  value:
+                    rideId: RID001
+                    action: CANCEL
+                    previousStatus: IN_PROGRESS
+                    status: CANCELLED
+                    operatorId: OPR001
+                    reason: Driver vehicle encountered a technical problem.
+                    processedAt: "2026-09-07T20:15:00Z"
+
+                completeRide:
+                  summary: Complete ride
+                  value:
+                    rideId: RID002
+                    action: COMPLETE
+                    previousStatus: IN_PROGRESS
+                    status: COMPLETED
+                    operatorId: OPR001
+                    reason: Ride completed manually due to system issue.
+                    processedAt: "2026-09-07T20:16:00Z"
+
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              example:
+                message: Action and reason are required.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only operators can intervene in rides.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '409':
+          description: Ride cannot be modified in its current state
+          content:
+            application/json:
+              example:
+                message: The ride cannot be cancelled or completed in its current state.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    OperatorActionRequest:
+      type: object
+      required:
+        - action
+        - reason
+      properties:
+        action:
+          type: string
+          enum:
+            - CANCEL
+            - COMPLETE
+          description: Action performed by the operator
+          example: CANCEL
+
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: Reason for the operator intervention
+          example: Driver vehicle encountered a technical problem.
+
+    OperatorActionResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+
+        action:
+          type: string
+          enum:
+            - CANCEL
+            - COMPLETE
+          example: CANCEL
+
+        previousStatus:
+          type: string
+          enum:
+            - SEARCHING_DRIVER
+            - DRIVER_ASSIGNED
+            - ON_THE_WAY
+            - ARRIVED
+            - IN_PROGRESS
+          example: IN_PROGRESS
+
+        status:
+          type: string
+          enum:
+            - CANCELLED
+            - COMPLETED
+          example: CANCELLED
+
+        operatorId:
+          type: string
+          example: OPR001
+
+        reason:
+          type: string
+          example: Driver vehicle encountered a technical problem.
+
+        processedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T20:15:00Z"
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
