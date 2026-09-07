@@ -1,0 +1,177 @@
+openapi: 3.0.3
+
+info:
+  title: Ride Cancellation API
+  description: API for customers and drivers to cancel a ride before it starts
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Ride Cancellation
+    description: Ride cancellation management
+
+paths:
+
+  /rides/{rideId}/status:
+
+    patch:
+      tags:
+        - Ride Cancellation
+      summary: Cancel a ride
+      description: Customer or driver cancels a ride before the ride starts
+      operationId: cancelRide
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: "RID001"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelRideRequest'
+            example:
+              status: "CANCELLED"
+              reason: "Customer changed plans"
+
+      responses:
+
+        '200':
+          description: Ride cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelRideResponse'
+              example:
+                rideId: "RID001"
+                status: "CANCELLED"
+                cancelledBy: "CUSTOMER"
+                reason: "Customer changed plans"
+                cancelledAt: "2026-09-07T18:40:00Z"
+
+        '400':
+          description: Invalid cancellation request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '403':
+          description: User does not have permission to cancel this ride
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '409':
+          description: Ride cannot be cancelled in the current state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    CancelRideRequest:
+      type: object
+      required:
+        - status
+        - reason
+
+      properties:
+
+        status:
+          type: string
+          enum:
+            - CANCELLED
+          description: Cancellation status
+          example: "CANCELLED"
+
+        reason:
+          type: string
+          minLength: 1
+          description: Reason for cancelling the ride
+          example: "Customer changed plans"
+
+    CancelRideResponse:
+      type: object
+      properties:
+
+        rideId:
+          type: string
+          example: "RID001"
+
+        status:
+          type: string
+          enum:
+            - CANCELLED
+          example: "CANCELLED"
+
+        cancelledBy:
+          type: string
+          enum:
+            - CUSTOMER
+            - DRIVER
+          example: "CUSTOMER"
+
+        reason:
+          type: string
+          example: "Customer changed plans"
+
+        cancelledAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:40:00Z"
+
+    ErrorResponse:
+      type: object
+      properties:
+
+        code:
+          type: string
+          example: "RIDE_CANNOT_BE_CANCELLED"
+
+        message:
+          type: string
+          example: "Ride cannot be cancelled in the current state."
