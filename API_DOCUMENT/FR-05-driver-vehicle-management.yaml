@@ -1,0 +1,320 @@
+openapi: 3.0.3
+
+info:
+  title: Driver and Vehicle Management API
+  description: API quản lý thông tin tài xế và phương tiện.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver
+    description: Quản lý thông tin tài xế
+  - name: Vehicle
+    description: Quản lý thông tin xe
+
+paths:
+
+  /drivers/{driverId}:
+    put:
+      tags:
+        - Driver
+      summary: Cập nhật thông tin tài xế
+      description: Cho phép cập nhật thông tin cá nhân của tài xế.
+      operationId: updateDriver
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Mã tài xế
+          schema:
+            type: string
+          example: DRV001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDriverRequest'
+            example:
+              fullName: Tran Van A
+              phone: "0901234567"
+              licenseNumber: "79A123456"
+
+      responses:
+
+        '200':
+          description: Cập nhật thông tin tài xế thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverResponse'
+              example:
+                success: true
+                message: Cập nhật thông tin tài xế thành công
+                data:
+                  driverId: DRV001
+                  fullName: Tran Van A
+                  phone: "0901234567"
+                  licenseNumber: "79A123456"
+
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Thông tin tài xế không hợp lệ
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '403':
+          description: Người dùng không có quyền quản lý thông tin tài xế
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Forbidden
+
+        '404':
+          description: Không tìm thấy tài xế
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy tài xế
+
+        '409':
+          description: Thông tin đã tồn tại
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Số điện thoại hoặc giấy phép lái xe đã được sử dụng
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /drivers/{driverId}/vehicle:
+    put:
+      tags:
+        - Vehicle
+      summary: Cập nhật thông tin xe
+      description: Cho phép tài xế cập nhật thông tin phương tiện đăng ký.
+      operationId: updateDriverVehicle
+
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Mã tài xế
+          schema:
+            type: string
+          example: DRV001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateVehicleRequest'
+            example:
+              licensePlate: "59A12345"
+              vehicleType: CAR
+              brand: Toyota
+              model: Vios
+              color: White
+
+      responses:
+
+        '200':
+          description: Cập nhật thông tin xe thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleResponse'
+              example:
+                success: true
+                message: Cập nhật thông tin xe thành công
+                data:
+                  vehicleId: VEH001
+                  driverId: DRV001
+                  licensePlate: "59A12345"
+                  vehicleType: CAR
+                  brand: Toyota
+                  model: Vios
+                  color: White
+
+        '400':
+          description: Dữ liệu xe không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Thông tin xe không hợp lệ
+
+        '401':
+          description: Chưa đăng nhập hoặc token không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '403':
+          description: Người dùng không có quyền quản lý xe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Forbidden
+
+        '404':
+          description: Không tìm thấy tài xế hoặc xe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Không tìm thấy tài xế hoặc xe
+
+        '409':
+          description: Biển số xe đã tồn tại
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Biển số xe đã được đăng ký
+
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  schemas:
+
+    UpdateDriverRequest:
+      type: object
+      required:
+        - fullName
+        - phone
+        - licenseNumber
+      properties:
+        fullName:
+          type: string
+          description: Họ và tên tài xế
+        phone:
+          type: string
+          description: Số điện thoại tài xế
+        licenseNumber:
+          type: string
+          description: Số giấy phép lái xe
+
+    DriverResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            driverId:
+              type: string
+            fullName:
+              type: string
+            phone:
+              type: string
+            licenseNumber:
+              type: string
+
+    UpdateVehicleRequest:
+      type: object
+      required:
+        - licensePlate
+        - vehicleType
+        - brand
+        - model
+      properties:
+        licensePlate:
+          type: string
+          description: Biển số xe
+        vehicleType:
+          type: string
+          enum:
+            - CAR
+            - MOTORBIKE
+          description: Loại phương tiện
+        brand:
+          type: string
+          description: Hãng xe
+        model:
+          type: string
+          description: Dòng xe
+        color:
+          type: string
+          description: Màu xe
+
+    VehicleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            vehicleId:
+              type: string
+            driverId:
+              type: string
+            licensePlate:
+              type: string
+            vehicleType:
+              type: string
+            brand:
+              type: string
+            model:
+              type: string
+            color:
+              type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
