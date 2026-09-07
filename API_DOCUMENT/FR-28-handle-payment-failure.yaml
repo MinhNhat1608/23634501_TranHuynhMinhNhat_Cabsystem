@@ -1,0 +1,250 @@
+openapi: 3.0.3
+
+info:
+  title: Payment Failure Handling API
+  description: API for handling failed payment transactions by retrying payment or changing payment method.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Payment Failure
+    description: Failed payment handling operations
+
+paths:
+
+  /transactions/{transactionId}/retry:
+    post:
+      tags:
+        - Payment Failure
+      summary: Retry failed payment
+      description: Allows the customer to retry a failed online payment transaction.
+      operationId: retryFailedPayment
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Unique identifier of the failed transaction
+          schema:
+            type: string
+          example: TXN001
+
+      responses:
+        '200':
+          description: Payment retry initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRetryResponse'
+              example:
+                transactionId: TXN001
+                rideId: RID001
+                paymentMethod: ONLINE
+                amount: 41000
+                status: PENDING
+                retryCount: 1
+                retriedAt: "2026-09-07T19:35:00Z"
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only the customer who owns the transaction can retry payment.
+
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              example:
+                message: Transaction not found.
+
+        '409':
+          description: Payment retry is not allowed
+          content:
+            application/json:
+              example:
+                message: Only failed transactions can be retried.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+  /rides/{rideId}/payment-method:
+    patch:
+      tags:
+        - Payment Failure
+      summary: Change payment method after failed payment
+      description: Allows the customer to change the payment method after an online payment failure.
+      operationId: changePaymentMethodAfterFailure
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePaymentMethodRequest'
+            example:
+              paymentMethod: CASH
+
+      responses:
+        '200':
+          description: Payment method changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePaymentMethodResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                paymentMethod: CASH
+                previousPaymentMethod: ONLINE
+                updatedAt: "2026-09-07T19:36:00Z"
+
+        '400':
+          description: Invalid payment method
+          content:
+            application/json:
+              example:
+                message: Invalid payment method.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only the customer who booked the ride can change the payment method.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '409':
+          description: Payment method cannot be changed
+          content:
+            application/json:
+              example:
+                message: Payment method cannot be changed because the transaction has not failed.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    PaymentRetryResponse:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          example: TXN001
+        rideId:
+          type: string
+          example: RID001
+        paymentMethod:
+          type: string
+          enum:
+            - ONLINE
+          example: ONLINE
+        amount:
+          type: number
+          format: double
+          example: 41000
+        status:
+          type: string
+          enum:
+            - PENDING
+          example: PENDING
+        retryCount:
+          type: integer
+          minimum: 1
+          example: 1
+        retriedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T19:35:00Z"
+
+    ChangePaymentMethodRequest:
+      type: object
+      required:
+        - paymentMethod
+      properties:
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+            - ONLINE
+          description: New payment method selected by the customer
+          example: CASH
+
+    ChangePaymentMethodResponse:
+      type: object
+      properties:
+        rideId:
+          type: string
+          example: RID001
+        customerId:
+          type: string
+          example: CUS001
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+            - ONLINE
+          example: CASH
+        previousPaymentMethod:
+          type: string
+          example: ONLINE
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T19:36:00Z"
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
