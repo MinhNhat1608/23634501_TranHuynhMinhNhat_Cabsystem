@@ -521,12 +521,13 @@ Nếu use case thành công, thông tin hồ sơ cá nhân được xem hoặc c
 
 ### Dòng sự kiện
 
-#### Basic Flow
+### Basic Flow
 
-| Người dùng | Hệ thống |
-|---|---|
-| 1. Khách hàng hoặc Tài xế chọn chức năng muốn thực hiện: **Xem hồ sơ cá nhân** hoặc **Cập nhật hồ sơ cá nhân**. | |
-| | 2. Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Khách hàng hoặc Tài xế chọn **“Xem hồ sơ cá nhân”**, subflow **Xem hồ sơ cá nhân** được thực hiện.<br><br>Nếu Khách hàng hoặc Tài xế chọn **“Cập nhật hồ sơ cá nhân”**, subflow **Cập nhật hồ sơ cá nhân** được thực hiện. |
+| STT | Actor | Hệ thống |
+|---|---|---|
+| 1 | | Hệ thống hiển thị các chức năng quản lý hồ sơ cá nhân, gồm **“Xem hồ sơ cá nhân”** và **“Cập nhật hồ sơ cá nhân”**. |
+| 2 | Khách hàng hoặc Tài xế chọn chức năng muốn thực hiện. | |
+| 3 | | Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Khách hàng hoặc Tài xế chọn **“Xem hồ sơ cá nhân”**, subflow **Xem hồ sơ cá nhân** được thực hiện.<br><br>Nếu Khách hàng hoặc Tài xế chọn **“Cập nhật hồ sơ cá nhân”**, subflow **Cập nhật hồ sơ cá nhân** được thực hiện. |
 
 
 ### Xem hồ sơ cá nhân
@@ -614,8 +615,9 @@ Nếu use case thành công, thông tin tài xế và phương tiện được t
 
 | Người dùng | Hệ thống |
 |---|---|
-| 1. Nhân viên vận hành chọn chức năng muốn thực hiện: **Thêm tài xế & phương tiện** hoặc **Cập nhật tài xế & phương tiện**. | |
-| | 2. Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Nhân viên vận hành chọn **“Thêm tài xế & phương tiện”**, subflow **Thêm tài xế & phương tiện** được thực hiện.<br><br>Nếu Nhân viên vận hành chọn **“Cập nhật tài xế & phương tiện”**, subflow **Cập nhật tài xế & phương tiện** được thực hiện. |
+| | 1. Hệ thống hiển thị các chức năng quản lý tài xế & phương tiện, gồm **“Thêm tài xế & phương tiện”** và **“Cập nhật tài xế & phương tiện”**. |
+| 2. Nhân viên vận hành chọn chức năng muốn thực hiện. | |
+| | 3. Hệ thống xác định chức năng được lựa chọn.<br><br>Nếu Nhân viên vận hành chọn **“Thêm tài xế & phương tiện”**, subflow **Thêm tài xế & phương tiện** được thực hiện.<br><br>Nếu Nhân viên vận hành chọn **“Cập nhật tài xế & phương tiện”**, subflow **Cập nhật tài xế & phương tiện** được thực hiện. |
 
 ### Thêm tài xế & phương tiện
 
@@ -737,8 +739,9 @@ Nếu use case thành công, trạng thái hoạt động của Tài xế đư�
 
 | Người dùng | Hệ thống |
 |---|---|
-| 1. Tài xế chọn chức năng **Quản lý trạng thái tài xế**. | |
-| | 2. Hệ thống xác định trạng thái hiện tại của Tài xế và hiển thị các trạng thái có thể lựa chọn.<br><br>Nếu Tài xế chọn **“Online”**, subflow **Chuyển sang Online** được thực hiện.<br><br>Nếu Tài xế chọn **“Offline”**, subflow **Chuyển sang Offline** được thực hiện. |
+| | 1. Hệ thống hiển thị chức năng **Quản lý trạng thái tài xế** và các trạng thái có thể lựa chọn, gồm **“Online”** và **“Offline”**. |
+| 2. Tài xế chọn trạng thái muốn thực hiện. | |
+| | 3. Hệ thống xác định trạng thái được lựa chọn.<br><br>Nếu Tài xế chọn **“Online”**, subflow **Chuyển sang Online** được thực hiện.<br><br>Nếu Tài xế chọn **“Offline”**, subflow **Chuyển sang Offline** được thực hiện. |
 
 ### Chuyển sang Online
 
