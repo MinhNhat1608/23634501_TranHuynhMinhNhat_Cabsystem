@@ -1,0 +1,270 @@
+openapi: 3.0.3
+
+info:
+  title: Incident Handling Log API
+  description: API for recording and retrieving operator actions taken to handle ride incidents.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Incident Handling Log
+    description: APIs for logging ride incident handling
+
+paths:
+
+  /rides/{rideId}/incident-logs:
+
+    post:
+      tags:
+        - Incident Handling Log
+      summary: Create an incident handling log
+      description: Records the operator, processing time, action, and result of handling a ride incident.
+      operationId: createIncidentLog
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncidentLogRequest'
+            example:
+              action: CANCEL
+              reason: Driver vehicle encountered a technical problem.
+              result: Ride cancelled successfully.
+
+      responses:
+
+        '201':
+          description: Incident handling log created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentLogResponse'
+              example:
+                logId: LOG001
+                rideId: RID001
+                operatorId: OPR001
+                action: CANCEL
+                reason: Driver vehicle encountered a technical problem.
+                result: Ride cancelled successfully.
+                processedAt: "2026-09-07T20:20:00Z"
+
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              example:
+                message: Action, reason, and result are required.
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only operators can create incident logs.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+    get:
+      tags:
+        - Incident Handling Log
+      summary: Get incident handling logs
+      description: Returns all incident handling logs for a ride.
+      operationId: getIncidentLogs
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      responses:
+
+        '200':
+          description: Incident handling logs retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentLogListResponse'
+              example:
+                rideId: RID001
+                total: 2
+                data:
+                  - logId: LOG001
+                    rideId: RID001
+                    operatorId: OPR001
+                    action: CANCEL
+                    reason: Driver vehicle encountered a technical problem.
+                    result: Ride cancelled successfully.
+                    processedAt: "2026-09-07T20:20:00Z"
+
+                  - logId: LOG002
+                    rideId: RID001
+                    operatorId: OPR002
+                    action: NOTIFY
+                    reason: Customer reported a ride issue.
+                    result: Customer was notified.
+                    processedAt: "2026-09-07T20:22:00Z"
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                message: Authentication is required.
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              example:
+                message: Only operators can view incident logs.
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              example:
+                message: Ride not found.
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error.
+
+components:
+
+  schemas:
+
+    IncidentLogRequest:
+      type: object
+      required:
+        - action
+        - reason
+        - result
+      properties:
+
+        action:
+          type: string
+          enum:
+            - CANCEL
+            - COMPLETE
+            - NOTIFY
+          description: Action performed by the operator
+          example: CANCEL
+
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: Reason for handling the incident
+          example: Driver vehicle encountered a technical problem.
+
+        result:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: Result of the incident handling
+          example: Ride cancelled successfully.
+
+    IncidentLogResponse:
+      type: object
+      properties:
+
+        logId:
+          type: string
+          example: LOG001
+
+        rideId:
+          type: string
+          example: RID001
+
+        operatorId:
+          type: string
+          example: OPR001
+
+        action:
+          type: string
+          enum:
+            - CANCEL
+            - COMPLETE
+            - NOTIFY
+          example: CANCEL
+
+        reason:
+          type: string
+          example: Driver vehicle encountered a technical problem.
+
+        result:
+          type: string
+          example: Ride cancelled successfully.
+
+        processedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T20:20:00Z"
+
+    IncidentLogListResponse:
+      type: object
+      properties:
+
+        rideId:
+          type: string
+          example: RID001
+
+        total:
+          type: integer
+          example: 2
+
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncidentLogResponse'
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
