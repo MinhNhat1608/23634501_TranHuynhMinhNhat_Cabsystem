@@ -1,0 +1,183 @@
+openapi: 3.0.3
+
+info:
+  title: Select Payment Method API
+  description: API for customers to select a payment method for a ride.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Payment
+    description: APIs for ride payment management
+
+paths:
+  /rides/{rideId}/payment-method:
+    patch:
+      tags:
+        - Payment
+      summary: Select payment method
+      description: >
+        Allows the customer to select either cash payment or online payment
+        for the ride.
+      operationId: selectPaymentMethod
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodRequest'
+            example:
+              paymentMethod: CASH
+
+      responses:
+        '200':
+          description: Payment method selected successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodResponse'
+              example:
+                rideId: RID001
+                customerId: CUS001
+                paymentMethod: CASH
+                updatedAt: "2026-09-07T18:40:00Z"
+
+        '400':
+          description: Invalid payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: Invalid payment method
+
+        '401':
+          description: Unauthorized - missing or invalid JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: Unauthorized
+
+        '403':
+          description: Forbidden - user is not the customer of the ride
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: You are not authorized to modify this ride
+
+        '404':
+          description: Ride not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: Ride not found
+
+        '409':
+          description: Payment method cannot be changed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: Payment method cannot be changed after the ride starts
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: Internal server error
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    PaymentMethodRequest:
+      type: object
+      required:
+        - paymentMethod
+      properties:
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+            - ONLINE
+          description: Selected payment method
+          example: CASH
+
+    PaymentMethodResponse:
+      type: object
+      required:
+        - rideId
+        - customerId
+        - paymentMethod
+        - updatedAt
+      properties:
+        rideId:
+          type: string
+          example: RID001
+
+        customerId:
+          type: string
+          example: CUS001
+
+        paymentMethod:
+          type: string
+          enum:
+            - CASH
+            - ONLINE
+          example: CASH
+
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:40:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: Invalid request
