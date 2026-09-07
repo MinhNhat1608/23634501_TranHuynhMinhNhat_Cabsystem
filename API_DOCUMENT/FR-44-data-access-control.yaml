@@ -1,0 +1,201 @@
+openapi: 3.0.3
+
+info:
+  title: CAB System - FR-44 Data Access Control
+  description: API for checking whether an authenticated user has permission to access a protected resource.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: FR-44 Data Access Control
+
+paths:
+  /auth/access-control:
+    get:
+      tags:
+        - FR-44 Data Access Control
+      summary: Check data access permission
+      description: Checks whether the authenticated user has permission to access the requested resource.
+      operationId: checkDataAccess
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: resource
+          in: query
+          required: true
+          description: Resource that the user wants to access.
+          schema:
+            type: string
+            enum:
+              - PROFILE
+              - RIDE
+              - RIDE_HISTORY
+              - DRIVER_STATUS
+              - TRANSACTION
+              - REPORT
+            example: RIDE_HISTORY
+
+        - name: action
+          in: query
+          required: true
+          description: Action that the user wants to perform.
+          schema:
+            type: string
+            enum:
+              - READ
+              - UPDATE
+              - CREATE
+              - DELETE
+            example: READ
+
+        - name: resourceId
+          in: query
+          required: false
+          description: Specific resource ID when access is related to a particular record.
+          schema:
+            type: string
+            example: RIDE001
+
+      responses:
+        '200':
+          description: Access permission checked successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessControlResponse'
+              example:
+                allowed: true
+                userId: "USR001"
+                role: CUSTOMER
+                resource: RIDE_HISTORY
+                action: READ
+                resourceId: "RIDE001"
+                message: "Access granted."
+
+        '400':
+          description: Invalid or missing access control parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: "Resource and action are required."
+
+        '401':
+          description: Authentication is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: "Authentication required."
+
+        '403':
+          description: User does not have permission to access the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: "Access denied."
+
+        '404':
+          description: Requested resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: "Resource not found."
+
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: "Internal server error."
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    AccessControlResponse:
+      type: object
+      required:
+        - allowed
+        - userId
+        - role
+        - resource
+        - action
+        - message
+      properties:
+
+        allowed:
+          type: boolean
+          example: true
+
+        userId:
+          type: string
+          example: "USR001"
+
+        role:
+          type: string
+          enum:
+            - CUSTOMER
+            - DRIVER
+            - OPERATOR
+          example: CUSTOMER
+
+        resource:
+          type: string
+          example: RIDE_HISTORY
+
+        action:
+          type: string
+          enum:
+            - READ
+            - UPDATE
+            - CREATE
+            - DELETE
+          example: READ
+
+        resourceId:
+          type: string
+          nullable: true
+          example: "RIDE001"
+
+        message:
+          type: string
+          example: "Access granted."
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+
+        status:
+          type: integer
+          example: 403
+
+        message:
+          type: string
+          example: "Access denied."
