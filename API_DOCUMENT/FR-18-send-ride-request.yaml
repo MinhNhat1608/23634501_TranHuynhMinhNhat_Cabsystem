@@ -1,0 +1,209 @@
+openapi: 3.0.3
+
+info:
+  title: Send Ride Request API
+  description: API for sending a ride request to a matched driver.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: Driver Matching
+    description: APIs for driver matching and ride requests
+
+paths:
+  /rides/{rideId}/driver-requests:
+    post:
+      tags:
+        - Driver Matching
+      summary: Send ride request to driver
+      description: >
+        Sends the ride request to a matched driver with a countdown timer.
+        The driver must respond within the configured time limit.
+      operationId: sendRideRequest
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: rideId
+          in: path
+          required: true
+          description: Unique identifier of the ride
+          schema:
+            type: string
+          example: RID001
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverRequest'
+
+            example:
+              driverId: DRV001
+              timeoutSeconds: 30
+
+      responses:
+        '201':
+          description: Ride request sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverRequestResponse'
+
+              example:
+                requestId: REQ001
+                rideId: RID001
+                driverId: DRV001
+                status: PENDING
+                timeoutSeconds: 30
+                expiresAt: "2026-09-07T18:30:30Z"
+                createdAt: "2026-09-07T18:30:00Z"
+
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                message: Invalid timeout value
+
+        '401':
+          description: Unauthorized - missing or invalid JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 401
+                message: Unauthorized
+
+        '403':
+          description: Forbidden - user does not have permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 403
+                message: Only the system or authorized operator can send driver requests
+
+        '404':
+          description: Ride or driver not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 404
+                message: Driver not found
+
+        '409':
+          description: Ride or driver is not available for the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                message: Driver is no longer available
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: Internal server error
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    DriverRequest:
+      type: object
+      required:
+        - driverId
+        - timeoutSeconds
+      properties:
+        driverId:
+          type: string
+          description: Driver receiving the ride request
+          example: DRV001
+
+        timeoutSeconds:
+          type: integer
+          minimum: 15
+          maximum: 30
+          description: Countdown duration for driver response
+          example: 30
+
+    DriverRequestResponse:
+      type: object
+      required:
+        - requestId
+        - rideId
+        - driverId
+        - status
+        - timeoutSeconds
+        - expiresAt
+        - createdAt
+      properties:
+        requestId:
+          type: string
+          example: REQ001
+
+        rideId:
+          type: string
+          example: RID001
+
+        driverId:
+          type: string
+          example: DRV001
+
+        status:
+          type: string
+          enum:
+            - PENDING
+          example: PENDING
+
+        timeoutSeconds:
+          type: integer
+          example: 30
+
+        expiresAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:30:30Z"
+
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T18:30:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+
+        message:
+          type: string
+          example: Invalid request
