@@ -1,0 +1,124 @@
+openapi: 3.0.3
+
+info:
+  title: CAB System - FR-43 Authentication Before Execution
+  description: API for validating user authentication before executing protected operations.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+tags:
+  - name: FR-43 Authentication
+
+paths:
+  /auth/validate-session:
+    post:
+      tags:
+        - FR-43 Authentication
+      summary: Validate user session
+      description: Validates the authenticated user's JWT token before allowing access to protected functions.
+      operationId: validateSession
+
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: Authentication is valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateSessionResponse'
+              example:
+                authenticated: true
+                userId: "USR001"
+                role: CUSTOMER
+                message: "Authentication is valid."
+                validatedAt: "2026-09-07T21:00:00Z"
+
+        '401':
+          description: Authentication is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingToken:
+                  value:
+                    status: 401
+                    message: "Authentication token is required."
+                invalidToken:
+                  value:
+                    status: 401
+                    message: "Invalid or expired authentication token."
+
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                message: "Internal server error."
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    ValidateSessionResponse:
+      type: object
+      required:
+        - authenticated
+        - userId
+        - role
+        - message
+        - validatedAt
+      properties:
+
+        authenticated:
+          type: boolean
+          example: true
+
+        userId:
+          type: string
+          example: "USR001"
+
+        role:
+          type: string
+          enum:
+            - CUSTOMER
+            - DRIVER
+            - OPERATOR
+          example: CUSTOMER
+
+        message:
+          type: string
+          example: "Authentication is valid."
+
+        validatedAt:
+          type: string
+          format: date-time
+          example: "2026-09-07T21:00:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+
+        status:
+          type: integer
+          example: 401
+
+        message:
+          type: string
+          example: "Authentication token is required."
