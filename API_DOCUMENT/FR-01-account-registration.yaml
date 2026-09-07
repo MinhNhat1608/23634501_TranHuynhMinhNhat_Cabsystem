@@ -1,0 +1,172 @@
+openapi: 3.0.3
+
+info:
+  title: Account Registration API
+  description: API for registering a new customer or driver account in the CAB System.
+  version: 1.0.0
+
+servers:
+  - url: https://your-api-domain.com/api/v1
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: APIs for user authentication and account registration
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new account
+      description: Register a new customer or driver account using phone number or email and password.
+      operationId: registerAccount
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterAccountRequest'
+            example:
+              fullName: "Nguyen Van A"
+              phoneNumber: "0901234567"
+              email: "nguyenvana@gmail.com"
+              password: "Password@123"
+              role: "CUSTOMER"
+
+      responses:
+        '201':
+          description: Account registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterAccountResponse'
+              example:
+                success: true
+                message: "Account registered successfully"
+                data:
+                  userId: "USR001"
+                  fullName: "Nguyen Van A"
+                  phoneNumber: "0901234567"
+                  email: "nguyenvana@gmail.com"
+                  role: "CUSTOMER"
+
+        '400':
+          description: Invalid registration information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Invalid registration information"
+
+        '409':
+          description: Phone number or email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Phone number or email already exists"
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Internal server error"
+
+components:
+
+  schemas:
+
+    RegisterAccountRequest:
+      type: object
+      required:
+        - fullName
+        - password
+        - role
+      properties:
+        fullName:
+          type: string
+          description: Full name of the user
+          example: "Nguyen Van A"
+
+        phoneNumber:
+          type: string
+          description: Phone number of the user
+          example: "0901234567"
+
+        email:
+          type: string
+          format: email
+          description: Email address of the user
+          example: "nguyenvana@gmail.com"
+
+        password:
+          type: string
+          format: password
+          description: Password used to access the account
+          example: "Password@123"
+
+        role:
+          type: string
+          description: Role of the account
+          enum:
+            - CUSTOMER
+            - DRIVER
+          example: "CUSTOMER"
+
+    RegisterAccountResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+
+        message:
+          type: string
+          example: "Account registered successfully"
+
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+              example: "USR001"
+
+            fullName:
+              type: string
+              example: "Nguyen Van A"
+
+            phoneNumber:
+              type: string
+              example: "0901234567"
+
+            email:
+              type: string
+              example: "nguyenvana@gmail.com"
+
+            role:
+              type: string
+              enum:
+                - CUSTOMER
+                - DRIVER
+              example: "CUSTOMER"
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: "Invalid registration information"
